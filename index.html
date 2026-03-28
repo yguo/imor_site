@@ -1,0 +1,2744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iMorph — Enterprise Conversational AI Platform</title>
+  <meta name="description" content="Build, test, deploy, and optimize enterprise-grade conversational AI agents with iMorph's lightweight all-in-one platform.">
+  <link rel="icon" type="image/png" href="asssets/iMorph_logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #09090B;
+      --surface: #111113;
+      --surface-2: #19191D;
+      --surface-3: #1F1F24;
+      --border: #222228;
+      --border-light: #2E2E36;
+      --text: #EEEEF0;
+      --text-sec: #9090A0;
+      --text-muted: #606070;
+      --purple: #8B5CF6;
+      --purple-dark: #7C3AED;
+      --purple-light: #A78BFA;
+      --purple-glow: rgba(139, 92, 246, 0.08);
+      --purple-glow-strong: rgba(139, 92, 246, 0.18);
+      --green: #34D399;
+      --amber: #FBBF24;
+      --red: #F87171;
+      --font: 'Sora', -apple-system, sans-serif;
+      --container: 1100px;
+      --section-py: 120px;
+    }
+
+    [data-theme="light"] {
+      --bg: #FAFAFA;
+      --surface: #FFFFFF;
+      --surface-2: #F4F4F5;
+      --surface-3: #E4E4E7;
+      --border: #E4E4E7;
+      --border-light: #D4D4D8;
+      --text: #18181B;
+      --text-sec: #52525B;
+      --text-muted: #A1A1AA;
+      --purple: #7C3AED;
+      --purple-dark: #6D28D9;
+      --purple-light: #6D28D9;
+      --purple-glow: rgba(124, 58, 237, 0.05);
+      --purple-glow-strong: rgba(124, 58, 237, 0.10);
+      --green: #059669;
+      --amber: #D97706;
+      --red: #DC2626;
+    }
+
+    [data-theme="light"] body { -webkit-font-smoothing: auto; }
+
+    [data-theme="light"] nav.scrolled {
+      background: rgba(250, 250, 250, 0.85);
+    }
+
+    [data-theme="light"] .hero::before {
+      background-image:
+        linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+    }
+
+    [data-theme="light"] .hero::after {
+      background: radial-gradient(ellipse, rgba(124, 58, 237, 0.06) 0%, transparent 65%);
+    }
+
+    [data-theme="light"] .label {
+      color: var(--purple);
+      background: rgba(124, 58, 237, 0.06);
+      border-color: rgba(124, 58, 237, 0.15);
+    }
+
+    [data-theme="light"] .btn-primary { color: #fff; }
+
+    [data-theme="light"] .btn-ghost {
+      color: var(--text-sec);
+      border-color: var(--border);
+    }
+
+
+    [data-theme="light"] .mockup {
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px var(--border);
+    }
+
+    [data-theme="light"] .fw-node-icon svg { stroke: var(--purple); }
+    [data-theme="light"] .adv-icon svg { stroke: var(--purple); }
+    [data-theme="light"] .ind-icon svg { stroke: var(--purple); }
+
+    [data-theme="light"] .adv-icon {
+      background: rgba(124, 58, 237, 0.05);
+      border-color: rgba(124, 58, 237, 0.12);
+    }
+
+    [data-theme="light"] .adv-grid {
+      background: var(--border);
+    }
+
+    [data-theme="light"] .chat-msg.user {
+      background: rgba(124, 58, 237, 0.08);
+      color: var(--purple);
+    }
+
+    [data-theme="light"] .chat-msg.agent {
+      background: var(--surface-2);
+      color: var(--text-sec);
+    }
+
+    [data-theme="light"] .mockup-sidebar-item.active {
+      background: rgba(124, 58, 237, 0.08);
+      color: var(--purple);
+    }
+
+    [data-theme="light"] .mockup-journey-step .step-num {
+      background: rgba(124, 58, 237, 0.08);
+      color: var(--purple);
+    }
+
+    [data-theme="light"] .mockup-guideline .g-icon {
+      background: rgba(5, 150, 105, 0.08);
+    }
+    [data-theme="light"] .mockup-guideline .g-icon::after { background: var(--green); }
+
+    [data-theme="light"] .flow-item .flow-num {
+      background: rgba(124, 58, 237, 0.08);
+      color: var(--purple);
+    }
+
+    [data-theme="light"] .metric-card .metric-val.good { color: var(--green); }
+    [data-theme="light"] .coverage-check { color: var(--green); }
+    [data-theme="light"] .status-dot.live { background: var(--green); }
+    [data-theme="light"] .status-dot.draft { background: var(--amber); }
+
+    [data-theme="light"] .trace-bar { background: var(--purple); }
+
+    [data-theme="light"] .sug-icon.knowledge { background: rgba(124, 58, 237, 0.08); }
+    [data-theme="light"] .sug-icon.guideline { background: rgba(5, 150, 105, 0.08); }
+    [data-theme="light"] .sug-icon.ops { background: rgba(217, 119, 6, 0.08); }
+
+    [data-theme="light"] .cta-section::before {
+      background: radial-gradient(ellipse, rgba(124, 58, 237, 0.04) 0%, transparent 65%);
+    }
+
+    [data-theme="light"] .ind-card::before {
+      background: linear-gradient(90deg, transparent, var(--purple), transparent);
+    }
+
+    [data-theme="light"] .flywheel-ring::after { border-top-color: var(--purple); }
+
+    [data-theme="light"] .blog-card {
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    [data-theme="light"] .blog-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    [data-theme="light"] .blog-tag {
+      background: rgba(124, 58, 237, 0.07);
+      color: var(--purple);
+    }
+    [data-theme="light"] .blog-link { color: var(--purple); }
+    [data-theme="light"] .blog-thumb {
+      background: #F8F7FF;
+    }
+
+    [data-theme="light"] .rm-dot.active {
+      box-shadow: 0 0 8px rgba(124, 58, 237, 0.25);
+    }
+    [data-theme="light"] .rm-dot.active::after { background: var(--bg); }
+    [data-theme="light"] .rm-quarter { color: var(--purple); }
+    [data-theme="light"] .rm-tag.shipped { background: rgba(5, 150, 105, 0.08); color: var(--green); }
+    [data-theme="light"] .rm-tag.progress { background: rgba(124, 58, 237, 0.08); color: var(--purple); }
+
+    [data-theme="light"] .faq-question:hover { color: var(--purple); }
+
+    /* ── THEME TOGGLE ── */
+    .theme-toggle {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-sec);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s ease;
+      flex-shrink: 0;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--border-light);
+      color: var(--text);
+    }
+
+    .theme-toggle svg { width: 14px; height: 14px; }
+    .theme-toggle .icon-sun { display: none; }
+    .theme-toggle .icon-moon { display: block; }
+    [data-theme="light"] .theme-toggle .icon-sun { display: block; }
+    [data-theme="light"] .theme-toggle .icon-moon { display: none; }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      font-weight: 300;
+      font-size: 0.8125rem;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      transition: background 0.35s ease, color 0.35s ease;
+    }
+
+    .container { max-width: var(--container); margin: 0 auto; padding: 0 32px; }
+    .text-center { text-align: center; }
+
+    a { color: inherit; text-decoration: none; }
+
+    .label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.6875rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      background: rgba(139, 92, 246, 0.08);
+      border: 1px solid rgba(139, 92, 246, 0.15);
+      padding: 6px 14px;
+      border-radius: 100px;
+    }
+
+    .label::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--purple);
+    }
+
+    h1, h2, h3, h4 { font-weight: 300; line-height: 1.2; letter-spacing: -0.02em; }
+
+    h1 { font-size: clamp(2rem, 5vw, 3.25rem); }
+    h2 { font-size: clamp(1.5rem, 3vw, 2rem); }
+    h3 { font-size: 1.125rem; }
+    h4 { font-size: 0.875rem; font-weight: 400; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-family: var(--font);
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      border: none;
+      transition: all 0.25s ease;
+    }
+
+    .btn-primary {
+      background: var(--purple);
+      color: #fff;
+    }
+    .btn-primary:hover { background: var(--purple-dark); transform: translateY(-1px); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-sec);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { border-color: var(--border-light); color: var(--text); }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 0 32px;
+      transition: all 0.3s ease;
+    }
+
+    nav.scrolled {
+      background: rgba(9, 9, 11, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav .nav-inner {
+      max-width: var(--container);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+
+    .logo-mark {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-mark img { width: 100%; height: 100%; object-fit: contain; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.75rem;
+      font-weight: 300;
+      color: var(--text-sec);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text);
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      padding: 160px 0 100px;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 20%, transparent 70%);
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 500px;
+      background: radial-gradient(ellipse, rgba(139, 92, 246, 0.06) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero .container { position: relative; z-index: 1; }
+
+    .hero-content {
+      max-width: 680px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .hero h1 {
+      margin-top: 20px;
+      color: var(--text);
+    }
+
+    .hero h1 span { color: var(--purple-light); }
+
+    .hero-desc {
+      margin-top: 20px;
+      color: var(--text-sec);
+      font-size: 0.875rem;
+      line-height: 1.8;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-cta {
+      margin-top: 36px;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .hero-flow {
+      margin-top: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: wrap;
+    }
+
+    .hero-flow-step {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .flow-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.6875rem;
+      font-weight: 400;
+      color: var(--text-sec);
+      white-space: nowrap;
+    }
+
+    .flow-item .flow-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(139, 92, 246, 0.12);
+      color: var(--purple-light);
+      font-size: 0.5625rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .flow-arrow {
+      color: var(--border-light);
+      font-size: 0.75rem;
+      padding: 0 8px;
+    }
+
+    /* ── STATS ── */
+    .stats {
+      padding: 60px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+      text-align: center;
+    }
+
+    .stat-item h3 {
+      font-size: 1.75rem;
+      font-weight: 200;
+      color: var(--text);
+      letter-spacing: -0.03em;
+    }
+
+    .stat-item h3 span { color: var(--purple-light); }
+
+    .stat-item p {
+      margin-top: 4px;
+      font-size: 0.6875rem;
+      color: var(--text-muted);
+      font-weight: 300;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    /* ── FLYWHEEL ── */
+    .flywheel { padding: var(--section-py) 0; }
+
+    .flywheel-header {
+      text-align: center;
+      max-width: 520px;
+      margin: 0 auto 64px;
+    }
+
+    .flywheel-header p {
+      margin-top: 16px;
+      color: var(--text-sec);
+      font-size: 0.8125rem;
+    }
+
+    .flywheel-diagram {
+      position: relative;
+      max-width: 560px;
+      margin: 0 auto;
+      aspect-ratio: 1;
+    }
+
+    .flywheel-ring {
+      position: absolute;
+      inset: 60px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+    }
+
+    .flywheel-ring::after {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 50%;
+      border: 1px solid transparent;
+      border-top-color: var(--purple);
+      animation: flywheel-spin 12s linear infinite;
+    }
+
+    @keyframes flywheel-spin { to { transform: rotate(360deg); } }
+
+    .flywheel-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    .flywheel-center-logo {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+
+    .flywheel-center-sub {
+      font-size: 0.5625rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .fw-node {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      width: 140px;
+      text-align: center;
+    }
+
+    .fw-node-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .fw-node:hover .fw-node-icon {
+      border-color: var(--purple);
+      box-shadow: 0 0 20px rgba(139, 92, 246, 0.15);
+    }
+
+    .fw-node-icon svg { width: 18px; height: 18px; stroke: var(--purple-light); fill: none; stroke-width: 1.5; }
+
+    .fw-node-label {
+      font-size: 0.6875rem;
+      font-weight: 400;
+      color: var(--text);
+    }
+
+    .fw-node-desc {
+      font-size: 0.5625rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .fw-top { top: 0; left: 50%; transform: translateX(-50%); }
+    .fw-right { top: 50%; right: 0; transform: translateY(-50%); }
+    .fw-bottom { bottom: 0; left: 50%; transform: translateX(-50%); }
+    .fw-left { top: 50%; left: 0; transform: translateY(-50%); }
+
+    .fw-arrow {
+      position: absolute;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+
+    .fw-arrow-tr { top: 18%; right: 14%; transform: rotate(45deg); }
+    .fw-arrow-br { bottom: 18%; right: 14%; transform: rotate(135deg); }
+    .fw-arrow-bl { bottom: 18%; left: 14%; transform: rotate(225deg); }
+    .fw-arrow-tl { top: 18%; left: 14%; transform: rotate(315deg); }
+
+    /* ── FEATURES ── */
+    .features { padding: var(--section-py) 0; }
+
+    .feature-block {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      padding: 64px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .feature-block:first-child { border-top: none; }
+    .feature-block.reverse .feature-text { order: 2; }
+    .feature-block.reverse .feature-mockup { order: 1; }
+
+    .feature-step {
+      font-size: 0.5625rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      margin-bottom: 12px;
+    }
+
+    .feature-text h3 {
+      font-size: 1.25rem;
+      margin-bottom: 16px;
+    }
+
+    .feature-text > p {
+      color: var(--text-sec);
+      font-size: 0.8125rem;
+      line-height: 1.8;
+      margin-bottom: 24px;
+    }
+
+    .feature-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .feature-bullets li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.75rem;
+      color: var(--text-sec);
+      line-height: 1.6;
+    }
+
+    .feature-bullets li::before {
+      content: '';
+      flex-shrink: 0;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--purple);
+      margin-top: 7px;
+    }
+
+    /* ── MOCKUP PANELS ── */
+    .mockup {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      font-size: 0.6875rem;
+    }
+
+    .mockup-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-2);
+    }
+
+    .mockup-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--border-light);
+    }
+
+    .mockup-bar-title {
+      margin-left: 8px;
+      font-size: 0.625rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .mockup-body { display: flex; min-height: 280px; }
+
+    .mockup-sidebar {
+      width: 130px;
+      border-right: 1px solid var(--border);
+      padding: 12px;
+      flex-shrink: 0;
+    }
+
+    .mockup-sidebar-label {
+      font-size: 0.5625rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      font-weight: 400;
+    }
+
+    .mockup-sidebar-item {
+      padding: 6px 8px;
+      border-radius: 5px;
+      font-size: 0.625rem;
+      color: var(--text-sec);
+      cursor: default;
+      margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .mockup-sidebar-item.active {
+      background: rgba(139, 92, 246, 0.1);
+      color: var(--purple-light);
+    }
+
+    .mockup-sidebar-item .dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+    }
+
+    .mockup-main { flex: 1; padding: 14px; }
+
+    .mockup-section-title {
+      font-size: 0.625rem;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .mockup-section-title .count {
+      background: var(--surface-2);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 0.5625rem;
+      color: var(--text-muted);
+    }
+
+    .mockup-journey-step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 4px;
+      font-size: 0.625rem;
+      color: var(--text-sec);
+    }
+
+    .mockup-journey-step .step-num {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: rgba(139, 92, 246, 0.1);
+      color: var(--purple-light);
+      font-size: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    .mockup-guideline {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 7px 10px;
+      background: var(--surface-2);
+      border-radius: 6px;
+      margin-bottom: 4px;
+      font-size: 0.5625rem;
+      color: var(--text-sec);
+      line-height: 1.5;
+    }
+
+    .mockup-guideline .g-icon {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      background: rgba(52, 211, 153, 0.1);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
+
+    .mockup-guideline .g-icon::after {
+      content: '';
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    /* Test mockup */
+    .mockup-chat { flex: 1; display: flex; flex-direction: column; }
+
+    .mockup-chat-messages {
+      flex: 1;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .chat-msg {
+      max-width: 80%;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.625rem;
+      line-height: 1.6;
+    }
+
+    .chat-msg.agent {
+      background: var(--surface-2);
+      color: var(--text-sec);
+      align-self: flex-start;
+      border-bottom-left-radius: 3px;
+    }
+
+    .chat-msg.user {
+      background: rgba(139, 92, 246, 0.1);
+      color: var(--purple-light);
+      align-self: flex-end;
+      border-bottom-right-radius: 3px;
+    }
+
+    .chat-msg .msg-label {
+      font-size: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 3px;
+      opacity: 0.5;
+    }
+
+    .mockup-chat-input {
+      padding: 10px 14px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .mock-input {
+      flex: 1;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 7px 10px;
+      font-size: 0.5625rem;
+      color: var(--text-muted);
+    }
+
+    .mockup-metrics {
+      width: 160px;
+      border-left: 1px solid var(--border);
+      padding: 14px;
+    }
+
+    .metric-card {
+      padding: 8px;
+      background: var(--surface-2);
+      border-radius: 6px;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+
+    .metric-card .metric-val {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--text);
+    }
+
+    .metric-card .metric-val.good { color: var(--green); }
+
+    .metric-card .metric-label {
+      font-size: 0.5rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 2px;
+    }
+
+    .coverage-list { margin-top: 12px; }
+
+    .coverage-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4px 0;
+      font-size: 0.5625rem;
+      color: var(--text-sec);
+    }
+
+    .coverage-check { color: var(--green); font-size: 0.625rem; }
+
+    /* Deploy mockup */
+    .deploy-channels {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .channel-card {
+      padding: 10px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      text-align: center;
+    }
+
+    .channel-card .ch-icon {
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+
+    .channel-card .ch-name {
+      font-size: 0.5625rem;
+      color: var(--text-sec);
+    }
+
+    .channel-card .ch-status {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      font-size: 0.5rem;
+      margin-top: 4px;
+    }
+
+    .status-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+    }
+
+    .status-dot.live { background: var(--green); }
+    .status-dot.draft { background: var(--amber); }
+
+    .trace-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      background: var(--surface-2);
+      border-radius: 6px;
+      margin-bottom: 4px;
+    }
+
+    .trace-name { font-size: 0.5625rem; color: var(--text-sec); flex: 1; }
+
+    .trace-bar-wrap {
+      flex: 2;
+      height: 6px;
+      background: var(--surface-3);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .trace-bar {
+      height: 100%;
+      border-radius: 3px;
+      background: var(--purple);
+      opacity: 0.6;
+    }
+
+    .trace-ms { font-size: 0.5rem; color: var(--text-muted); min-width: 32px; text-align: right; }
+
+    /* Insights mockup */
+    .insights-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .insight-metric {
+      padding: 10px;
+      background: var(--surface-2);
+      border-radius: 6px;
+      text-align: center;
+    }
+
+    .insight-metric .im-val {
+      font-size: 1.125rem;
+      font-weight: 300;
+      color: var(--text);
+    }
+
+    .insight-metric .im-label {
+      font-size: 0.5rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 2px;
+    }
+
+    .suggestion-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px;
+      background: var(--surface-2);
+      border-radius: 6px;
+      margin-bottom: 4px;
+    }
+
+    .sug-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 0.625rem;
+    }
+
+    .sug-icon.knowledge { background: rgba(139, 92, 246, 0.12); }
+    .sug-icon.guideline { background: rgba(52, 211, 153, 0.12); }
+    .sug-icon.ops { background: rgba(251, 191, 36, 0.12); }
+
+    .sug-text .sug-type {
+      font-size: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .sug-text .sug-desc { font-size: 0.5625rem; color: var(--text-sec); line-height: 1.5; }
+
+    /* ── ADVANTAGES ── */
+    .advantages { padding: var(--section-py) 0; }
+
+    .advantages-header {
+      text-align: center;
+      max-width: 480px;
+      margin: 0 auto 56px;
+    }
+
+    .advantages-header p {
+      margin-top: 16px;
+      color: var(--text-sec);
+    }
+
+    .adv-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .adv-card {
+      padding: 32px 28px;
+      background: var(--surface);
+      transition: background 0.3s ease;
+    }
+
+    .adv-card:hover { background: var(--surface-2); }
+
+    .adv-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: rgba(139, 92, 246, 0.06);
+      border: 1px solid rgba(139, 92, 246, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .adv-icon svg { width: 16px; height: 16px; stroke: var(--purple-light); fill: none; stroke-width: 1.5; }
+
+    .adv-card h4 { margin-bottom: 8px; color: var(--text); }
+
+    .adv-card p { font-size: 0.75rem; color: var(--text-muted); line-height: 1.7; }
+
+    /* ── INDUSTRIES ── */
+    .industries { padding: var(--section-py) 0; }
+
+    .industries-header {
+      text-align: center;
+      max-width: 500px;
+      margin: 0 auto 56px;
+    }
+
+    .industries-header p {
+      margin-top: 16px;
+      color: var(--text-sec);
+    }
+
+    .ind-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .ind-card {
+      padding: 36px 28px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ind-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--purple), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .ind-card:hover::before { opacity: 1; }
+    .ind-card:hover { border-color: var(--border-light); }
+
+    .ind-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .ind-icon svg { width: 20px; height: 20px; stroke: var(--purple-light); fill: none; stroke-width: 1.5; }
+
+    .ind-card h3 { font-size: 1rem; margin-bottom: 12px; }
+
+    .ind-card p { color: var(--text-sec); font-size: 0.75rem; line-height: 1.7; margin-bottom: 16px; }
+
+    .ind-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .ind-tag {
+      padding: 4px 10px;
+      background: var(--surface-2);
+      border-radius: 4px;
+      font-size: 0.5625rem;
+      color: var(--text-muted);
+    }
+
+    /* ── ROADMAP ── */
+    .roadmap { padding: var(--section-py) 0; }
+
+    .roadmap-header {
+      text-align: center;
+      max-width: 500px;
+      margin: 0 auto 56px;
+    }
+
+    .roadmap-header p { margin-top: 16px; color: var(--text-sec); }
+
+    .roadmap-timeline {
+      position: relative;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .roadmap-timeline::before {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--border);
+    }
+
+    .rm-item {
+      position: relative;
+      padding-left: 52px;
+      padding-bottom: 40px;
+    }
+
+    .rm-item:last-child { padding-bottom: 0; }
+
+    .rm-dot {
+      position: absolute;
+      left: 12px;
+      top: 2px;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      background: var(--bg);
+      z-index: 1;
+    }
+
+    .rm-dot.active {
+      border-color: var(--purple);
+      background: var(--purple);
+      box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+    }
+
+    .rm-dot.active::after {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      border-radius: 50%;
+      background: var(--bg);
+    }
+
+    .rm-quarter {
+      font-size: 0.5625rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--purple-light);
+      margin-bottom: 6px;
+    }
+
+    .rm-item h4 {
+      font-size: 0.8125rem;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .rm-item p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .rm-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 8px;
+    }
+
+    .rm-tag {
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.5rem;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+    }
+
+    .rm-tag.shipped { background: rgba(52, 211, 153, 0.1); color: var(--green); }
+    .rm-tag.progress { background: rgba(139, 92, 246, 0.1); color: var(--purple-light); }
+    .rm-tag.planned { background: var(--surface-2); color: var(--text-muted); }
+
+    /* ── BLOG ── */
+    .blog { padding: var(--section-py) 0; }
+
+    .blog-header {
+      text-align: center;
+      max-width: 480px;
+      margin: 0 auto 56px;
+    }
+
+    .blog-header p { margin-top: 16px; color: var(--text-sec); }
+
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .blog-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .blog-card:hover { border-color: var(--border-light); transform: translateY(-2px); }
+
+    .blog-thumb {
+      height: 140px;
+      background: var(--surface-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .blog-thumb svg.blog-illust {
+      width: 100%;
+      height: 100%;
+    }
+
+    .blog-body { padding: 20px; }
+
+    .blog-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .blog-tag {
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(139, 92, 246, 0.08);
+      font-size: 0.5625rem;
+      font-weight: 400;
+      color: var(--purple-light);
+    }
+
+    .blog-date {
+      font-size: 0.5625rem;
+      color: var(--text-muted);
+    }
+
+    .blog-card h4 {
+      font-size: 0.8125rem;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    .blog-card p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .blog-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.6875rem;
+      color: var(--purple-light);
+      margin-top: 12px;
+      font-weight: 400;
+      transition: gap 0.2s ease;
+    }
+
+    .blog-card:hover .blog-link { gap: 8px; }
+
+    /* ── FAQ ── */
+    .faq { padding: var(--section-py) 0; }
+
+    .faq-header {
+      text-align: center;
+      max-width: 480px;
+      margin: 0 auto 56px;
+    }
+
+    .faq-header p { margin-top: 16px; color: var(--text-sec); }
+
+    .faq-list {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      cursor: pointer;
+      font-family: var(--font);
+      font-size: 0.8125rem;
+      font-weight: 400;
+      color: var(--text);
+      text-align: left;
+      line-height: 1.5;
+    }
+
+    .faq-question:hover { color: var(--purple-light); }
+
+    .faq-chevron {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+      color: var(--text-muted);
+    }
+
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.35s ease;
+    }
+
+    .faq-item.open .faq-answer { max-height: 300px; }
+
+    .faq-answer p {
+      padding-bottom: 20px;
+      font-size: 0.75rem;
+      color: var(--text-sec);
+      line-height: 1.8;
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      padding: var(--section-py) 0;
+      text-align: center;
+      position: relative;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 300px;
+      background: radial-gradient(ellipse, rgba(139, 92, 246, 0.05) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .cta-inner {
+      max-width: 500px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .cta-inner h2 { margin-bottom: 16px; }
+
+    .cta-inner p {
+      color: var(--text-sec);
+      margin-bottom: 32px;
+      font-size: 0.8125rem;
+      line-height: 1.8;
+    }
+
+    .cta-buttons { display: flex; gap: 12px; justify-content: center; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 60px 0 40px;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+
+    .footer-brand p {
+      margin-top: 12px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 260px;
+    }
+
+    .footer-col h4 {
+      font-size: 0.625rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .footer-col ul { list-style: none; }
+
+    .footer-col li { margin-bottom: 10px; }
+
+    .footer-col a {
+      font-size: 0.75rem;
+      color: var(--text-sec);
+      transition: color 0.2s;
+    }
+
+    .footer-col a:hover { color: var(--text); }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-bottom p {
+      font-size: 0.625rem;
+      color: var(--text-muted);
+    }
+
+    .footer-legal {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-legal a {
+      font-size: 0.625rem;
+      color: var(--text-muted);
+      transition: color 0.2s;
+    }
+    .footer-legal a:hover { color: var(--text-sec); }
+
+    /* ── SCROLL ANIMATIONS ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-d1 { transition-delay: 0.1s; }
+    .reveal-d2 { transition-delay: 0.2s; }
+    .reveal-d3 { transition-delay: 0.3s; }
+    .reveal-d4 { transition-delay: 0.4s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      :root { --section-py: 80px; }
+
+      .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+      .feature-block { grid-template-columns: 1fr; gap: 36px; }
+      .feature-block.reverse .feature-text { order: 1; }
+      .feature-block.reverse .feature-mockup { order: 2; }
+      .adv-grid { grid-template-columns: repeat(2, 1fr); }
+      .ind-grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
+      .blog-grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+
+      .flywheel-diagram { max-width: 400px; }
+      .fw-node { width: 110px; }
+      .fw-node-desc { display: none; }
+
+      .nav-links { display: none; }
+      .mobile-toggle { display: block; }
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 0 20px; }
+      .hero { padding: 120px 0 60px; }
+      .hero-flow { flex-direction: column; gap: 8px; }
+      .flow-arrow { transform: rotate(90deg); }
+      .hero-flow-step { flex-direction: column; align-items: center; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .adv-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+      .flywheel-diagram { max-width: 320px; }
+      .fw-node { width: 90px; }
+      .fw-node-label { font-size: 0.5625rem; }
+      .mockup-sidebar { width: 100px; }
+      .mockup-metrics { width: 120px; }
+      .deploy-channels { grid-template-columns: 1fr 1fr 1fr; }
+      .hero-cta { flex-direction: column; align-items: center; }
+      .cta-buttons { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="kg-canvas" style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;"></canvas>
+
+  <!-- ────── NAVIGATION ────── -->
+  <nav id="nav">
+    <div class="nav-inner">
+      <a href="#" class="logo">
+        <div class="logo-mark"><img src="asssets/iMorph_logo.png" alt="iMorph"></div>
+        iMorph
+      </a>
+      <ul class="nav-links">
+        <li><a href="#features">Product</a></li>
+        <li><a href="#advantages">Why iMorph</a></li>
+        <li><a href="#industries">Industries</a></li>
+        <li><a href="#roadmap">Roadmap</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#cta-section">Contact</a></li>
+      </ul>
+      <div class="nav-cta">
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke-linecap="round"/></svg>
+        </button>
+        <a href="#cta-section" class="btn btn-primary">Get Started</a>
+      </div>
+      <button class="mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('show')" aria-label="Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ────── HERO ────── -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="label">Enterprise Conversational AI</div>
+        <h1>Build Conversational Agents <span>Businesses Trust</span></h1>
+        <p class="hero-desc">A lightweight, all-in-one platform for building, testing, deploying, and continuously optimizing enterprise-grade conversational AI — from cold start to production in minutes.</p>
+        <div class="hero-cta">
+          <a href="#cta-section" class="btn btn-primary">Get Started Free</a>
+          <a href="#flywheel" class="btn btn-ghost">See How It Works</a>
+        </div>
+      </div>
+      <div class="hero-flow reveal">
+        <div class="hero-flow-step">
+          <div class="flow-item"><span class="flow-num">1</span>Describe Your Business</div>
+          <span class="flow-arrow">→</span>
+        </div>
+        <div class="hero-flow-step">
+          <div class="flow-item"><span class="flow-num">2</span>Auto-Build Agent</div>
+          <span class="flow-arrow">→</span>
+        </div>
+        <div class="hero-flow-step">
+          <div class="flow-item"><span class="flow-num">3</span>Test & Validate</div>
+          <span class="flow-arrow">→</span>
+        </div>
+        <div class="hero-flow-step">
+          <div class="flow-item"><span class="flow-num">4</span>Deploy to Channels</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────── STATS ────── -->
+  <section class="stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item reveal">
+          <h3><span data-count="1000">0</span>+</h3>
+          <p>Enterprise Clients</p>
+        </div>
+        <div class="stat-item reveal reveal-d1">
+          <h3><span>7</span>+</h3>
+          <p>Languages Supported</p>
+        </div>
+        <div class="stat-item reveal reveal-d2">
+          <h3>&lt;<span>200</span>ms</h3>
+          <p>Response Latency</p>
+        </div>
+        <div class="stat-item reveal reveal-d3">
+          <h3><span>4</span></h3>
+          <p>Continents</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────── FLYWHEEL ────── -->
+  <section class="flywheel" id="flywheel">
+    <div class="container">
+      <div class="flywheel-header reveal">
+        <div class="label">Product Loop</div>
+        <h2 style="margin-top:16px">The Continuous Improvement Loop</h2>
+        <p>Every agent evolves through a closed-loop cycle — building, testing, deploying, and learning from real conversations to get better over time.</p>
+      </div>
+      <div class="flywheel-diagram reveal">
+        <div class="flywheel-ring"></div>
+        <div class="flywheel-center">
+          <div class="flywheel-center-logo">iMorph</div>
+          <div class="flywheel-center-sub">Agent Loop</div>
+        </div>
+
+        <!-- Top node -->
+        <div class="fw-node fw-top">
+          <div class="fw-node-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 3v12M8 11l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 21H4" stroke-linecap="round"/></svg>
+          </div>
+          <div class="fw-node-label">Train & Optimize</div>
+          <div class="fw-node-desc">Define behavior with natural language</div>
+        </div>
+
+        <!-- Right node -->
+        <div class="fw-node fw-right">
+          <div class="fw-node-icon">
+            <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" stroke-linecap="round"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 14l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="fw-node-label">Test & Simulate</div>
+          <div class="fw-node-desc">Validate before deployment</div>
+        </div>
+
+        <!-- Bottom node -->
+        <div class="fw-node fw-bottom">
+          <div class="fw-node-icon">
+            <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="fw-node-label">Deploy & Monitor</div>
+          <div class="fw-node-desc">Launch with full observability</div>
+        </div>
+
+        <!-- Left node -->
+        <div class="fw-node fw-left">
+          <div class="fw-node-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke-linecap="round"/></svg>
+          </div>
+          <div class="fw-node-label">Analyze & Insights</div>
+          <div class="fw-node-desc">Learn from every conversation</div>
+        </div>
+
+        <span class="fw-arrow fw-arrow-tr">›</span>
+        <span class="fw-arrow fw-arrow-br">›</span>
+        <span class="fw-arrow fw-arrow-bl">›</span>
+        <span class="fw-arrow fw-arrow-tl">›</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────── FEATURES ────── -->
+  <section class="features" id="features">
+    <div class="container">
+
+      <!-- FEATURE 1: Train & Optimize -->
+      <div class="feature-block reveal">
+        <div class="feature-text">
+          <div class="feature-step">Step 01</div>
+          <h3>Train & Optimize</h3>
+          <p>Define your agent's behavior with natural language. Describe your business process, and iMorph automatically structures it into Journeys, Guidelines, Glossary, and Tools — the building blocks of enterprise conversations.</p>
+          <ul class="feature-bullets">
+            <li>Cold-start an agent in a 5–10 minute conversation</li>
+            <li>Auto-generate journey flows, behavioral rules, and glossary terms</li>
+            <li>Multi-language support from day one — EN, ZH, JA, KO, DE, ES</li>
+            <li>Ultra-natural voice with human-like intonation across all languages</li>
+          </ul>
+        </div>
+        <div class="feature-mockup">
+          <div class="mockup">
+            <div class="mockup-bar">
+              <div class="mockup-dot"></div><div class="mockup-dot"></div><div class="mockup-dot"></div>
+              <span class="mockup-bar-title">Agent Studio — Train & Optimize</span>
+            </div>
+            <div class="mockup-body">
+              <div class="mockup-sidebar">
+                <div class="mockup-sidebar-label">Agents</div>
+                <div class="mockup-sidebar-item active"><span class="dot" style="background:var(--purple)"></span> Insurance Outbound</div>
+                <div class="mockup-sidebar-item"><span class="dot" style="background:var(--border-light)"></span> EV Sales</div>
+                <div class="mockup-sidebar-item"><span class="dot" style="background:var(--border-light)"></span> Finance Pre-Screen</div>
+                <div class="mockup-sidebar-item"><span class="dot" style="background:var(--border-light)"></span> E-Commerce CS</div>
+              </div>
+              <div class="mockup-main">
+                <div class="mockup-section-title">Journey Steps <span class="count">5</span></div>
+                <div class="mockup-journey-step"><span class="step-num">1</span> Opening & Introduction</div>
+                <div class="mockup-journey-step"><span class="step-num">2</span> Coverage Discovery</div>
+                <div class="mockup-journey-step"><span class="step-num">3</span> Need Analysis</div>
+                <div class="mockup-journey-step"><span class="step-num">4</span> Intent Resolution</div>
+                <div class="mockup-journey-step"><span class="step-num">5</span> Handoff / Close</div>
+                <div style="margin-top:14px">
+                  <div class="mockup-section-title">Active Guidelines <span class="count">12</span></div>
+                  <div class="mockup-guideline"><span class="g-icon"></span> When customer shows interest, transition to coverage discovery</div>
+                  <div class="mockup-guideline"><span class="g-icon"></span> If objection raised, acknowledge before presenting alternatives</div>
+                  <div class="mockup-guideline"><span class="g-icon"></span> Maintain warm, professional tone in all languages</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FEATURE 2: Test & Simulate -->
+      <div class="feature-block reverse reveal">
+        <div class="feature-text">
+          <div class="feature-step">Step 02</div>
+          <h3>Test & Simulate</h3>
+          <p>Validate your agent before it meets real customers. Run self-play simulations across diverse personas, test edge cases, and verify multi-turn coherence — all in a safe sandbox environment.</p>
+          <ul class="feature-bullets">
+            <li>Self-play testing against synthetic customer personas</li>
+            <li>Edge case and long-tail scenario coverage</li>
+            <li>Multi-turn coherence validation with scoring</li>
+            <li>Regression testing across agent versions</li>
+          </ul>
+        </div>
+        <div class="feature-mockup">
+          <div class="mockup">
+            <div class="mockup-bar">
+              <div class="mockup-dot"></div><div class="mockup-dot"></div><div class="mockup-dot"></div>
+              <span class="mockup-bar-title">Agent Studio — Test & Simulate</span>
+            </div>
+            <div class="mockup-body">
+              <div class="mockup-chat">
+                <div class="mockup-chat-messages">
+                  <div class="chat-msg agent">
+                    <div class="msg-label">Agent</div>
+                    Good morning! I'm reaching out from SecureLife Insurance. Do you have a moment to discuss your current coverage?
+                  </div>
+                  <div class="chat-msg user">
+                    <div class="msg-label">Simulated Lead</div>
+                    I already have insurance, thanks.
+                  </div>
+                  <div class="chat-msg agent">
+                    <div class="msg-label">Agent</div>
+                    I completely understand. Many of our clients felt the same way. May I ask which provider you're currently with? Sometimes there are gaps worth reviewing.
+                  </div>
+                  <div class="chat-msg user">
+                    <div class="msg-label">Simulated Lead</div>
+                    I'm with AllState. What gaps are you talking about?
+                  </div>
+                </div>
+                <div class="mockup-chat-input">
+                  <div class="mock-input">Type a message or run self-play...</div>
+                </div>
+              </div>
+              <div class="mockup-metrics">
+                <div class="metric-card"><div class="metric-val good">94%</div><div class="metric-label">Pass Rate</div></div>
+                <div class="metric-card"><div class="metric-val">6.2</div><div class="metric-label">Avg Turns</div></div>
+                <div class="metric-card"><div class="metric-val">12%</div><div class="metric-label">Handoff Rate</div></div>
+                <div class="coverage-list">
+                  <div class="mockup-sidebar-label" style="margin-top:8px">Coverage</div>
+                  <div class="coverage-item"><span>Opening</span><span class="coverage-check">✓</span></div>
+                  <div class="coverage-item"><span>Objection</span><span class="coverage-check">✓</span></div>
+                  <div class="coverage-item"><span>Discovery</span><span class="coverage-check">✓</span></div>
+                  <div class="coverage-item"><span>Edge Case</span><span class="coverage-check">✓</span></div>
+                  <div class="coverage-item"><span>Handoff</span><span class="coverage-check">✓</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FEATURE 3: Deploy & Monitor -->
+      <div class="feature-block reveal">
+        <div class="feature-text">
+          <div class="feature-step">Step 03</div>
+          <h3>Deploy & Launch</h3>
+          <p>Deploy your agent across channels with a unified gateway. Monitor every request in real-time with full trace visibility — from guideline matching to tool execution and response generation.</p>
+          <ul class="feature-bullets">
+            <li>Multi-channel deployment — Web, WhatsApp, Phone, API</li>
+            <li>Real-time request traces with per-phase latency breakdown</li>
+            <li>Unified gateway with channel-specific configuration</li>
+            <li>Zero-downtime rollout with version control</li>
+          </ul>
+        </div>
+        <div class="feature-mockup">
+          <div class="mockup">
+            <div class="mockup-bar">
+              <div class="mockup-dot"></div><div class="mockup-dot"></div><div class="mockup-dot"></div>
+              <span class="mockup-bar-title">Agent Studio — Deploy & Monitor</span>
+            </div>
+            <div class="mockup-body" style="flex-direction:column">
+              <div class="mockup-main">
+                <div class="mockup-section-title">Active Channels</div>
+                <div class="deploy-channels">
+                  <div class="channel-card">
+                    <div class="ch-icon">💬</div>
+                    <div class="ch-name">Web Chat</div>
+                    <div class="ch-status"><span class="status-dot live"></span><span style="color:var(--green);font-size:0.5rem">Live</span></div>
+                  </div>
+                  <div class="channel-card">
+                    <div class="ch-icon">📱</div>
+                    <div class="ch-name">WhatsApp</div>
+                    <div class="ch-status"><span class="status-dot live"></span><span style="color:var(--green);font-size:0.5rem">Live</span></div>
+                  </div>
+                  <div class="channel-card">
+                    <div class="ch-icon">📞</div>
+                    <div class="ch-name">Phone</div>
+                    <div class="ch-status"><span class="status-dot draft"></span><span style="color:var(--amber);font-size:0.5rem">Draft</span></div>
+                  </div>
+                </div>
+                <div class="mockup-section-title" style="margin-top:4px">Request Trace — Session #a8f2</div>
+                <div class="trace-row">
+                  <span class="trace-name">Guideline Matching</span>
+                  <div class="trace-bar-wrap"><div class="trace-bar" style="width:28%"></div></div>
+                  <span class="trace-ms">42ms</span>
+                </div>
+                <div class="trace-row">
+                  <span class="trace-name">Tool Execution</span>
+                  <div class="trace-bar-wrap"><div class="trace-bar" style="width:82%"></div></div>
+                  <span class="trace-ms">128ms</span>
+                </div>
+                <div class="trace-row">
+                  <span class="trace-name">Message Generation</span>
+                  <div class="trace-bar-wrap"><div class="trace-bar" style="width:58%"></div></div>
+                  <span class="trace-ms">89ms</span>
+                </div>
+                <div class="trace-row">
+                  <span class="trace-name">Response Analysis</span>
+                  <div class="trace-bar-wrap"><div class="trace-bar" style="width:20%"></div></div>
+                  <span class="trace-ms">31ms</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FEATURE 4: Analyze & Insights -->
+      <div class="feature-block reverse reveal">
+        <div class="feature-text">
+          <div class="feature-step">Step 04</div>
+          <h3>Analyze & Insights</h3>
+          <p>Turn every conversation into actionable intelligence. Identify knowledge gaps, guideline failures, and operational improvements through evidence-based analysis — not guesswork.</p>
+          <ul class="feature-bullets">
+            <li>Conversation analytics with ratings and outcome tracking</li>
+            <li>Evidence-first suggestion generation from diagnostic rules</li>
+            <li>Knowledge gap, guideline gap, and ops improvement detection</li>
+            <li>Continuous feedback loop back to training</li>
+          </ul>
+        </div>
+        <div class="feature-mockup">
+          <div class="mockup">
+            <div class="mockup-bar">
+              <div class="mockup-dot"></div><div class="mockup-dot"></div><div class="mockup-dot"></div>
+              <span class="mockup-bar-title">Agent Studio — Analyze & Insights</span>
+            </div>
+            <div class="mockup-body" style="flex-direction:column">
+              <div class="mockup-main">
+                <div class="insights-metrics">
+                  <div class="insight-metric"><div class="im-val">2,847</div><div class="im-label">Total Sessions</div></div>
+                  <div class="insight-metric"><div class="im-val">4.6<span style="font-size:0.625rem;color:var(--text-muted)">/5</span></div><div class="im-label">Avg CSAT</div></div>
+                  <div class="insight-metric"><div class="im-val" style="color:var(--green)">91.2%</div><div class="im-label">Resolution Rate</div></div>
+                </div>
+                <div class="mockup-section-title" style="margin-top:4px">Suggestions <span class="count">3</span></div>
+                <div class="suggestion-card">
+                  <div class="sug-icon knowledge">📚</div>
+                  <div class="sug-text">
+                    <div class="sug-type">Knowledge Gap</div>
+                    <div class="sug-desc">Add FAQ entry for policy transfer process — 23 conversations had unanswered questions about transferring coverage.</div>
+                  </div>
+                </div>
+                <div class="suggestion-card">
+                  <div class="sug-icon guideline">📋</div>
+                  <div class="sug-text">
+                    <div class="sug-type">Guideline Gap</div>
+                    <div class="sug-desc">Missing handling rule for premium comparison requests — agent defaults to generic responses in 8% of price-related turns.</div>
+                  </div>
+                </div>
+                <div class="suggestion-card">
+                  <div class="sug-icon ops">⚡</div>
+                  <div class="sug-text">
+                    <div class="sug-type">Ops Suggestion</div>
+                    <div class="sug-desc">Route high-value leads (>$500K coverage) to senior representatives — current handoff rate is 4% below target.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ────── ADVANTAGES ────── -->
+  <section class="advantages" id="advantages">
+    <div class="container">
+      <div class="advantages-header reveal">
+        <div class="label">Core Strengths</div>
+        <h2 style="margin-top:16px">Why iMorph</h2>
+        <p>Built for the demands of real enterprise conversations — where reliability, consistency, and traceability matter more than fluency alone.</p>
+      </div>
+      <div class="adv-grid reveal">
+        <div class="adv-card">
+          <div class="adv-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 3c1.5 2 2.5 4.5 2.5 7s-1 5-2.5 7c-1.5-2-2.5-4.5-2.5-7s1-5 2.5-7z" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 12h3M18 12h3M5.5 6l2 1.5M16.5 16.5l2 1.5M5.5 18l2-1.5M16.5 7.5l2-1.5" stroke-linecap="round"/></svg>
+          </div>
+          <h4>Natural Voice</h4>
+          <p>Ultra-natural voice simulation across 7+ languages — English, Chinese, Japanese, Korean, German, Spanish, and more — with human-like intonation and prosody.</p>
+        </div>
+        <div class="adv-card">
+          <div class="adv-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c-2.5-2.5-4-5.5-4-9s1.5-6.5 4-9m0 18c2.5-2.5 4-5.5 4-9s-1.5-6.5-4-9M3 12a9 9 0 019-9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h4>Multi-Turn Coherence</h4>
+          <p>Complex conversations stay on track across many turns. Dynamic context assembly ensures your agent never loses the thread, even in lengthy interactions.</p>
+        </div>
+        <div class="adv-card">
+          <div class="adv-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.636 5.636l2.121 2.121M16.243 16.243l2.121 2.121M5.636 18.364l2.121-2.121M16.243 7.757l2.121-2.121" stroke-linecap="round"/><circle cx="12" cy="12" r="4"/></svg>
+          </div>
+          <h4>Long-Tail Coverage</h4>
+          <p>Edge cases and unusual scenarios are handled gracefully. Scoped guidelines and conditional rules ensure your agent responds appropriately — even in rare situations.</p>
+        </div>
+        <div class="adv-card">
+          <div class="adv-icon">
+            <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h4>Low Latency</h4>
+          <p>Sub-200ms response times for real-time conversational experiences. Optimized context assembly and inference pipeline minimize wait times.</p>
+        </div>
+        <div class="adv-card">
+          <div class="adv-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 15V9m-3 3h6" stroke-linecap="round"/><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 3v18" stroke-linecap="round"/></svg>
+          </div>
+          <h4>Dynamic Rule Loading</h4>
+          <p>Rules are loaded contextually at runtime — only what's relevant to the current turn. This reduces cognitive load on the model and ensures strict compliance.</p>
+        </div>
+        <div class="adv-card">
+          <div class="adv-icon">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 3a9 9 0 110 18 9 9 0 010-18z"/><path d="M12 7v1M12 16v1" stroke-linecap="round"/></svg>
+          </div>
+          <h4>Traceable Responses</h4>
+          <p>Every response is backed by evidence — which rules fired, which knowledge was used, which tools were called. Full auditability for compliance and optimization.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────── INDUSTRIES ────── -->
+  <section class="industries" id="industries">
+    <div class="container">
+      <div class="industries-header reveal">
+        <div class="label">Industries</div>
+        <h2 style="margin-top:16px">Built for Regulated, High-Stakes Industries</h2>
+        <p>Trusted by over 1,000 enterprises across Japan, Europe, North America, and Southeast Asia in industries where conversation quality directly impacts revenue and compliance.</p>
+      </div>
+      <div class="ind-grid">
+        <div class="ind-card reveal">
+          <div class="ind-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5.25-3.5 10-8 12-4.5-2-8-6.75-8-12V6l8-4z" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>Insurance</h3>
+          <p>Outbound qualification, policy explanation, renewal follow-ups, and compliance-aware conversations at scale. Handle objections with empathy and precision.</p>
+          <div class="ind-tags">
+            <span class="ind-tag">Outbound Qualification</span>
+            <span class="ind-tag">Policy Explanation</span>
+            <span class="ind-tag">Follow-Up</span>
+            <span class="ind-tag">Compliance</span>
+          </div>
+        </div>
+        <div class="ind-card reveal reveal-d1">
+          <div class="ind-icon">
+            <svg viewBox="0 0 24 24"><path d="M2 17l5-5 4 4 5.5-5.5L22 16" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 7v5h-5" stroke-linecap="round" stroke-linejoin="round"/><rect x="2" y="3" width="20" height="18" rx="2" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Financial Services</h3>
+          <p>Pre-screening, product recommendation, KYC verification, and appointment scheduling. Regulatory compliance built into every turn of the conversation.</p>
+          <div class="ind-tags">
+            <span class="ind-tag">Pre-Screening</span>
+            <span class="ind-tag">Product Advisory</span>
+            <span class="ind-tag">KYC</span>
+            <span class="ind-tag">Scheduling</span>
+          </div>
+        </div>
+        <div class="ind-card reveal reveal-d2">
+          <div class="ind-icon">
+            <svg viewBox="0 0 24 24"><path d="M5 17h14M7 17l1-9h8l1 9" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 8V6a3 3 0 016 0v2" stroke-linecap="round"/><circle cx="8" cy="17" r="2"/><circle cx="16" cy="17" r="2"/></svg>
+          </div>
+          <h3>Automotive & EV</h3>
+          <p>Test drive invitations, sales qualification, financing pre-approval, service scheduling, and multi-language support for global OEM operations.</p>
+          <div class="ind-tags">
+            <span class="ind-tag">Test Drives</span>
+            <span class="ind-tag">Sales Qualification</span>
+            <span class="ind-tag">Financing</span>
+            <span class="ind-tag">Service</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────── ROADMAP ────── -->
+  <section class="roadmap" id="roadmap">
+    <div class="container">
+      <div class="roadmap-header reveal">
+        <div class="label">Roadmap</div>
+        <h2 style="margin-top:16px">Where We're Headed</h2>
+        <p>Our product roadmap is shaped by customer feedback and enterprise requirements. Here's what's in motion.</p>
+      </div>
+      <div class="roadmap-timeline reveal">
+        <div class="rm-item">
+          <div class="rm-dot active"></div>
+          <div class="rm-quarter">Q1 2026 — Shipped</div>
+          <h4>Agent Studio & Flywheel Loop</h4>
+          <p>Full Train → Test → Deploy → Analyze lifecycle. Self-play simulation, real-time request traces, evidence-based suggestions, and multi-agent management.</p>
+          <div class="rm-tags"><span class="rm-tag shipped">Shipped</span></div>
+        </div>
+        <div class="rm-item">
+          <div class="rm-dot active"></div>
+          <div class="rm-quarter">Q2 2026 — In Progress</div>
+          <h4>Voice Agent & Multi-Channel Deploy</h4>
+          <p>Ultra-natural voice synthesis across 7+ languages. One-click deployment to WhatsApp, Phone, Web Widget, and enterprise IM platforms (Feishu, DingTalk, Slack).</p>
+          <div class="rm-tags"><span class="rm-tag progress">In Progress</span></div>
+        </div>
+        <div class="rm-item">
+          <div class="rm-dot"></div>
+          <div class="rm-quarter">Q3 2026 — Planned</div>
+          <h4>Scenario Composer & Guided Onboarding</h4>
+          <p>Natural-language wizard that converts business SOPs into draft Journeys, Guidelines, Glossary, and Tools — reducing cold-start time from minutes to seconds.</p>
+          <div class="rm-tags"><span class="rm-tag planned">Planned</span></div>
+        </div>
+        <div class="rm-item">
+          <div class="rm-dot"></div>
+          <div class="rm-quarter">Q4 2026 — Planned</div>
+          <h4>Enterprise SSO, Audit Logs & Team Roles</h4>
+          <p>SAML/OIDC single sign-on, granular role-based access, full audit trail for every agent change and conversation, and SOC 2 compliance readiness.</p>
+          <div class="rm-tags"><span class="rm-tag planned">Planned</span></div>
+        </div>
+        <div class="rm-item">
+          <div class="rm-dot"></div>
+          <div class="rm-quarter">2027 — Vision</div>
+          <h4>Autonomous Improvement Loop</h4>
+          <p>Closed-loop agent optimization — the system detects performance regressions, proposes guideline and knowledge updates, and auto-applies approved changes with rollback safety.</p>
+          <div class="rm-tags"><span class="rm-tag planned">Vision</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────── BLOG ────── -->
+  <section class="blog" id="blog">
+    <div class="container">
+      <div class="blog-header reveal">
+        <div class="label">Blog</div>
+        <h2 style="margin-top:16px">Latest from iMorph</h2>
+        <p>Product thinking, engineering deep-dives, and industry perspectives on enterprise conversational AI.</p>
+      </div>
+      <div class="blog-grid">
+
+        <!-- 01 Product Business Model — Flywheel cycle -->
+        <a href="blog.html#product-business-model" class="blog-card reveal">
+          <div class="blog-thumb">
+            <svg class="blog-illust" viewBox="0 0 320 140" fill="none">
+              <circle cx="160" cy="70" r="38" stroke="var(--purple)" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.25"/>
+              <circle cx="160" cy="70" r="22" stroke="var(--purple)" stroke-width="0.6" opacity="0.15"/>
+              <g font-family="var(--font)" font-size="7" fill="var(--text-muted)" text-anchor="middle">
+                <text x="160" y="30"><tspan fill="var(--purple-light)" font-weight="500">Build</tspan></text>
+                <text x="204" y="50">Test</text>
+                <text x="210" y="82">Monitor</text>
+                <text x="175" y="112">Deploy</text>
+                <text x="140" y="112">Insights</text>
+                <text x="112" y="65">Suggest</text>
+              </g>
+              <g stroke="var(--purple)" stroke-width="0.7" fill="none" opacity="0.4">
+                <path d="M172 33 L195 44" marker-end="url(#arr)"/>
+                <path d="M207 56 L209 72"/>
+                <path d="M205 88 L185 104"/>
+                <path d="M162 110 L148 110"/>
+                <path d="M132 104 L118 72"/>
+                <path d="M122 58 L148 35"/>
+              </g>
+              <defs><marker id="arr" markerWidth="5" markerHeight="4" refX="4" refY="2" orient="auto"><path d="M0 0 L5 2 L0 4" fill="none" stroke="var(--purple)" stroke-width="0.6"/></marker></defs>
+            </svg>
+          </div>
+          <div class="blog-body">
+            <div class="blog-meta"><span class="blog-tag">商业价值</span><span class="blog-tag">产品构想</span><span class="blog-date">Mar 2026</span></div>
+            <h4>iMorph.ai 的产品业态：从 Prompt Playground 到企业会话操作系统</h4>
+            <p>企业不需要一个更聪明的聊天机器人，而需要一套围绕会话建立流程、规则、知识、动作和监控闭环的产品基础设施。</p>
+            <span class="blog-link">Read more →</span>
+          </div>
+        </a>
+
+        <!-- 02 Innovation Directions — 5 radiating nodes -->
+        <a href="blog.html#innovation-directions" class="blog-card reveal reveal-d1">
+          <div class="blog-thumb">
+            <svg class="blog-illust" viewBox="0 0 320 140" fill="none">
+              <circle cx="160" cy="70" r="8" fill="var(--purple)" opacity="0.15" stroke="var(--purple)" stroke-width="0.8"/>
+              <circle cx="160" cy="70" r="3" fill="var(--purple)" opacity="0.5"/>
+              <g stroke="var(--purple)" stroke-width="0.6" opacity="0.3">
+                <line x1="160" y1="62" x2="160" y2="32"/>
+                <line x1="167" y1="65" x2="198" y2="46"/>
+                <line x1="167" y1="75" x2="195" y2="96"/>
+                <line x1="153" y1="75" x2="125" y2="96"/>
+                <line x1="153" y1="65" x2="122" y2="46"/>
+              </g>
+              <g font-family="var(--font)" font-size="6.5" fill="var(--text-muted)" text-anchor="middle">
+                <text x="160" y="28"><tspan fill="var(--purple-light)">动态上下文</tspan></text>
+                <text x="208" y="43">Evidence建议</text>
+                <text x="205" y="102">Self Play</text>
+                <text x="115" y="102">SOP编译</text>
+                <text x="113" y="43">多渠道部署</text>
+              </g>
+              <g fill="var(--purple)" opacity="0.35">
+                <circle cx="160" cy="30" r="2.5"/><circle cx="202" cy="44" r="2.5"/><circle cx="199" cy="98" r="2.5"/>
+                <circle cx="121" cy="98" r="2.5"/><circle cx="118" cy="44" r="2.5"/>
+              </g>
+            </svg>
+          </div>
+          <div class="blog-body">
+            <div class="blog-meta"><span class="blog-tag">产品构想</span><span class="blog-tag">技术探索</span><span class="blog-date">Mar 2026</span></div>
+            <h4>iMorph.ai 的创新方向：五个让企业智能体真正可用的关键突破</h4>
+            <p>iMorph.ai 的创新方向不是追求更强的语言模型，而是专注于五个被绝大多数 AI 产品忽略的关键问题。</p>
+            <span class="blog-link">Read more →</span>
+          </div>
+        </a>
+
+        <!-- 03 Value Proposition — Governance shield -->
+        <a href="blog.html#value-proposition" class="blog-card reveal reveal-d2">
+          <div class="blog-thumb">
+            <svg class="blog-illust" viewBox="0 0 320 140" fill="none">
+              <path d="M160 28 L192 42 V76 C192 96 160 112 160 112 C160 112 128 96 128 76 V42 Z" stroke="var(--purple)" stroke-width="0.8" fill="var(--purple)" fill-opacity="0.04"/>
+              <path d="M148 68 L156 76 L174 58" stroke="var(--purple-light)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+              <g font-family="var(--font)" font-size="5.5" fill="var(--text-muted)">
+                <text x="80" y="50">严格遵循</text><text x="80" y="72">一致性</text><text x="80" y="94">可循证</text>
+                <text x="216" y="50">高置信度</text><text x="216" y="72">自动化</text>
+              </g>
+              <g stroke="var(--purple)" stroke-width="0.4" opacity="0.2" stroke-dasharray="2 2">
+                <line x1="106" y1="48" x2="128" y2="55"/><line x1="102" y1="70" x2="128" y2="70"/>
+                <line x1="100" y1="92" x2="132" y2="85"/>
+                <line x1="215" y1="48" x2="192" y2="55"/><line x1="215" y1="70" x2="192" y2="70"/>
+              </g>
+            </svg>
+          </div>
+          <div class="blog-body">
+            <div class="blog-meta"><span class="blog-tag">商业价值</span><span class="blog-tag">产品构想</span><span class="blog-date">Mar 2026</span></div>
+            <h4>iMorph.ai 的价值主张：企业会话不是自由聊天，而是可约束的系统行为</h4>
+            <p>让企业能够像治理业务流程一样治理会话智能体——严格、一致、可解释、可回溯、可度量。</p>
+            <span class="blog-link">Read more →</span>
+          </div>
+        </a>
+
+        <!-- 04 Industry Segmentation — 3 industry columns -->
+        <a href="blog.html#industry-segmentation" class="blog-card reveal">
+          <div class="blog-thumb">
+            <svg class="blog-illust" viewBox="0 0 320 140" fill="none">
+              <g opacity="0.6">
+                <rect x="88" y="50" width="36" height="60" rx="4" stroke="var(--purple)" stroke-width="0.7" fill="var(--purple)" fill-opacity="0.04"/>
+                <rect x="142" y="38" width="36" height="72" rx="4" stroke="var(--purple)" stroke-width="0.7" fill="var(--purple)" fill-opacity="0.07"/>
+                <rect x="196" y="56" width="36" height="54" rx="4" stroke="var(--purple)" stroke-width="0.7" fill="var(--purple)" fill-opacity="0.04"/>
+              </g>
+              <g font-family="var(--font)" font-size="6" text-anchor="middle">
+                <text x="106" y="46" fill="var(--purple-light)">保险</text>
+                <text x="160" y="34" fill="var(--purple-light)">牙科</text>
+                <text x="214" y="52" fill="var(--purple-light)">家政</text>
+              </g>
+              <g font-family="var(--font)" font-size="5" text-anchor="middle" fill="var(--text-muted)">
+                <text x="106" y="76">外呼筛选</text><text x="106" y="88">多语言</text><text x="106" y="100">异议处理</text>
+                <text x="160" y="60">预约调度</text><text x="160" y="72">HIPAA</text><text x="160" y="84">急症分流</text><text x="160" y="96">PMS集成</text>
+                <text x="214" y="74">紧急派单</text><text x="214" y="86">报价引擎</text><text x="214" y="98">ETA查询</text>
+              </g>
+            </svg>
+          </div>
+          <div class="blog-body">
+            <div class="blog-meta"><span class="blog-tag">商业价值</span><span class="blog-date">Mar 2026</span></div>
+            <h4>iMorph.ai 的行业落地图：从保险外呼到牙医诊所，AI 接管的不只是通话</h4>
+            <p>不同行业有完全不同的合规要求、业务流程和对话复杂度。先从高结构化、高 ROI 的场景切入。</p>
+            <span class="blog-link">Read more →</span>
+          </div>
+        </a>
+
+        <!-- 05 Pricing & GTM — Pricing tiers chart -->
+        <a href="blog.html#pricing-gtm" class="blog-card reveal reveal-d1">
+          <div class="blog-thumb">
+            <svg class="blog-illust" viewBox="0 0 320 140" fill="none">
+              <g opacity="0.6">
+                <rect x="80" y="78" width="34" height="32" rx="3" fill="var(--purple)" fill-opacity="0.08" stroke="var(--purple)" stroke-width="0.6"/>
+                <rect x="124" y="58" width="34" height="52" rx="3" fill="var(--purple)" fill-opacity="0.12" stroke="var(--purple)" stroke-width="0.8"/>
+                <rect x="168" y="46" width="34" height="64" rx="3" fill="var(--purple)" fill-opacity="0.08" stroke="var(--purple)" stroke-width="0.6"/>
+                <rect x="212" y="34" width="34" height="76" rx="3" fill="var(--purple)" fill-opacity="0.06" stroke="var(--purple)" stroke-width="0.5" stroke-dasharray="3 2"/>
+              </g>
+              <g font-family="var(--font)" font-size="6" text-anchor="middle" fill="var(--text-muted)">
+                <text x="97" y="96">Starter</text><text x="141" y="76"><tspan fill="var(--purple-light)" font-weight="500">Growth</tspan></text>
+                <text x="185" y="64">Pro</text><text x="229" y="52">Enterprise</text>
+              </g>
+              <g font-family="var(--font)" font-size="5.5" text-anchor="middle" fill="var(--text-muted)" opacity="0.7">
+                <text x="97" y="74">$79</text><text x="141" y="54">$229</text><text x="185" y="42">$499</text><text x="229" y="30">定制</text>
+              </g>
+              <line x1="72" y1="110" x2="252" y2="110" stroke="var(--border-light)" stroke-width="0.5"/>
+            </svg>
+          </div>
+          <div class="blog-body">
+            <div class="blog-meta"><span class="blog-tag">商业价值</span><span class="blog-date">Mar 2026</span></div>
+            <h4>定价策略与GTM：如何让 AI 接线员在 15 分钟内上线并在第一个月证明价值</h4>
+            <p>企业最贵的隐形成本，是漏接的电话。定价策略围绕这个核心认知设计。</p>
+            <span class="blog-link">Read more →</span>
+          </div>
+        </a>
+
+        <!-- 06 Context Engineering — Layered blocks -->
+        <a href="blog.html#context-engineering" class="blog-card reveal reveal-d2">
+          <div class="blog-thumb">
+            <svg class="blog-illust" viewBox="0 0 320 140" fill="none">
+              <g opacity="0.7">
+                <rect x="110" y="22" width="100" height="16" rx="3" fill="var(--purple)" fill-opacity="0.06" stroke="var(--purple)" stroke-width="0.6"/>
+                <rect x="110" y="42" width="100" height="16" rx="3" fill="var(--purple)" fill-opacity="0.06" stroke="var(--purple)" stroke-width="0.6"/>
+                <rect x="110" y="62" width="100" height="16" rx="3" fill="var(--purple)" fill-opacity="0.12" stroke="var(--purple)" stroke-width="0.8"/>
+                <rect x="110" y="82" width="100" height="16" rx="3" fill="var(--purple)" fill-opacity="0.06" stroke="var(--purple)" stroke-width="0.6"/>
+                <rect x="110" y="102" width="100" height="16" rx="3" fill="var(--purple)" fill-opacity="0.04" stroke="var(--purple)" stroke-width="0.5"/>
+              </g>
+              <g font-family="var(--font)" font-size="5.5" text-anchor="middle">
+                <text x="160" y="33" fill="var(--text-muted)">Persona &amp; Identity</text>
+                <text x="160" y="53" fill="var(--text-muted)">Constraints</text>
+                <text x="160" y="73" fill="var(--purple-light)">Business Logic ← 动态</text>
+                <text x="160" y="93" fill="var(--text-muted)">Conversation State</text>
+                <text x="160" y="113" fill="var(--text-muted)">Tools</text>
+              </g>
+              <path d="M215 70 L230 70 L230 45 L215 45" stroke="var(--purple)" stroke-width="0.5" fill="none" opacity="0.3" stroke-dasharray="2 2"/>
+              <text x="234" y="60" font-family="var(--font)" font-size="5" fill="var(--text-muted)" opacity="0.6">按 Journey&#10;动态切换</text>
+            </svg>
+          </div>
+          <div class="blog-body">
+            <div class="blog-meta"><span class="blog-tag">技术探索</span><span class="blog-date">Mar 2026</span></div>
+            <h4>符合会话的上下文工程：为什么静态 System Prompt 无法撑起企业级 Agent</h4>
+            <p>怎么在对话进行中，给模型提供它此刻最需要的信息，而不是把所有信息都塞进去。</p>
+            <span class="blog-link">Read more →</span>
+          </div>
+        </a>
+
+        <!-- 07 Low Latency TTS/ASR — Voice pipeline -->
+        <a href="blog.html#low-latency-tts-asr" class="blog-card reveal">
+          <div class="blog-thumb">
+            <svg class="blog-illust" viewBox="0 0 320 140" fill="none">
+              <g opacity="0.7">
+                <rect x="42" y="54" width="44" height="22" rx="4" stroke="var(--purple)" stroke-width="0.6" fill="var(--purple)" fill-opacity="0.05"/>
+                <rect x="100" y="54" width="44" height="22" rx="4" stroke="var(--purple)" stroke-width="0.6" fill="var(--purple)" fill-opacity="0.05"/>
+                <rect x="158" y="54" width="44" height="22" rx="4" stroke="var(--purple)" stroke-width="0.8" fill="var(--purple)" fill-opacity="0.10"/>
+                <rect x="216" y="54" width="44" height="22" rx="4" stroke="var(--purple)" stroke-width="0.6" fill="var(--purple)" fill-opacity="0.05"/>
+              </g>
+              <g font-family="var(--font)" font-size="5.5" text-anchor="middle" fill="var(--text-muted)">
+                <text x="64" y="68">VAD</text><text x="122" y="68">STT</text>
+                <text x="180" y="68" fill="var(--purple-light)">LLM</text><text x="238" y="68">TTS</text>
+              </g>
+              <g stroke="var(--purple)" stroke-width="0.6" opacity="0.35" marker-end="url(#arr2)">
+                <line x1="86" y1="65" x2="98" y2="65"/>
+                <line x1="144" y1="65" x2="156" y2="65"/>
+                <line x1="202" y1="65" x2="214" y2="65"/>
+              </g>
+              <g font-family="var(--font)" font-size="4.5" text-anchor="middle" fill="var(--text-muted)" opacity="0.6">
+                <text x="64" y="88">~80ms</text><text x="122" y="88">~220ms</text>
+                <text x="180" y="88">~400ms</text><text x="238" y="88">~100ms</text>
+              </g>
+              <line x1="42" y1="96" x2="260" y2="96" stroke="var(--border-light)" stroke-width="0.4"/>
+              <text x="160" y="108" font-family="var(--font)" font-size="5.5" text-anchor="middle" fill="var(--purple-light)" opacity="0.7">E2E &lt; 1.5s</text>
+              <defs><marker id="arr2" markerWidth="4" markerHeight="3" refX="3.5" refY="1.5" orient="auto"><path d="M0 0 L4 1.5 L0 3" fill="none" stroke="var(--purple)" stroke-width="0.5"/></marker></defs>
+            </svg>
+          </div>
+          <div class="blog-body">
+            <div class="blog-meta"><span class="blog-tag">技术探索</span><span class="blog-date">Mar 2026</span></div>
+            <h4>低时延语音 AI 的工程实践：如何把 E2E 延迟压到 1.5 秒以内</h4>
+            <p>端到端延迟必须控制在 1.5 秒以内。整个语音处理管道的每一个环节都需要被精心设计。</p>
+            <span class="blog-link">Read more →</span>
+          </div>
+        </a>
+
+        <!-- 08 Self Play — Two chat bubbles in loop -->
+        <a href="blog.html#self-play-simulation" class="blog-card reveal reveal-d1">
+          <div class="blog-thumb">
+            <svg class="blog-illust" viewBox="0 0 320 140" fill="none">
+              <rect x="100" y="36" width="56" height="28" rx="6" stroke="var(--purple)" stroke-width="0.7" fill="var(--purple)" fill-opacity="0.06"/>
+              <text x="128" y="54" font-family="var(--font)" font-size="6" text-anchor="middle" fill="var(--purple-light)">Agent</text>
+              <rect x="164" y="76" width="56" height="28" rx="6" stroke="var(--purple)" stroke-width="0.7" fill="var(--purple)" fill-opacity="0.06"/>
+              <text x="192" y="94" font-family="var(--font)" font-size="6" text-anchor="middle" fill="var(--text-muted)">模拟客户</text>
+              <path d="M156 52 C180 52 180 52 180 76" stroke="var(--purple)" stroke-width="0.6" fill="none" opacity="0.35" marker-end="url(#arr3)"/>
+              <path d="M164 90 C140 90 140 90 140 64" stroke="var(--purple)" stroke-width="0.6" fill="none" opacity="0.35" marker-end="url(#arr3)"/>
+              <g font-family="var(--font)" font-size="5" fill="var(--text-muted)" opacity="0.6">
+                <text x="80" y="104">Good</text><text x="80" y="114" fill="var(--green)">85%</text>
+                <text x="128" y="104">Acceptable</text><text x="128" y="114" fill="var(--amber)">12%</text>
+                <text x="195" y="104">Bad</text><text x="195" y="114" fill="var(--text-muted)">3%</text>
+              </g>
+              <text x="260" y="70" font-family="var(--font)" font-size="5" fill="var(--text-muted)" opacity="0.5" text-anchor="middle">×100+&#10;场景</text>
+              <defs><marker id="arr3" markerWidth="4" markerHeight="3" refX="3.5" refY="1.5" orient="auto"><path d="M0 0 L4 1.5 L0 3" fill="none" stroke="var(--purple)" stroke-width="0.5"/></marker></defs>
+            </svg>
+          </div>
+          <div class="blog-body">
+            <div class="blog-meta"><span class="blog-tag">技术探索</span><span class="blog-date">Mar 2026</span></div>
+            <h4>Self Play：用模拟对话替代真实用户的上线前验证方法</h4>
+            <p>让系统在沙盒环境中自行生成大规模的模拟对话，在真实用户出现之前完成系统化验证。</p>
+            <span class="blog-link">Read more →</span>
+          </div>
+        </a>
+
+        <!-- 09 Cold Start Knowledge — Template loading -->
+        <a href="blog.html#cold-start-knowledge" class="blog-card reveal reveal-d2">
+          <div class="blog-thumb">
+            <svg class="blog-illust" viewBox="0 0 320 140" fill="none">
+              <rect x="90" y="28" width="60" height="84" rx="5" stroke="var(--purple)" stroke-width="0.7" fill="var(--purple)" fill-opacity="0.04"/>
+              <text x="120" y="22" font-family="var(--font)" font-size="5.5" text-anchor="middle" fill="var(--text-muted)">行业模板</text>
+              <g font-family="var(--font)" font-size="5" fill="var(--text-muted)" opacity="0.7">
+                <text x="100" y="46">Guidelines</text><text x="100" y="58">Journey</text><text x="100" y="70">Glossary</text>
+              </g>
+              <g opacity="0.3"><rect x="96" y="78" width="48" height="6" rx="2" fill="var(--purple)"/><rect x="96" y="88" width="36" height="6" rx="2" fill="var(--purple)"/><rect x="96" y="98" width="42" height="6" rx="2" fill="var(--purple)"/></g>
+              <path d="M155 70 L175 70" stroke="var(--purple)" stroke-width="0.7" opacity="0.4" marker-end="url(#arr4)"/>
+              <text x="165" y="64" font-family="var(--font)" font-size="5" fill="var(--text-muted)" opacity="0.5" text-anchor="middle">+客户信息</text>
+              <rect x="180" y="38" width="50" height="64" rx="5" stroke="var(--purple-light)" stroke-width="0.9" fill="var(--purple)" fill-opacity="0.07"/>
+              <text x="205" y="32" font-family="var(--font)" font-size="5.5" text-anchor="middle" fill="var(--purple-light)">可用 Agent</text>
+              <g font-family="var(--font)" font-size="5" fill="var(--text-muted)" opacity="0.7">
+                <text x="188" y="56">诊所名称 ✓</text><text x="188" y="68">营业时间 ✓</text><text x="188" y="80">服务项目 ✓</text><text x="188" y="92">保险计划 ✓</text>
+              </g>
+              <text x="205" y="110" font-family="var(--font)" font-size="5.5" text-anchor="middle" fill="var(--green)" opacity="0.6">&lt;24h 上线</text>
+              <defs><marker id="arr4" markerWidth="4" markerHeight="3" refX="3.5" refY="1.5" orient="auto"><path d="M0 0 L4 1.5 L0 3" fill="none" stroke="var(--purple)" stroke-width="0.5"/></marker></defs>
+            </svg>
+          </div>
+          <div class="blog-body">
+            <div class="blog-meta"><span class="blog-tag">产品构想</span><span class="blog-date">Mar 2026</span></div>
+            <h4>冷启动知识工程：如何让一个新 Agent 在没有历史数据的情况下快速可用</h4>
+            <p>新客户的 Agent 没有历史数据，系统凭什么运行得好？这是冷启动问题的核心挑战。</p>
+            <span class="blog-link">Read more →</span>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ────── FAQ ────── -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="faq-header reveal">
+        <div class="label">FAQ</div>
+        <h2 style="margin-top:16px">Frequently Asked Questions</h2>
+        <p>Common questions about getting started, capabilities, and how iMorph fits into your enterprise.</p>
+      </div>
+      <div class="faq-list reveal">
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            How quickly can I get an agent up and running?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-answer"><p>Most customers go from zero to a testable agent in under 10 minutes. Describe your business process in natural language, and iMorph auto-generates Journeys, Guidelines, Glossary terms, and Tool bindings. You can refine from there — but the cold start is measured in minutes, not weeks.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            Which languages and channels are supported?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-answer"><p>iMorph supports 7+ languages including English, Chinese, Japanese, Korean, German, Spanish, and Portuguese — with ultra-natural voice synthesis in each. Agents can be deployed to web chat, WhatsApp, phone (voice), API endpoints, and enterprise IM platforms like Feishu, DingTalk, and Slack.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            How does iMorph ensure the agent follows business rules?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-answer"><p>Instead of stuffing everything into one large prompt, iMorph dynamically loads only the rules and knowledge relevant to the current conversation turn. Guidelines are conditionally activated based on context, reducing attention dilution and ensuring strict compliance. Every response is traceable — you can see exactly which rules fired and which knowledge was used.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            Can I use iMorph for both inbound support and outbound sales?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-answer"><p>Yes. iMorph's modeling primitives — Journeys, Guidelines, Glossary, Tools, and Variables — work for any structured conversation. Whether it's outbound qualification, inbound customer service, follow-up orchestration, or appointment scheduling, the same platform adapts to the workflow.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            What happens when the agent doesn't know the answer?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-answer"><p>iMorph is designed for high-confidence automation. When the agent lacks sufficient context or confidence, it gracefully escalates — requesting clarification, flagging for human review, or triggering a handoff to a live representative. The system knows when not to answer, which is critical for enterprise trust.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            How does pricing work?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-answer"><p>Pricing is based on conversation volume and deployed channels. We offer a free tier for evaluation, a growth plan for scaling teams, and enterprise contracts for organizations needing SSO, audit logs, and dedicated support. Contact our sales team for a custom quote.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────── CTA ────── -->
+  <section class="cta-section" id="cta-section">
+    <div class="container">
+      <div class="cta-inner reveal">
+        <div class="label">Get Started</div>
+        <h2 style="margin-top:16px">Start Building in Minutes</h2>
+        <p>Describe your business process in natural language. Have a 5-minute conversation with our onboarding agent, and your production-ready conversational AI will be ready for testing and deployment.</p>
+        <div class="cta-buttons">
+          <a href="#" class="btn btn-primary">Get Started Free</a>
+          <a href="#" class="btn btn-ghost">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────── FOOTER ────── -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">
+            <div class="logo-mark"><img src="asssets/iMorph_logo.png" alt="iMorph"></div>
+            iMorph
+          </div>
+          <p>A lightweight, all-in-one platform for building enterprise-grade conversational AI agents. From cold start to production in minutes.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#flywheel">How It Works</a></li>
+            <li><a href="#industries">Industries</a></li>
+            <li><a href="#">Pricing</a></li>
+            <li><a href="#">Documentation</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="#">API Reference</a></li>
+            <li><a href="#">Case Studies</a></li>
+            <li><a href="#">Status</a></li>
+            <li><a href="#">Changelog</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 iMorph.ai. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const html = document.documentElement;
+    const toggle = document.getElementById('theme-toggle');
+    const stored = localStorage.getItem('imorph-theme');
+    if (stored) html.setAttribute('data-theme', stored);
+
+    toggle.addEventListener('click', () => {
+      const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('imorph-theme', next);
+    });
+
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    const countEls = document.querySelectorAll('[data-count]');
+    const countObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = parseInt(el.dataset.count);
+          const duration = 1400;
+          const start = performance.now();
+          const step = (now) => {
+            const progress = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = Math.floor(eased * target).toLocaleString();
+            if (progress < 1) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+          countObserver.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    countEls.forEach(el => countObserver.observe(el));
+
+    // ── Knowledge Graph background effect ──
+    (() => {
+      const canvas = document.getElementById('kg-canvas');
+      const ctx = canvas.getContext('2d');
+      const labels = ['Journey', 'Guideline', 'Glossary', 'Tool', 'Retriever', 'Variable'];
+      const MAX_NODES = 6;
+      const GROW_MS = 400;
+      const HOLD_MS = 1500;
+      const FADE_MS = 3500;
+      let nodes = [];
+      let raf = 0;
+      let labelIdx = 0;
+
+      function resize() {
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = window.innerWidth * dpr;
+        canvas.height = window.innerHeight * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      function isLight() {
+        return document.documentElement.getAttribute('data-theme') === 'light';
+      }
+
+      function purpleRGBA(a) {
+        return isLight()
+          ? `rgba(124, 58, 237, ${a})`
+          : `rgba(139, 92, 246, ${a})`;
+      }
+
+      document.addEventListener('mousedown', (e) => {
+        if (e.button !== 0) return;
+        const t = e.target;
+        if (t.closest && t.closest('a, button, input, select, textarea, nav, .blog-card, .blog-thumb, .faq-item, .btn, .theme-toggle, .ind-card, .flywheel-svg, .mockup, .hero-cta')) return;
+
+        const node = {
+          x: e.clientX,
+          y: e.clientY,
+          scale: 0,
+          opacity: 1,
+          born: performance.now(),
+          label: labels[labelIdx % labels.length]
+        };
+        labelIdx++;
+        nodes.push(node);
+        if (nodes.length > MAX_NODES) nodes.shift();
+
+        if (!raf) tick();
+      });
+
+      function ease(t) { return 1 - Math.pow(1 - t, 3); }
+
+      function tick() {
+        const now = performance.now();
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (let i = nodes.length - 1; i >= 0; i--) {
+          const n = nodes[i];
+          const age = now - n.born;
+
+          n.scale = Math.min(1, ease(Math.min(age / GROW_MS, 1)));
+
+          if (age < HOLD_MS + GROW_MS) {
+            n.opacity = 1;
+          } else {
+            n.opacity = Math.max(0, 1 - (age - HOLD_MS - GROW_MS) / FADE_MS);
+          }
+
+          if (n.opacity <= 0) { nodes.splice(i, 1); }
+        }
+
+        // edges
+        for (let i = 0; i < nodes.length; i++) {
+          for (let j = i + 1; j < nodes.length; j++) {
+            const a = nodes[i], b = nodes[j];
+            const edgeAlpha = Math.min(a.opacity, b.opacity) * Math.min(a.scale, b.scale) * 0.18;
+            if (edgeAlpha < 0.005) continue;
+
+            const mx = (a.x + b.x) / 2;
+            const my = (a.y + b.y) / 2;
+            const dx = b.x - a.x;
+            const dy = b.y - a.y;
+            const cx = mx + dy * 0.08;
+            const cy = my - dx * 0.08;
+
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.quadraticCurveTo(cx, cy, b.x, b.y);
+            ctx.strokeStyle = purpleRGBA(edgeAlpha);
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+
+        // nodes
+        for (const n of nodes) {
+          const r = 14 * n.scale;
+          const alpha = n.opacity * n.scale;
+          if (alpha < 0.005) continue;
+
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
+          ctx.fillStyle = purpleRGBA(0.10 * alpha);
+          ctx.fill();
+          ctx.strokeStyle = purpleRGBA(0.25 * alpha);
+          ctx.lineWidth = 0.7;
+          ctx.stroke();
+
+          ctx.font = `${Math.round(6.5 * n.scale)}px Sora, sans-serif`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillStyle = purpleRGBA(0.45 * alpha);
+          ctx.fillText(n.label, n.x, n.y);
+        }
+
+        if (nodes.length > 0) {
+          raf = requestAnimationFrame(tick);
+        } else {
+          raf = 0;
+        }
+      }
+    })();
+  </script>
+
+</body>
+</html>

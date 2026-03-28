@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — iMorph</title>
+  <link rel="icon" type="image/png" href="asssets/iMorph_logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #09090B; --surface: #111113; --surface-2: #19191D; --surface-3: #1F1F24;
+      --border: #222228; --border-light: #2E2E36;
+      --text: #EEEEF0; --text-sec: #9090A0; --text-muted: #606070;
+      --purple: #8B5CF6; --purple-dark: #7C3AED; --purple-light: #A78BFA;
+      --green: #34D399; --amber: #FBBF24;
+      --font: 'Sora', -apple-system, sans-serif; --container: 1100px;
+    }
+
+    [data-theme="light"] {
+      --bg: #FAFAFA; --surface: #FFFFFF; --surface-2: #F4F4F5; --surface-3: #E4E4E7;
+      --border: #E4E4E7; --border-light: #D4D4D8;
+      --text: #18181B; --text-sec: #52525B; --text-muted: #A1A1AA;
+      --purple: #7C3AED; --purple-dark: #6D28D9; --purple-light: #6D28D9;
+      --green: #059669; --amber: #D97706;
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: var(--font); background: var(--bg); color: var(--text);
+      font-weight: 300; font-size: 0.8125rem; line-height: 1.7;
+      -webkit-font-smoothing: antialiased; overflow-x: hidden;
+      transition: background 0.35s ease, color 0.35s ease;
+    }
+    [data-theme="light"] body { -webkit-font-smoothing: auto; }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container { max-width: var(--container); margin: 0 auto; padding: 0 32px; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 0 32px; background: rgba(9,9,11,0.85); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border); transition: all 0.3s ease;
+    }
+    [data-theme="light"] nav { background: rgba(250,250,250,0.85); }
+    nav .nav-inner {
+      max-width: var(--container); margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; height: 56px;
+    }
+    .logo { display: flex; align-items: center; gap: 8px; font-size: 0.9375rem; font-weight: 500; letter-spacing: -0.02em; }
+    .logo-mark {
+      width: 24px; height: 24px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-mark img { width: 100%; height: 100%; object-fit: contain; }
+    .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+    .nav-links a { font-size: 0.75rem; font-weight: 300; color: var(--text-sec); transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .theme-toggle {
+      width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border);
+      background: transparent; color: var(--text-sec); cursor: pointer;
+      display: flex; align-items: center; justify-content: center; transition: all 0.25s ease;
+    }
+    .theme-toggle:hover { border-color: var(--border-light); color: var(--text); }
+    .theme-toggle svg { width: 14px; height: 14px; }
+    .theme-toggle .icon-sun { display: none; }
+    [data-theme="light"] .theme-toggle .icon-sun { display: block; }
+    [data-theme="light"] .theme-toggle .icon-moon { display: none; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 24px; border-radius: 8px; font-family: var(--font); font-size: 0.75rem; font-weight: 400; cursor: pointer; border: none; transition: all 0.25s ease; }
+    .btn-primary { background: var(--purple); color: #fff; }
+    .btn-primary:hover { background: var(--purple-dark); }
+
+    /* ── BLOG INDEX ── */
+    .blog-index { padding: 100px 0 80px; }
+    .blog-index-header { text-align: center; margin-bottom: 48px; }
+    .blog-index-header h1 { font-size: 2rem; font-weight: 300; letter-spacing: -0.02em; }
+    .blog-index-header p { margin-top: 12px; color: var(--text-sec); max-width: 480px; margin-left: auto; margin-right: auto; }
+
+    .tag-filter { display: flex; justify-content: center; gap: 8px; margin-bottom: 40px; flex-wrap: wrap; }
+    .tag-btn {
+      padding: 5px 14px; border-radius: 100px; border: 1px solid var(--border);
+      background: transparent; color: var(--text-sec); font-family: var(--font);
+      font-size: 0.6875rem; font-weight: 400; cursor: pointer; transition: all 0.2s;
+    }
+    .tag-btn:hover, .tag-btn.active { border-color: var(--purple); color: var(--purple-light); background: rgba(139,92,246,0.06); }
+
+    .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+    .blog-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      overflow: hidden; transition: all 0.3s ease; cursor: pointer; display: flex; flex-direction: column;
+    }
+    .blog-card:hover { border-color: var(--border-light); transform: translateY(-2px); }
+    [data-theme="light"] .blog-card { box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    [data-theme="light"] .blog-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+
+    .blog-card-thumb {
+      height: 120px; background: var(--surface-2); display: flex; align-items: center;
+      justify-content: center; border-bottom: 1px solid var(--border); overflow: hidden;
+    }
+    [data-theme="light"] .blog-card-thumb { background: #F8F7FF; }
+    .blog-card-thumb svg { width: 100%; height: 100%; }
+
+    .blog-card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+    .blog-card-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+    .blog-card-tag {
+      padding: 3px 8px; border-radius: 4px; font-size: 0.5625rem; font-weight: 400;
+      background: rgba(139,92,246,0.08); color: var(--purple-light);
+    }
+    [data-theme="light"] .blog-card-tag { color: var(--purple); }
+    .blog-card-date { font-size: 0.5625rem; color: var(--text-muted); margin-bottom: 8px; }
+    .blog-card h3 { font-size: 0.8125rem; font-weight: 400; line-height: 1.5; margin-bottom: 8px; color: var(--text); }
+    .blog-card p { font-size: 0.75rem; color: var(--text-muted); line-height: 1.7; flex: 1; }
+    .blog-card-link { font-size: 0.6875rem; color: var(--purple-light); margin-top: 12px; font-weight: 400; }
+    [data-theme="light"] .blog-card-link { color: var(--purple); }
+
+    /* ── ARTICLE VIEW ── */
+    .article-view { display: none; padding: 80px 0 60px; }
+    .article-view.active { display: block; }
+    .blog-index.hidden { display: none; }
+
+    .article-layout {
+      display: grid; grid-template-columns: 200px 1fr; gap: 48px;
+      max-width: var(--container); margin: 0 auto; padding: 0 32px;
+    }
+
+    /* TOC sidebar */
+    .toc { position: sticky; top: 80px; align-self: start; }
+    .toc-back {
+      display: flex; align-items: center; gap: 6px; font-size: 0.6875rem;
+      color: var(--text-muted); margin-bottom: 20px; cursor: pointer; transition: color 0.2s;
+    }
+    .toc-back:hover { color: var(--text); }
+    .toc-title {
+      font-size: 0.5625rem; font-weight: 500; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 12px;
+    }
+    .toc-list { list-style: none; }
+    .toc-list li { margin-bottom: 6px; }
+    .toc-list a {
+      font-size: 0.6875rem; color: var(--text-muted); line-height: 1.5;
+      display: block; padding: 2px 0 2px 10px; border-left: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+    .toc-list a:hover { color: var(--text-sec); border-color: var(--border-light); }
+    .toc-list a.active { color: var(--purple-light); border-color: var(--purple); }
+    [data-theme="light"] .toc-list a.active { color: var(--purple); }
+    .toc-list a.h3 { padding-left: 20px; font-size: 0.625rem; }
+
+    /* Article content */
+    .article-meta { margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+    .article-meta-tags { display: flex; gap: 6px; margin-bottom: 8px; }
+    .article-meta-tag { padding: 3px 8px; border-radius: 4px; font-size: 0.5625rem; background: rgba(139,92,246,0.08); color: var(--purple-light); }
+    [data-theme="light"] .article-meta-tag { color: var(--purple); }
+    .article-meta-date { font-size: 0.6875rem; color: var(--text-muted); }
+
+    .article-content h1 { font-size: 1.5rem; font-weight: 300; letter-spacing: -0.02em; margin-bottom: 24px; line-height: 1.3; }
+    .article-content h2 {
+      font-size: 1.125rem; font-weight: 300; margin-top: 48px; margin-bottom: 16px;
+      padding-top: 24px; border-top: 1px solid var(--border); letter-spacing: -0.01em;
+    }
+    .article-content h2:first-of-type { border-top: none; padding-top: 0; }
+    .article-content h3 { font-size: 0.9375rem; font-weight: 400; margin-top: 32px; margin-bottom: 12px; }
+    .article-content p { margin-bottom: 16px; color: var(--text-sec); line-height: 1.9; font-size: 0.8125rem; }
+    .article-content strong { font-weight: 500; color: var(--text); }
+    .article-content ul, .article-content ol { margin-bottom: 16px; padding-left: 20px; color: var(--text-sec); }
+    .article-content li { margin-bottom: 6px; line-height: 1.8; font-size: 0.8125rem; }
+    .article-content hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+    .article-content a { color: var(--purple-light); border-bottom: 1px solid rgba(139,92,246,0.2); }
+    [data-theme="light"] .article-content a { color: var(--purple); }
+
+    /* Tables */
+    .article-content table {
+      width: 100%; border-collapse: collapse; margin-bottom: 20px;
+      font-size: 0.75rem; line-height: 1.6;
+    }
+    .article-content th {
+      text-align: left; padding: 8px 12px; font-weight: 400; color: var(--text);
+      background: var(--surface-2); border-bottom: 1px solid var(--border);
+      font-size: 0.6875rem; letter-spacing: 0.02em;
+    }
+    .article-content td {
+      padding: 8px 12px; border-bottom: 1px solid var(--border); color: var(--text-sec);
+    }
+    .article-content tr:last-child td { border-bottom: none; }
+
+    /* Code blocks */
+    .article-content pre {
+      background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px;
+      padding: 16px 20px; margin-bottom: 20px; overflow-x: auto;
+      font-size: 0.75rem; line-height: 1.7;
+    }
+    .article-content code {
+      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+      font-size: 0.7rem;
+    }
+    .article-content pre code { color: var(--text-sec); background: none; padding: 0; }
+    .article-content p code, .article-content li code {
+      background: var(--surface-2); border: 1px solid var(--border);
+      padding: 1px 5px; border-radius: 4px; font-size: 0.7rem; color: var(--purple-light);
+    }
+    [data-theme="light"] .article-content p code,
+    [data-theme="light"] .article-content li code { color: var(--purple); }
+
+    /* Diagram blocks (ASCII art) */
+    .article-content pre.diagram {
+      background: var(--surface); border: 1px solid var(--border);
+      border-left: 3px solid var(--purple); position: relative;
+    }
+    .article-content pre.diagram::before {
+      content: 'DIAGRAM'; position: absolute; top: 8px; right: 12px;
+      font-size: 0.5rem; letter-spacing: 0.1em; color: var(--text-muted);
+      font-family: var(--font);
+    }
+
+    /* Blockquote */
+    .article-content blockquote {
+      border-left: 2px solid var(--purple); padding-left: 16px; margin-bottom: 16px;
+    }
+    .article-content blockquote p { color: var(--text-muted); font-style: italic; }
+
+    /* ── FOOTER ── */
+    footer { padding: 40px 0 30px; border-top: 1px solid var(--border); }
+    .footer-inner {
+      display: flex; justify-content: space-between; align-items: center;
+      max-width: var(--container); margin: 0 auto; padding: 0 32px;
+    }
+    .footer-inner p { font-size: 0.625rem; color: var(--text-muted); }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { font-size: 0.625rem; color: var(--text-muted); transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text-sec); }
+
+    @media (max-width: 900px) {
+      .blog-grid { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
+      .article-layout { grid-template-columns: 1fr; }
+      .toc { position: static; margin-bottom: 32px; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-mark"><img src="asssets/iMorph_logo.png" alt="iMorph"></div>
+        iMorph
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html#features">Product</a></li>
+        <li><a href="index.html#advantages">Why iMorph</a></li>
+        <li><a href="index.html#industries">Industries</a></li>
+        <li><a href="index.html#roadmap">Roadmap</a></li>
+        <li><a href="blog.html" class="active">Blog</a></li>
+        <li><a href="index.html#faq">FAQ</a></li>
+        <li><a href="index.html#cta-section">Contact</a></li>
+      </ul>
+      <div class="nav-right">
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke-linecap="round"/></svg>
+        </button>
+        <a href="index.html#cta-section" class="btn btn-primary">Get Started</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="blog-index" id="blog-index">
+      <div class="container">
+        <div class="blog-index-header">
+          <h1>Blog</h1>
+          <p>Product thinking, engineering deep-dives, and industry perspectives on enterprise conversational AI.</p>
+        </div>
+        <div class="tag-filter" id="tag-filter"></div>
+        <div class="blog-grid" id="blog-grid"></div>
+      </div>
+    </div>
+
+    <div class="article-view" id="article-view">
+      <div class="article-layout">
+        <aside class="toc" id="toc">
+          <a class="toc-back" onclick="showIndex()">← All Articles</a>
+          <div class="toc-title">Contents</div>
+          <ul class="toc-list" id="toc-list"></ul>
+        </aside>
+        <article>
+          <div class="article-meta" id="article-meta"></div>
+          <div class="article-content" id="article-content"></div>
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <p>&copy; 2026 iMorph.ai. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#features">Product</a>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+<script>
+const ARTICLES = [
+  {
+    slug: "product-business-model",
+    title: "iMorph.ai 的产品业态：从 Prompt Playground 到企业会话操作系统",
+    date: "2026-03-26",
+    tags: ["商业价值", "产品构想"],
+    file: "docs/01-product-business-model.md"
+  },
+  {
+    slug: "innovation-directions",
+    title: "iMorph.ai 的创新方向：五个让企业智能体真正可用的关键突破",
+    date: "2026-03-26",
+    tags: ["产品构想", "技术探索"],
+    file: "docs/02-innovation-directions.md"
+  },
+  {
+    slug: "value-proposition",
+    title: "iMorph.ai 的价值主张：企业会话不是自由聊天，而是可约束的系统行为",
+    date: "2026-03-26",
+    tags: ["商业价值", "产品构想"],
+    file: "docs/03-value-proposition.md"
+  },
+  {
+    slug: "industry-segmentation",
+    title: "iMorph.ai 的行业落地图：从保险外呼到牙医诊所，AI 接管的不只是通话",
+    date: "2026-03-26",
+    tags: ["商业价值"],
+    file: "docs/04-industry-segmentation.md"
+  },
+  {
+    slug: "pricing-gtm",
+    title: "定价策略与GTM：如何让 AI 接线员在 15 分钟内上线并在第一个月证明价值",
+    date: "2026-03-26",
+    tags: ["商业价值"],
+    file: "docs/05-pricing-gtm.md"
+  },
+  {
+    slug: "context-engineering",
+    title: "符合会话的上下文工程：为什么静态 System Prompt 无法撑起企业级 Agent",
+    date: "2026-03-26",
+    tags: ["技术探索"],
+    file: "docs/06-context-engineering.md"
+  },
+  {
+    slug: "low-latency-tts-asr",
+    title: "低时延语音 AI 的工程实践：如何把 E2E 延迟压到 1.5 秒以内",
+    date: "2026-03-26",
+    tags: ["技术探索"],
+    file: "docs/07-low-latency-tts-asr.md"
+  },
+  {
+    slug: "self-play-simulation",
+    title: "Self Play：用模拟对话替代真实用户的上线前验证方法",
+    date: "2026-03-26",
+    tags: ["技术探索"],
+    file: "docs/08-self-play-simulation.md"
+  },
+  {
+    slug: "cold-start-knowledge",
+    title: "冷启动知识工程：如何让一个新 Agent 在没有历史数据的情况下快速可用",
+    date: "2026-03-26",
+    tags: ["产品构想"],
+    file: "docs/09-cold-start-knowledge.md"
+  }
+];
+
+const html = document.documentElement;
+const stored = localStorage.getItem('imorph-theme');
+if (stored) html.setAttribute('data-theme', stored);
+document.getElementById('theme-toggle').addEventListener('click', () => {
+  const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+  html.setAttribute('data-theme', next);
+  localStorage.setItem('imorph-theme', next);
+});
+
+let activeTag = null;
+
+function getExcerpt(file) {
+  const idx = ARTICLES.findIndex(a => a.file === file);
+  const excerpts = [
+    "企业不需要一个更聪明的聊天机器人，而需要一套可以围绕会话建立流程、规则、知识、动作和监控闭环的产品基础设施。",
+    "iMorph.ai 的创新方向不是追求更强的语言模型，而是专注于五个被绝大多数 AI 产品忽略的关键问题。",
+    "让企业能够像治理业务流程一样治理会话智能体。这句话背后是一个与大多数 AI 产品截然不同的假设。",
+    "不同行业有完全不同的合规要求、业务流程和对话复杂度。先从高结构化、高 ROI 的场景切入。",
+    "企业最贵的隐形成本，是漏接的电话。定价策略围绕这个核心认知设计。",
+    "怎么在对话进行中，给模型提供它此刻最需要的信息，而不是把所有信息都塞进去。",
+    "端到端延迟必须控制在 1.5 秒以内。整个语音处理管道的每一个环节都需要被精心设计。",
+    "让系统在沙盒环境中自行生成大规模的模拟对话，在真实用户出现之前完成系统化验证。",
+    "新客户的 Agent 没有历史数据，系统凭什么运行得好？这是冷启动问题的核心挑战。"
+  ];
+  return excerpts[idx] || "";
+}
+
+const ILLUSTRATIONS = {
+  "product-business-model": `<svg viewBox="0 0 320 120" fill="none">
+    <circle cx="160" cy="60" r="34" stroke="var(--purple)" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.25"/>
+    <circle cx="160" cy="60" r="18" stroke="var(--purple)" stroke-width="0.6" opacity="0.15"/>
+    <g font-family="var(--font)" font-size="6.5" fill="var(--text-muted)" text-anchor="middle">
+      <text x="160" y="22"><tspan fill="var(--purple-light)" font-weight="500">Build</tspan></text>
+      <text x="200" y="42">Test</text><text x="206" y="72">Monitor</text>
+      <text x="175" y="100">Deploy</text><text x="140" y="100">Insights</text><text x="116" y="56">Suggest</text>
+    </g>
+    <g stroke="var(--purple)" stroke-width="0.6" fill="none" opacity="0.35">
+      <path d="M172 25 L192 36"/><path d="M204 48 L206 64"/><path d="M202 78 L183 94"/>
+      <path d="M162 100 L148 100"/><path d="M132 94 L120 64"/><path d="M124 48 L150 27"/>
+    </g></svg>`,
+
+  "innovation-directions": `<svg viewBox="0 0 320 120" fill="none">
+    <circle cx="160" cy="60" r="8" fill="var(--purple)" opacity="0.15" stroke="var(--purple)" stroke-width="0.8"/>
+    <circle cx="160" cy="60" r="3" fill="var(--purple)" opacity="0.5"/>
+    <g stroke="var(--purple)" stroke-width="0.5" opacity="0.3">
+      <line x1="160" y1="52" x2="160" y2="24"/><line x1="167" y1="56" x2="198" y2="38"/>
+      <line x1="167" y1="66" x2="195" y2="86"/><line x1="153" y1="66" x2="125" y2="86"/>
+      <line x1="153" y1="56" x2="122" y2="38"/>
+    </g>
+    <g font-family="var(--font)" font-size="6" fill="var(--text-muted)" text-anchor="middle">
+      <text x="160" y="20"><tspan fill="var(--purple-light)">动态上下文</tspan></text>
+      <text x="208" y="36">Evidence建议</text><text x="205" y="92">Self Play</text>
+      <text x="115" y="92">SOP编译</text><text x="113" y="36">多渠道部署</text>
+    </g>
+    <g fill="var(--purple)" opacity="0.3">
+      <circle cx="160" cy="22" r="2.5"/><circle cx="202" cy="38" r="2.5"/><circle cx="199" cy="88" r="2.5"/>
+      <circle cx="121" cy="88" r="2.5"/><circle cx="118" cy="38" r="2.5"/>
+    </g></svg>`,
+
+  "value-proposition": `<svg viewBox="0 0 320 120" fill="none">
+    <path d="M160 18 L190 32 V62 C190 82 160 96 160 96 C160 96 130 82 130 62 V32 Z" stroke="var(--purple)" stroke-width="0.8" fill="var(--purple)" fill-opacity="0.04"/>
+    <path d="M150 56 L157 63 L172 48" stroke="var(--purple-light)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+    <g font-family="var(--font)" font-size="5.5" fill="var(--text-muted)">
+      <text x="82" y="40">严格遵循</text><text x="82" y="60">一致性</text><text x="82" y="80">可循证</text>
+      <text x="214" y="40">高置信度</text><text x="214" y="60">自动化</text>
+    </g>
+    <g stroke="var(--purple)" stroke-width="0.4" opacity="0.2" stroke-dasharray="2 2">
+      <line x1="108" y1="38" x2="130" y2="44"/><line x1="104" y1="58" x2="130" y2="58"/>
+      <line x1="102" y1="78" x2="134" y2="72"/><line x1="213" y1="38" x2="190" y2="44"/><line x1="213" y1="58" x2="190" y2="58"/>
+    </g></svg>`,
+
+  "industry-segmentation": `<svg viewBox="0 0 320 120" fill="none">
+    <g opacity="0.6">
+      <rect x="92" y="40" width="34" height="52" rx="4" stroke="var(--purple)" stroke-width="0.7" fill="var(--purple)" fill-opacity="0.04"/>
+      <rect x="143" y="28" width="34" height="64" rx="4" stroke="var(--purple)" stroke-width="0.7" fill="var(--purple)" fill-opacity="0.07"/>
+      <rect x="194" y="44" width="34" height="48" rx="4" stroke="var(--purple)" stroke-width="0.7" fill="var(--purple)" fill-opacity="0.04"/>
+    </g>
+    <g font-family="var(--font)" font-size="6" text-anchor="middle">
+      <text x="109" y="36" fill="var(--purple-light)">保险</text>
+      <text x="160" y="24" fill="var(--purple-light)">牙科</text>
+      <text x="211" y="40" fill="var(--purple-light)">家政</text>
+    </g>
+    <g font-family="var(--font)" font-size="5" text-anchor="middle" fill="var(--text-muted)">
+      <text x="109" y="60">外呼筛选</text><text x="109" y="72">多语言</text><text x="109" y="84">异议处理</text>
+      <text x="160" y="46">预约调度</text><text x="160" y="58">HIPAA</text><text x="160" y="70">急症分流</text><text x="160" y="82">PMS集成</text>
+      <text x="211" y="62">紧急派单</text><text x="211" y="74">报价引擎</text><text x="211" y="86">ETA查询</text>
+    </g></svg>`,
+
+  "pricing-gtm": `<svg viewBox="0 0 320 120" fill="none">
+    <g opacity="0.6">
+      <rect x="82" y="68" width="32" height="28" rx="3" fill="var(--purple)" fill-opacity="0.08" stroke="var(--purple)" stroke-width="0.6"/>
+      <rect x="124" y="48" width="32" height="48" rx="3" fill="var(--purple)" fill-opacity="0.12" stroke="var(--purple)" stroke-width="0.8"/>
+      <rect x="166" y="36" width="32" height="60" rx="3" fill="var(--purple)" fill-opacity="0.08" stroke="var(--purple)" stroke-width="0.6"/>
+      <rect x="208" y="24" width="32" height="72" rx="3" fill="var(--purple)" fill-opacity="0.05" stroke="var(--purple)" stroke-width="0.5" stroke-dasharray="3 2"/>
+    </g>
+    <g font-family="var(--font)" font-size="5.5" text-anchor="middle" fill="var(--text-muted)">
+      <text x="98" y="84">Starter</text><text x="140" y="64"><tspan fill="var(--purple-light)" font-weight="500">Growth</tspan></text>
+      <text x="182" y="52">Pro</text><text x="224" y="40">Enterprise</text>
+    </g>
+    <g font-family="var(--font)" font-size="5" text-anchor="middle" fill="var(--text-muted)" opacity="0.6">
+      <text x="98" y="64">$79</text><text x="140" y="44">$229</text><text x="182" y="32">$499</text><text x="224" y="20">定制</text>
+    </g>
+    <line x1="74" y1="96" x2="248" y2="96" stroke="var(--border-light)" stroke-width="0.5"/></svg>`,
+
+  "context-engineering": `<svg viewBox="0 0 320 120" fill="none">
+    <g opacity="0.7">
+      <rect x="115" y="10" width="90" height="16" rx="3" fill="var(--purple)" fill-opacity="0.06" stroke="var(--purple)" stroke-width="0.6"/>
+      <rect x="115" y="30" width="90" height="16" rx="3" fill="var(--purple)" fill-opacity="0.06" stroke="var(--purple)" stroke-width="0.6"/>
+      <rect x="115" y="50" width="90" height="16" rx="3" fill="var(--purple)" fill-opacity="0.12" stroke="var(--purple)" stroke-width="0.8"/>
+      <rect x="115" y="70" width="90" height="16" rx="3" fill="var(--purple)" fill-opacity="0.06" stroke="var(--purple)" stroke-width="0.6"/>
+      <rect x="115" y="90" width="90" height="16" rx="3" fill="var(--purple)" fill-opacity="0.04" stroke="var(--purple)" stroke-width="0.5"/>
+    </g>
+    <g font-family="var(--font)" font-size="5.5" text-anchor="middle">
+      <text x="160" y="21" fill="var(--text-muted)">Persona &amp; Identity</text>
+      <text x="160" y="41" fill="var(--text-muted)">Constraints</text>
+      <text x="160" y="61" fill="var(--purple-light)">Business Logic ← 动态</text>
+      <text x="160" y="81" fill="var(--text-muted)">Conversation State</text>
+      <text x="160" y="101" fill="var(--text-muted)">Tools</text>
+    </g>
+    <path d="M210 58 L224 58 L224 36 L210 36" stroke="var(--purple)" stroke-width="0.5" fill="none" opacity="0.3" stroke-dasharray="2 2"/>
+    <text x="228" y="50" font-family="var(--font)" font-size="5" fill="var(--text-muted)" opacity="0.6">按 Journey&#10;动态切换</text></svg>`,
+
+  "low-latency-tts-asr": `<svg viewBox="0 0 320 120" fill="none">
+    <g opacity="0.7">
+      <rect x="46" y="40" width="42" height="22" rx="4" stroke="var(--purple)" stroke-width="0.6" fill="var(--purple)" fill-opacity="0.05"/>
+      <rect x="102" y="40" width="42" height="22" rx="4" stroke="var(--purple)" stroke-width="0.6" fill="var(--purple)" fill-opacity="0.05"/>
+      <rect x="158" y="40" width="42" height="22" rx="4" stroke="var(--purple)" stroke-width="0.8" fill="var(--purple)" fill-opacity="0.10"/>
+      <rect x="214" y="40" width="42" height="22" rx="4" stroke="var(--purple)" stroke-width="0.6" fill="var(--purple)" fill-opacity="0.05"/>
+    </g>
+    <g font-family="var(--font)" font-size="5.5" text-anchor="middle" fill="var(--text-muted)">
+      <text x="67" y="54">VAD</text><text x="123" y="54">STT</text>
+      <text x="179" y="54" fill="var(--purple-light)">LLM</text><text x="235" y="54">TTS</text>
+    </g>
+    <g stroke="var(--purple)" stroke-width="0.5" opacity="0.3">
+      <line x1="88" y1="51" x2="100" y2="51"/><line x1="144" y1="51" x2="156" y2="51"/>
+      <line x1="200" y1="51" x2="212" y2="51"/>
+    </g>
+    <g font-family="var(--font)" font-size="4.5" text-anchor="middle" fill="var(--text-muted)" opacity="0.6">
+      <text x="67" y="76">~80ms</text><text x="123" y="76">~220ms</text>
+      <text x="179" y="76">~400ms</text><text x="235" y="76">~100ms</text>
+    </g>
+    <line x1="46" y1="84" x2="256" y2="84" stroke="var(--border-light)" stroke-width="0.4"/>
+    <text x="160" y="96" font-family="var(--font)" font-size="5.5" text-anchor="middle" fill="var(--purple-light)" opacity="0.7">E2E &lt; 1.5s</text></svg>`,
+
+  "self-play-simulation": `<svg viewBox="0 0 320 120" fill="none">
+    <rect x="104" y="24" width="52" height="26" rx="6" stroke="var(--purple)" stroke-width="0.7" fill="var(--purple)" fill-opacity="0.06"/>
+    <text x="130" y="41" font-family="var(--font)" font-size="6" text-anchor="middle" fill="var(--purple-light)">Agent</text>
+    <rect x="164" y="66" width="52" height="26" rx="6" stroke="var(--purple)" stroke-width="0.7" fill="var(--purple)" fill-opacity="0.06"/>
+    <text x="190" y="83" font-family="var(--font)" font-size="6" text-anchor="middle" fill="var(--text-muted)">模拟客户</text>
+    <path d="M156 40 C178 40 178 40 178 66" stroke="var(--purple)" stroke-width="0.6" fill="none" opacity="0.3"/>
+    <path d="M164 80 C142 80 142 80 142 50" stroke="var(--purple)" stroke-width="0.6" fill="none" opacity="0.3"/>
+    <g font-family="var(--font)" font-size="5" fill="var(--text-muted)" opacity="0.6">
+      <text x="84" y="96">Good</text><text x="84" y="106" fill="var(--green)">85%</text>
+      <text x="136" y="96">Acceptable</text><text x="136" y="106" fill="var(--amber)">12%</text>
+      <text x="200" y="96">Bad</text><text x="200" y="106" fill="var(--text-muted)">3%</text>
+    </g></svg>`,
+
+  "cold-start-knowledge": `<svg viewBox="0 0 320 120" fill="none">
+    <rect x="92" y="18" width="56" height="76" rx="5" stroke="var(--purple)" stroke-width="0.7" fill="var(--purple)" fill-opacity="0.04"/>
+    <text x="120" y="14" font-family="var(--font)" font-size="5.5" text-anchor="middle" fill="var(--text-muted)">行业模板</text>
+    <g font-family="var(--font)" font-size="5" fill="var(--text-muted)" opacity="0.7">
+      <text x="100" y="36">Guidelines</text><text x="100" y="48">Journey</text><text x="100" y="60">Glossary</text>
+    </g>
+    <g opacity="0.3"><rect x="98" y="68" width="44" height="5" rx="2" fill="var(--purple)"/><rect x="98" y="76" width="32" height="5" rx="2" fill="var(--purple)"/><rect x="98" y="84" width="38" height="5" rx="2" fill="var(--purple)"/></g>
+    <path d="M152 58 L172 58" stroke="var(--purple)" stroke-width="0.6" opacity="0.4"/>
+    <text x="162" y="52" font-family="var(--font)" font-size="5" fill="var(--text-muted)" opacity="0.5" text-anchor="middle">+客户</text>
+    <rect x="178" y="26" width="50" height="60" rx="5" stroke="var(--purple-light)" stroke-width="0.9" fill="var(--purple)" fill-opacity="0.07"/>
+    <text x="203" y="20" font-family="var(--font)" font-size="5.5" text-anchor="middle" fill="var(--purple-light)">可用 Agent</text>
+    <g font-family="var(--font)" font-size="5" fill="var(--text-muted)" opacity="0.7">
+      <text x="186" y="44">诊所名称 ✓</text><text x="186" y="56">营业时间 ✓</text><text x="186" y="68">服务项目 ✓</text><text x="186" y="80">保险计划 ✓</text>
+    </g>
+    <text x="203" y="100" font-family="var(--font)" font-size="5.5" text-anchor="middle" fill="var(--green)" opacity="0.6">&lt;24h 上线</text></svg>`
+};
+
+function renderIndex() {
+  const allTags = [...new Set(ARTICLES.flatMap(a => a.tags))];
+  const filterEl = document.getElementById('tag-filter');
+  filterEl.innerHTML = `<button class="tag-btn ${!activeTag ? 'active' : ''}" onclick="filterTag(null)">All</button>` +
+    allTags.map(t => `<button class="tag-btn ${activeTag === t ? 'active' : ''}" onclick="filterTag('${t}')">${t}</button>`).join('');
+
+  const filtered = activeTag ? ARTICLES.filter(a => a.tags.includes(activeTag)) : ARTICLES;
+  const grid = document.getElementById('blog-grid');
+  grid.innerHTML = filtered.map(a => `
+    <div class="blog-card" onclick="showArticle('${a.slug}')">
+      <div class="blog-card-thumb">${ILLUSTRATIONS[a.slug] || ''}</div>
+      <div class="blog-card-body">
+        <div class="blog-card-tags">${a.tags.map(t => `<span class="blog-card-tag">${t}</span>`).join('')}</div>
+        <div class="blog-card-date">${a.date}</div>
+        <h3>${a.title}</h3>
+        <p>${getExcerpt(a.file)}</p>
+        <span class="blog-card-link">Read article →</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterTag(tag) {
+  activeTag = tag;
+  renderIndex();
+}
+
+function showIndex() {
+  history.pushState(null, '', 'blog.html');
+  document.getElementById('blog-index').classList.remove('hidden');
+  document.getElementById('article-view').classList.remove('active');
+  document.title = 'Blog — iMorph';
+  window.scrollTo(0, 0);
+}
+
+async function showArticle(slug) {
+  const article = ARTICLES.find(a => a.slug === slug);
+  if (!article) return;
+
+  history.pushState(null, '', `blog.html#${slug}`);
+  document.title = `${article.title} — iMorph Blog`;
+
+  let md = '';
+  try {
+    const res = await fetch(article.file);
+    md = await res.text();
+  } catch (e) {
+    document.getElementById('article-content').innerHTML = `<p>Unable to load article. Please serve this site via an HTTP server (e.g. <code>npx serve</code>).</p>`;
+    document.getElementById('blog-index').classList.add('hidden');
+    document.getElementById('article-view').classList.add('active');
+    return;
+  }
+
+  md = md.replace(/^---[\s\S]*?---\n*/, '');
+
+  marked.setOptions({
+    gfm: true,
+    breaks: false,
+    headerIds: true,
+    mangle: false
+  });
+
+  const rendered = marked.parse(md);
+  document.getElementById('article-content').innerHTML = rendered;
+
+  document.getElementById('article-meta').innerHTML = `
+    <div class="article-meta-tags">${article.tags.map(t => `<span class="article-meta-tag">${t}</span>`).join('')}</div>
+    <div class="article-meta-date">${article.date}</div>
+  `;
+
+  decorateCodeBlocks();
+  buildToc();
+
+  document.getElementById('blog-index').classList.add('hidden');
+  document.getElementById('article-view').classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function decorateCodeBlocks() {
+  document.querySelectorAll('.article-content pre').forEach(pre => {
+    const code = pre.querySelector('code');
+    if (!code) return;
+    const text = code.textContent;
+    const hasDiagramChars = (text.includes('↓') || text.includes('←') || text.includes('→') ||
+      text.includes('──') || text.includes('Layer ') || text.includes('Step '));
+    const lang = code.className.replace('language-', '');
+    if (!lang && hasDiagramChars) {
+      pre.classList.add('diagram');
+    }
+  });
+}
+
+function buildToc() {
+  const headings = document.querySelectorAll('.article-content h2, .article-content h3');
+  const list = document.getElementById('toc-list');
+  list.innerHTML = '';
+  headings.forEach((h, i) => {
+    const id = 'section-' + i;
+    h.id = id;
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = '#' + id;
+    a.textContent = h.textContent;
+    if (h.tagName === 'H3') a.classList.add('h3');
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      h.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    li.appendChild(a);
+    list.appendChild(li);
+  });
+
+  const tocLinks = list.querySelectorAll('a');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        tocLinks.forEach(l => l.classList.remove('active'));
+        const match = list.querySelector(`a[href="#${entry.target.id}"]`);
+        if (match) match.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-80px 0px -70% 0px', threshold: 0 });
+  headings.forEach(h => obs.observe(h));
+}
+
+function init() {
+  renderIndex();
+  const hash = location.hash.slice(1);
+  if (hash && ARTICLES.find(a => a.slug === hash)) {
+    showArticle(hash);
+  }
+}
+
+window.addEventListener('popstate', () => {
+  const hash = location.hash.slice(1);
+  if (hash && ARTICLES.find(a => a.slug === hash)) {
+    showArticle(hash);
+  } else {
+    showIndex();
+  }
+});
+
+init();
+</script>
+
+</body>
+</html>
