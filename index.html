@@ -6,9 +6,6 @@
   <title>iMorph — Enterprise Conversational AI Platform</title>
   <meta name="description" content="Build, test, deploy, and optimize enterprise-grade conversational AI agents with iMorph's lightweight all-in-one platform.">
   <link rel="icon" type="image/png" href="asssets/iMorph_logo.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@200;300;400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -30,7 +27,7 @@
       --green: #34D399;
       --amber: #FBBF24;
       --red: #F87171;
-      --font: 'Sora', -apple-system, sans-serif;
+      --font: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       --container: 1100px;
       --section-py: 120px;
     }
@@ -306,6 +303,7 @@
       align-items: center;
       justify-content: space-between;
       height: 56px;
+      position: relative;
     }
 
     .logo {
@@ -1599,6 +1597,28 @@
       .fw-node-desc { display: none; }
 
       .nav-links { display: none; }
+      .nav-links.show {
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 14px 16px;
+        background: rgba(21, 21, 35, 0.96);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25);
+        z-index: 120;
+      }
+      [data-theme="light"] .nav-links.show {
+        background: rgba(255, 255, 255, 0.98);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.10);
+      }
+      .nav-links.show li { width: 100%; }
+      .nav-links.show a { display: block; width: 100%; padding: 2px 0; }
       .mobile-toggle { display: block; }
     }
 
@@ -1649,7 +1669,7 @@
         </button>
         <a href="#cta-section" class="btn btn-primary">Get Started</a>
       </div>
-      <button class="mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('show')" aria-label="Menu">
+      <button class="mobile-toggle" aria-label="Menu">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
     </div>
@@ -2577,9 +2597,25 @@
     });
 
     const nav = document.getElementById('nav');
+    const navLinks = document.querySelector('.nav-links');
+    const mobileToggle = document.querySelector('.mobile-toggle');
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 40);
     });
+
+    if (mobileToggle && navLinks) {
+      mobileToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('show');
+      });
+
+      navLinks.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => navLinks.classList.remove('show'));
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!nav.contains(e.target)) navLinks.classList.remove('show');
+      });
+    }
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {

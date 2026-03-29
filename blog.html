@@ -5,10 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blog — iMorph</title>
   <link rel="icon" type="image/png" href="asssets/iMorph_logo.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@200;300;400;500;600&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/marked/12.0.2/marked.min.js"></script>
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -18,7 +15,7 @@
       --text: #EEEEF0; --text-sec: #9090A0; --text-muted: #606070;
       --purple: #8B5CF6; --purple-dark: #7C3AED; --purple-light: #A78BFA;
       --green: #34D399; --amber: #FBBF24;
-      --font: 'Sora', -apple-system, sans-serif; --container: 1100px;
+      --font: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; --container: 1100px;
     }
 
     [data-theme="light"] {
@@ -53,6 +50,7 @@
     nav .nav-inner {
       max-width: var(--container); margin: 0 auto;
       display: flex; align-items: center; justify-content: space-between; height: 56px;
+      position: relative;
     }
     .logo { display: flex; align-items: center; gap: 8px; font-size: 0.9375rem; font-weight: 500; letter-spacing: -0.02em; }
     .logo-mark {
@@ -74,6 +72,13 @@
     .theme-toggle .icon-sun { display: none; }
     [data-theme="light"] .theme-toggle .icon-sun { display: block; }
     [data-theme="light"] .theme-toggle .icon-moon { display: none; }
+    .mobile-toggle {
+      display: none;
+      width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border);
+      background: transparent; color: var(--text-sec); cursor: pointer;
+      align-items: center; justify-content: center; transition: all 0.25s ease;
+    }
+    .mobile-toggle:hover { border-color: var(--border-light); color: var(--text); }
     .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 24px; border-radius: 8px; font-family: var(--font); font-size: 0.75rem; font-weight: 400; cursor: pointer; border: none; transition: all 0.25s ease; }
     .btn-primary { background: var(--purple); color: #fff; }
     .btn-primary:hover { background: var(--purple-dark); }
@@ -243,6 +248,30 @@
       .article-layout { grid-template-columns: 1fr; }
       .toc { position: static; margin-bottom: 32px; }
       .nav-links { display: none; }
+      .nav-links.show {
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 14px 16px;
+        background: rgba(21, 21, 35, 0.96);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25);
+        z-index: 120;
+      }
+      [data-theme="light"] .nav-links.show {
+        background: rgba(255, 255, 255, 0.98);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.10);
+      }
+      .nav-links.show li { width: 100%; }
+      .nav-links.show a { display: block; width: 100%; padding: 2px 0; }
+      .nav-right .btn { display: none; }
+      .mobile-toggle { display: inline-flex; }
     }
   </style>
 </head>
@@ -269,6 +298,9 @@
           <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke-linecap="round"/></svg>
         </button>
         <a href="index.html#cta-section" class="btn btn-primary">Get Started</a>
+        <button class="mobile-toggle" id="mobile-toggle" aria-label="Menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
       </div>
     </div>
   </nav>
@@ -380,6 +412,9 @@ const ARTICLES = [
 ];
 
 const html = document.documentElement;
+const blogNav = document.querySelector('nav');
+const blogNavLinks = document.querySelector('.nav-links');
+const blogMobileToggle = document.getElementById('mobile-toggle');
 const stored = localStorage.getItem('imorph-theme');
 if (stored) html.setAttribute('data-theme', stored);
 document.getElementById('theme-toggle').addEventListener('click', () => {
@@ -387,6 +422,20 @@ document.getElementById('theme-toggle').addEventListener('click', () => {
   html.setAttribute('data-theme', next);
   localStorage.setItem('imorph-theme', next);
 });
+
+if (blogMobileToggle && blogNavLinks && blogNav) {
+  blogMobileToggle.addEventListener('click', () => {
+    blogNavLinks.classList.toggle('show');
+  });
+
+  blogNavLinks.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => blogNavLinks.classList.remove('show'));
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!blogNav.contains(e.target)) blogNavLinks.classList.remove('show');
+  });
+}
 
 let activeTag = null;
 
@@ -607,6 +656,13 @@ async function showArticle(slug) {
   }
 
   md = md.replace(/^---[\s\S]*?---\n*/, '');
+
+  if (!window.marked) {
+    document.getElementById('article-content').innerHTML = `<p>Markdown renderer is unavailable. Please check network access to <code>cdn.bootcdn.net</code>.</p>`;
+    document.getElementById('blog-index').classList.add('hidden');
+    document.getElementById('article-view').classList.add('active');
+    return;
+  }
 
   marked.setOptions({
     gfm: true,
