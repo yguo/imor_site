@@ -13,15 +13,15 @@
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --bg: #09090B;
-      --surface: #111113;
-      --surface-2: #19191D;
-      --surface-3: #1F1F24;
-      --border: #222228;
-      --border-light: #2E2E36;
+      --bg: #121218;
+      --surface: #191923;
+      --surface-2: #22222D;
+      --surface-3: #2A2A36;
+      --border: #343441;
+      --border-light: #404050;
       --text: #EEEEF0;
-      --text-sec: #9090A0;
-      --text-muted: #606070;
+      --text-sec: #9A9AAD;
+      --text-muted: #6D6D7F;
       --purple: #8B5CF6;
       --purple-dark: #7C3AED;
       --purple-light: #A78BFA;
@@ -294,7 +294,7 @@
     }
 
     nav.scrolled {
-      background: rgba(9, 9, 11, 0.85);
+      background: rgba(24, 24, 34, 0.80);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
     }
@@ -369,8 +369,8 @@
       position: absolute;
       inset: 0;
       background-image:
-        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+        linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px);
       background-size: 64px 64px;
       mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 20%, transparent 70%);
     }
@@ -383,7 +383,7 @@
       transform: translateX(-50%);
       width: 900px;
       height: 500px;
-      background: radial-gradient(ellipse, rgba(139, 92, 246, 0.06) 0%, transparent 65%);
+      background: radial-gradient(ellipse, rgba(139, 92, 246, 0.11) 0%, transparent 65%);
       pointer-events: none;
     }
 
@@ -2643,7 +2643,7 @@
       function purpleRGBA(a) {
         return isLight()
           ? `rgba(124, 58, 237, ${a})`
-          : `rgba(139, 92, 246, ${a})`;
+          : `rgba(196, 181, 253, ${a})`;
       }
 
       document.addEventListener('mousedown', (e) => {
@@ -2691,7 +2691,9 @@
         for (let i = 0; i < nodes.length; i++) {
           for (let j = i + 1; j < nodes.length; j++) {
             const a = nodes[i], b = nodes[j];
-            const edgeAlpha = Math.min(a.opacity, b.opacity) * Math.min(a.scale, b.scale) * 0.18;
+            const darkMode = !isLight();
+            const themeBoost = darkMode ? 2.2 : 1;
+            const edgeAlpha = Math.min(a.opacity, b.opacity) * Math.min(a.scale, b.scale) * 0.18 * themeBoost;
             if (edgeAlpha < 0.005) continue;
 
             const mx = (a.x + b.x) / 2;
@@ -2705,29 +2707,34 @@
             ctx.moveTo(a.x, a.y);
             ctx.quadraticCurveTo(cx, cy, b.x, b.y);
             ctx.strokeStyle = purpleRGBA(edgeAlpha);
-            ctx.lineWidth = 0.5;
+            ctx.lineWidth = darkMode ? 0.8 : 0.5;
             ctx.stroke();
           }
         }
 
         // nodes
         for (const n of nodes) {
-          const r = 14 * n.scale;
+          const darkMode = !isLight();
+          const r = (darkMode ? 16 : 14) * n.scale;
           const alpha = n.opacity * n.scale;
           if (alpha < 0.005) continue;
 
           ctx.beginPath();
           ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
-          ctx.fillStyle = purpleRGBA(0.10 * alpha);
+          const themeBoost = darkMode ? 1.9 : 1;
+          ctx.fillStyle = purpleRGBA(0.10 * alpha * themeBoost);
+          ctx.shadowBlur = darkMode ? 9 * alpha : 0;
+          ctx.shadowColor = darkMode ? 'rgba(167, 139, 250, 0.35)' : 'transparent';
           ctx.fill();
-          ctx.strokeStyle = purpleRGBA(0.25 * alpha);
+          ctx.strokeStyle = purpleRGBA(0.25 * alpha * themeBoost);
           ctx.lineWidth = 0.7;
           ctx.stroke();
+          ctx.shadowBlur = 0;
 
-          ctx.font = `${Math.round(6.5 * n.scale)}px Sora, sans-serif`;
+          ctx.font = `${Math.round((darkMode ? 7.2 : 6.5) * n.scale)}px Sora, sans-serif`;
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
-          ctx.fillStyle = purpleRGBA(0.45 * alpha);
+          ctx.fillStyle = purpleRGBA(0.45 * alpha * themeBoost);
           ctx.fillText(n.label, n.x, n.y);
         }
 
