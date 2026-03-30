@@ -245,8 +245,15 @@
 
     @media (max-width: 900px) {
       .blog-grid { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
-      .article-view { padding: 72px 0 52px; }
-      .article-layout { grid-template-columns: 1fr; gap: 22px; padding: 0 20px; }
+      .article-view { padding: 72px 0 52px; overflow-x: hidden; }
+      .article-layout { grid-template-columns: 1fr; gap: 22px; padding: 0 20px; overflow-x: hidden; }
+
+      .article-content {
+        word-break: break-word;
+        overflow-wrap: break-word;
+        min-width: 0;
+      }
+
       .toc {
         position: static;
         margin-bottom: 10px;
@@ -259,10 +266,9 @@
       .toc-title { margin-bottom: 8px; }
       .toc-list {
         display: flex;
+        flex-wrap: wrap;
         gap: 8px;
-        overflow-x: auto;
         padding-bottom: 2px;
-        white-space: nowrap;
       }
       .toc-list li { margin-bottom: 0; flex: 0 0 auto; }
       .toc-list a {
@@ -271,6 +277,7 @@
         border-radius: 999px;
         padding: 6px 10px;
         font-size: 0.72rem;
+        white-space: nowrap;
       }
       .toc-list a.h3 { padding-left: 10px; font-size: 0.68rem; opacity: 0.9; }
 
@@ -294,6 +301,10 @@
         font-size: 0.81rem;
         line-height: 1.78;
         margin-bottom: 18px;
+        max-width: 100%;
+        box-sizing: border-box;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
       }
       .article-content code { font-size: 0.79rem; }
       .article-content p code,
@@ -303,13 +314,18 @@
       .article-content table {
         display: block;
         overflow-x: auto;
-        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        max-width: 100%;
         border: 1px solid var(--border);
         border-radius: 8px;
       }
-      .article-content table tbody,
-      .article-content table thead,
-      .article-content table tr { white-space: nowrap; }
+      .article-content th,
+      .article-content td {
+        white-space: normal;
+        word-break: break-word;
+        min-width: 80px;
+      }
 
       .article-content blockquote { padding-left: 12px; }
 
@@ -359,7 +375,9 @@
       .article-content h3 { font-size: 0.98rem; }
       .article-content p,
       .article-content li { font-size: 0.92rem; line-height: 1.85; }
-      .article-content pre { font-size: 0.77rem; }
+      .article-content pre { font-size: 0.77rem; padding: 12px 12px; }
+      .article-content th,
+      .article-content td { padding: 6px 8px; font-size: 0.72rem; min-width: 60px; }
 
       footer { padding: 28px 0 24px; }
       .footer-inner { flex-direction: column; gap: 8px; align-items: flex-start; }
