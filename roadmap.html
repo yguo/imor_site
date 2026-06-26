@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roadmap — iMorph</title>
+  <link rel="icon" type="image/png" href="asssets/iMorph_logo.png">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #09090B;
+      --surface: #111113;
+      --surface-2: #19191D;
+      --surface-3: #1F1F24;
+      --border: #222228;
+      --border-light: #2E2E36;
+      --text: #EEEEF0;
+      --text-sec: #9090A0;
+      --text-muted: #606070;
+      --purple: #8B5CF6;
+      --purple-dark: #7C3AED;
+      --purple-light: #A78BFA;
+      --green: #34D399;
+      --font: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --container: 1100px;
+      --section-py: 96px;
+    }
+
+    [data-theme="light"] {
+      --bg: #FAFAFA;
+      --surface: #FFFFFF;
+      --surface-2: #F4F4F5;
+      --surface-3: #E4E4E7;
+      --border: #E4E4E7;
+      --border-light: #D4D4D8;
+      --text: #18181B;
+      --text-sec: #52525B;
+      --text-muted: #A1A1AA;
+      --purple: #7C3AED;
+      --purple-dark: #6D28D9;
+      --purple-light: #6D28D9;
+      --green: #059669;
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      font-weight: 300;
+      font-size: 0.8125rem;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      transition: background 0.35s ease, color 0.35s ease;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: var(--container); margin: 0 auto; padding: 0 32px; }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 0 32px;
+      background: rgba(9,9,11,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+    [data-theme="light"] nav { background: rgba(250,250,250,0.85); }
+    nav .nav-inner {
+      max-width: var(--container);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      position: relative;
+    }
+    .logo { display: flex; align-items: center; gap: 8px; font-size: 0.9375rem; font-weight: 500; letter-spacing: -0.02em; }
+    .logo-mark { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
+    .logo-mark img { width: 100%; height: 100%; object-fit: contain; }
+    .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+    .nav-links a { font-size: 0.75rem; font-weight: 300; color: var(--text-sec); transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .theme-toggle {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-sec);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s ease;
+    }
+    .theme-toggle:hover { border-color: var(--border-light); color: var(--text); }
+    .theme-toggle svg { width: 14px; height: 14px; }
+    .theme-toggle .icon-sun { display: none; }
+    [data-theme="light"] .theme-toggle .icon-sun { display: block; }
+    [data-theme="light"] .theme-toggle .icon-moon { display: none; }
+    .mobile-toggle {
+      display: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-sec);
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s ease;
+    }
+    .mobile-toggle:hover { border-color: var(--border-light); color: var(--text); }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-family: var(--font);
+      font-size: 0.75rem;
+      font-weight: 400;
+      cursor: pointer;
+      border: none;
+      transition: all 0.25s ease;
+    }
+    .btn-primary { background: var(--purple); color: #fff; }
+    .btn-primary:hover { background: var(--purple-dark); }
+
+    .roadmap { padding: 104px 0 var(--section-py); }
+    .release-notes { padding: var(--section-py) 0; }
+    .roadmap-header, .release-header {
+      text-align: center;
+      max-width: 620px;
+      margin: 0 auto 40px;
+    }
+    .roadmap-header p, .release-header p { margin-top: 16px; color: var(--text-sec); }
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(139, 92, 246, 0.16);
+      background: rgba(139, 92, 246, 0.08);
+      color: var(--purple-light);
+      font-size: 0.625rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    [data-theme="light"] .section-label { color: var(--purple); }
+
+    .roadmap-timeline {
+      position: relative;
+      max-width: 880px;
+      margin: 0 auto;
+      display: grid;
+      gap: 28px;
+    }
+    .roadmap-timeline::before {
+      content: "";
+      position: absolute;
+      left: 8px;
+      top: 5px;
+      bottom: 5px;
+      width: 1px;
+      background: linear-gradient(180deg, rgba(139, 92, 246, 0.32), var(--border));
+    }
+    .rm-item {
+      position: relative;
+      padding: 0 0 0 32px;
+      min-height: 24px;
+    }
+    .rm-dot {
+      position: absolute;
+      left: 0;
+      top: 2px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 1px solid rgba(139, 92, 246, 0.35);
+      background: var(--surface);
+    }
+    .rm-dot.active {
+      border-color: var(--purple);
+      background: var(--purple);
+      box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+    }
+    .rm-dot.active::after {
+      content: "";
+      position: absolute;
+      inset: 1.5px;
+      border-radius: 50%;
+      background: var(--bg);
+    }
+    .rm-quarter {
+      font-size: 0.5625rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--purple-light);
+      margin-bottom: 6px;
+    }
+    [data-theme="light"] .rm-quarter { color: var(--purple); }
+    .rm-item h4 {
+      font-size: 0.875rem;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .rm-item p {
+      font-size: 0.75rem;
+      color: var(--text-sec);
+      line-height: 1.7;
+      margin-top: 8px;
+    }
+    .rm-item p strong {
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    .release-stack {
+      max-width: 880px;
+      margin: 0 auto;
+      display: grid;
+      gap: 18px;
+    }
+    .release-card {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 22px;
+      padding: 26px;
+      border-radius: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      transition: border-color 0.25s ease, transform 0.25s ease;
+    }
+    .release-card:hover {
+      border-color: var(--border-light);
+      transform: translateY(-1px);
+    }
+    .release-version { padding-left: 0; }
+    .release-version h3 {
+      font-size: 0.875rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+    .release-summary {
+      font-size: 0.75rem;
+      color: var(--text-sec);
+      margin-bottom: 12px;
+    }
+    .release-list {
+      padding-left: 18px;
+      color: var(--text-sec);
+    }
+    .release-list li {
+      margin-bottom: 8px;
+      font-size: 0.75rem;
+      line-height: 1.75;
+    }
+    .release-list strong {
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 32px 24px;
+    }
+    .footer-inner {
+      max-width: var(--container);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .footer-inner p, .footer-links a {
+      color: var(--text-muted);
+      font-size: 0.6875rem;
+    }
+    .footer-links { display: flex; gap: 18px; }
+    .footer-links a:hover { color: var(--text-sec); }
+
+    @media (max-width: 900px) {
+      .nav-links {
+        position: absolute;
+        top: calc(100% + 12px);
+        right: 0;
+        min-width: 220px;
+        padding: 12px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: rgba(17,17,19,0.96);
+        backdrop-filter: blur(18px);
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        display: none;
+      }
+      [data-theme="light"] .nav-links { background: rgba(255,255,255,0.96); }
+      .nav-links.show { display: flex; }
+      .mobile-toggle { display: flex; }
+      .nav-right .btn-primary { display: none; }
+    }
+
+    @media (max-width: 720px) {
+      .container { padding: 0 20px; }
+      nav, footer { padding-left: 20px; padding-right: 20px; }
+      .release-card { grid-template-columns: 1fr; gap: 16px; padding: 22px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+      .footer-links { flex-wrap: wrap; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <nav id="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-mark"><img src="asssets/iMorph_logo.png" alt="iMorph"></div>
+        iMorph
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html#features">Product</a></li>
+        <li><a href="index.html#advantages">Why iMorph</a></li>
+        <li><a href="index.html#industries">Industries</a></li>
+        <li><a href="roadmap.html" class="active">Roadmap</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="index.html#faq">FAQ</a></li>
+        <li><a href="index.html#cta-section">Contact</a></li>
+      </ul>
+      <div class="nav-right">
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke-linecap="round"/></svg>
+        </button>
+        <a href="index.html#cta-section" class="btn btn-primary">Get Started</a>
+        <button class="mobile-toggle" id="mobile-toggle" aria-label="Menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="roadmap" id="roadmap">
+      <div class="container">
+        <div class="roadmap-header">
+          <div class="section-label">Roadmap</div>
+          <h2 style="margin-top:16px">Where We’re Headed</h2>
+          <p>Our roadmap reflects the product architecture, runtime governance, and optimization workflows we’re building toward across the iMorph platform.</p>
+        </div>
+        <div class="roadmap-timeline">
+          <div class="rm-item">
+            <div class="rm-dot active"></div>
+            <div class="rm-quarter">2026 Q1</div>
+            <h4>Agent Architecture Research and Core Modeling</h4>
+            <p>1. <strong>Agent Flywheel Architecture:</strong> Completed the overall architecture definition for Agent Studio and Insights, establishing a closed-loop system across Build → Test → Monitor → Deploy → Suggestions.</p>
+            <p>2. <strong>Runtime Context Assembly Research:</strong> Researched and validated the dynamic assembly model for Journey, Guidelines, Reference, Actions, and Variables.</p>
+            <p>3. <strong>Agent Modeling Standardization:</strong> Established standards for minimal modeling units, including Journey, Branch, Edge, Guideline, Retriever, and Variable.</p>
+            <p>4. <strong>Runtime Governance Research:</strong> Completed research on runtime governance areas, including Runtime Snapshot, Deployment Governance, PII Masking, Handoff, and Fallback.</p>
+          </div>
+          <div class="rm-item">
+            <div class="rm-dot active"></div>
+            <div class="rm-quarter">2026 Q2</div>
+            <h4>MVP Productization and Core Workflow Launch</h4>
+            <p>1. <strong>Agent Studio MVP:</strong> Launched the foundational workspace capabilities for KnowledgeHub, Build, Test, Deploy, Monitor, and Suggestions.</p>
+            <p>2. <strong>Build-time Runtime Orchestration:</strong> Supported structured orchestration of Main Journey, Branch, Edge, Actions, and Variables.</p>
+            <p>3. <strong>White-box Test Validation:</strong> Supported Test Group, batch regression testing, Evaluate Answer, and Reference / Guideline hit analysis.</p>
+            <p>4. <strong>Deploy Runtime Foundation:</strong> Supported Published Definition, Deployment Snapshot, Web Widget Runtime, and the foundational Gateway.</p>
+          </div>
+          <div class="rm-item">
+            <div class="rm-dot active"></div>
+            <div class="rm-quarter">2026 Q3</div>
+            <h4>Runtime Observability and Optimization Loop</h4>
+            <p>1. <strong>Request-based Monitor Debugger:</strong> Supported runtime detail inspection for RequestTrace, Guideline Match, Tool Calls, Generation, Analysis, and Span Tree.</p>
+            <p>2. <strong>Runtime Explainability:</strong> Supported Runtime Assembly Explainability and white-box diagnostic capabilities.</p>
+            <p>3. <strong>Evidence-first Suggestions Optimization:</strong> Automatically generated optimization suggestions based on Conversations, Ratings, Monitor Trace, and Test Failures.</p>
+            <p>4. <strong>Validation-driven Iteration Loop:</strong> Connected the continuous optimization workflow of “Issue Discovery → Suggestion Generation → Patch Creation → Regression Validation.”</p>
+          </div>
+          <div class="rm-item">
+            <div class="rm-dot active"></div>
+            <div class="rm-quarter">2026 Q4</div>
+            <h4>Agent Operating System Platformization</h4>
+            <p>1. <strong>Unified Runtime Governance:</strong> Supported governance capabilities including Rollout, Suspend, Resume, Rollback, Audience Routing, and Channel Governance.</p>
+            <p>2. <strong>Insights Intelligence Layer:</strong> Enhanced global experience analytics capabilities across Conversations, Topic Explorer, and CX Dashboard.</p>
+            <p>3. <strong>Cross-module Continuous Optimization:</strong> Established a unified optimization flywheel across Build, Test, Monitor, Deploy, and Suggestions.</p>
+            <p>4. <strong>Multi-agent Scalability:</strong> Supported lifecycle governance, asset reuse, and cross-business scenario expansion for multiple agents.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="release-notes" id="release-notes">
+      <div class="container">
+        <div class="release-header">
+          <div class="section-label">Release Notes</div>
+          <h2 style="margin-top:16px">Product Updates by Version</h2>
+          <p>Track the latest platform capabilities, runtime improvements, and workflow upgrades shipped across iMorph releases.</p>
+        </div>
+        <div class="release-stack">
+          <article class="release-card">
+            <div class="release-version">
+              <h3>v0.6.3</h3>
+            </div>
+            <div class="release-content">
+              <p class="release-summary">Enhanced agent integration, deployment, and openness capabilities, enabling broader business automation and voice-based use cases.</p>
+              <ol class="release-list">
+                <li><strong>Tool Configuration:</strong> Build now supports HTTP tool creation and invocation, allowing agents to connect with external systems and automate business workflows.</li>
+                <li><strong>Voice Channel Deployment:</strong> Deploy now supports voice channels with automatic phone number provisioning and voice agent configuration, accelerating voice agent rollout.</li>
+                <li><strong>Chat OpenAPI:</strong> Introduced Chat OpenAPI, enabling developers to access agent conversation capabilities through standard APIs and integrate them into business systems and applications.</li>
+              </ol>
+            </div>
+          </article>
+
+          <article class="release-card">
+            <div class="release-version">
+              <h3>v0.6.2</h3>
+            </div>
+            <div class="release-content">
+              <p class="release-summary">Expanded orchestration, configuration, and evaluation capabilities to enable more sophisticated and scalable AI agent deployments.</p>
+              <ol class="release-list">
+                <li><strong>Flexible Agent Creation:</strong> Create agents from scratch or start with templates to balance flexibility and speed.</li>
+                <li><strong>Multi-Journey Support:</strong> Manage multiple workflows within a single agent, reducing maintenance effort while supporting more complex use cases.</li>
+                <li><strong>Enhanced Configuration:</strong> Support variable write-backs and advanced workflow controls for greater business flexibility and dynamic decision-making.</li>
+                <li><strong>Self-Play Evaluation:</strong> Automatically evaluate agent performance through simulated conversations, helping teams identify configuration issues and workflow risks before deployment.</li>
+              </ol>
+            </div>
+          </article>
+
+          <article class="release-card">
+            <div class="release-version">
+              <h3>v0.6.1</h3>
+            </div>
+            <div class="release-content">
+              <p class="release-summary">Enhanced agent testing, runtime performance, and platform governance to help teams identify issues faster and deliver more reliable AI experiences.</p>
+              <ol class="release-list">
+                <li><strong>Self-Play Simulation:</strong> Automatically generate conversation scripts to reduce manual testing effort and improve scenario coverage.</li>
+                <li><strong>Lite Mode:</strong> Run agents in Lite Mode to significantly reduce latency and deliver a smoother experience for voice and other real-time interactions.</li>
+                <li><strong>Built-in Counter Tool:</strong> Support complex state management and conditional logic, expanding agent capabilities in rule-driven workflows.</li>
+                <li><strong>Data Access Controls:</strong> Strengthened data isolation and security to support multi-team collaboration and enterprise governance.</li>
+              </ol>
+            </div>
+          </article>
+
+          <article class="release-card">
+            <div class="release-version">
+              <h3>Beta v0.5.0</h3>
+            </div>
+            <div class="release-content">
+              <p class="release-summary">Delivered the core capabilities required to create, test, monitor, and deploy AI agents, enabling business teams to build and validate agents faster and bring them into production with confidence.</p>
+              <ol class="release-list">
+                <li><strong>Login &amp; Registration:</strong> Established a unified account system, making it easier for users to get started with building and managing agents.</li>
+                <li><strong>Agent Creation:</strong> Automatically generate onboarding flows to reduce setup effort and accelerate time to launch.</li>
+                <li><strong>Knowledge Management:</strong> Centralize and maintain knowledge to improve response accuracy and consistency.</li>
+                <li><strong>Preview Testing:</strong> Test conversations with agents in real time and view matched rules and execution paths, making it easier to validate configurations and optimize agent performance before deployment.</li>
+                <li><strong>Batch Testing:</strong> Validate agent performance across multiple scenarios before launch, reducing production risks.</li>
+                <li><strong>Conversation Monitoring:</strong> Access detailed conversation logs to quickly identify issues and continuously optimize agent performance.</li>
+                <li><strong>Web Deployment:</strong> Publish agents to web channels with one click, accelerating business adoption and validation.</li>
+              </ol>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <p>&copy; 2026 iMorph.ai. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#features">Product</a>
+        <a href="blog.html">Blog</a>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const html = document.documentElement;
+    const roadmapNav = document.getElementById('nav');
+    const roadmapNavLinks = document.querySelector('.nav-links');
+    const roadmapMobileToggle = document.getElementById('mobile-toggle');
+    const stored = localStorage.getItem('imorph-theme');
+
+    if (stored) html.setAttribute('data-theme', stored);
+
+    document.getElementById('theme-toggle').addEventListener('click', () => {
+      const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('imorph-theme', next);
+    });
+
+    if (roadmapMobileToggle && roadmapNavLinks && roadmapNav) {
+      roadmapMobileToggle.addEventListener('click', () => {
+        roadmapNavLinks.classList.toggle('show');
+      });
+
+      roadmapNavLinks.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => roadmapNavLinks.classList.remove('show'));
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!roadmapNav.contains(e.target)) roadmapNavLinks.classList.remove('show');
+      });
+    }
+  </script>
+</body>
+</html>
