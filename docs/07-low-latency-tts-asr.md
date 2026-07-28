@@ -1,124 +1,124 @@
 ---
-title: "低时延语音 AI 的工程实践：如何把 E2E 延迟压到 1.5 秒以内"
-date: "2026-03-26"
-tags: ["技术探索"]
+title: "Engineering Low-Latency Voice AI: How to Bring E2E Latency below 1.5 Seconds"
+date: "2026-03-03"
+tags: ["Technical Exploration"]
 slug: "low-latency-tts-asr"
 ---
 
-# 低时延语音 AI 的工程实践：如何把 E2E 延迟压到 1.5 秒以内
+# Engineering Low-Latency Voice AI: How to Bring E2E Latency below 1.5 Seconds
 
-打电话是一种实时交互。人和人打电话时，一方说完话，另一方通常在 300-500ms 内开始回应。如果超过 2 秒，人们会开始怀疑线路断了。
+Phone calls are a real-time interaction. When people talk on the phone, the other person typically begins responding within 300–500 ms after the first person finishes speaking. After two seconds, people start to wonder whether the line has disconnected.
 
-这个心理窗口，是语音 AI 产品的根本工程约束。**端到端延迟（E2E Latency）必须控制在 1.5 秒以内，理想情况下在 P95 < 1.2 秒。**
+This psychological window is the fundamental engineering constraint for voice AI products. **End-to-end latency must stay below 1.5 seconds, with an ideal P95 below 1.2 seconds.**
 
-要实现这个目标，整个语音处理管道的每一个环节都需要被精心设计。
+Reaching this goal requires careful design of every stage in the voice processing pipeline.
 
-## 一、完整管道的延迟分解
+## 1. Breaking Down the Full Pipeline
 
-一次完整的 AI 语音交互，从用户说完最后一个字到 AI 开始播放回应，经过以下阶段：
-
-```
-用户说话结束
-    ↓
-VAD 静音检测（End-of-Turn Detection）    ~80ms
-    ↓
-STT 语音识别（Speech-to-Text）           ~200-250ms
-    ↓
-LLM 推理（首 Token 生成）               ~300-450ms
-    ↓
-TTS 首包合成（Text-to-Speech, TTFP）    ~80-120ms
-    ↓
-网络传输 + 缓冲                          ~80-120ms
-    ↓
-用户听到第一个音节                        总计 ~740-1,020ms
-```
-
-理想路径下，E2E 约 890ms，留有充足余量。但在实际生产环境中，网络抖动、模型冷启动、长输入、慢工具调用等因素都可能让延迟飙升到 2-3 秒以上。
-
-因此，低时延语音 AI 的工程工作，本质上是**对每个环节做最坏情况的控制**，而不只是优化平均情况。
-
-## 二、语音活动检测（VAD）：先说对，再说快
-
-VAD（Voice Activity Detection）是管道的第一个环节，负责检测用户是否已经说完。这个环节有一个有趣的矛盾：
-
-- **切太早**：用户还没说完，AI 就开始处理，导致理解不完整
-- **切太晚**：等待太久才开始处理，增加感知延迟
-
-业界主流的解法是组合策略：
-
-**能量阈值静音检测** 作为快速通道：检测到连续 300-400ms 的低能量信号即认为说话结束，触发管道启动。这处理了约 85% 的正常场景。
-
-**语义完整性检测** 作为保险：对检测到的「末尾」输入做快速语义判断——如果识别文本以疑问词开头但还没有疑问号结构，可能是截断，适当延迟处理。这减少了因 VAD 切割不当导致的理解错误。
-
-**Interruption 处理**：用户在 AI 说话时插话（打断），VAD 需要立即停止 TTS 播放并重新开始 STT → LLM 流程。这对自然对话体验至关重要，但实现上需要在 VAD 检测到声音时就能快速中断已在进行的 TTS 流。
-
-## 三、STT 选型：Deepgram Nova-3 的实测数据
-
-语音识别的关键指标有三个：首字延迟（TTFW）、词错率（WER）和多语言支持。
-
-iMorph.ai 在评估阶段对比了主流 STT 服务：
-
-| 服务 | 首字延迟 | WER（通话英语） | 多语言 | 实时流式 |
-|------|---------|----------------|--------|---------|
-| Deepgram Nova-3 | ~220ms | ~6% | 30+ 语言 | 是 |
-| OpenAI Whisper (API) | ~800ms+ | ~5% | 99 语言 | 批处理为主 |
-| Google Speech-to-Text | ~350ms | ~7% | 125 语言 | 是 |
-| AssemblyAI | ~300ms | ~7% | 17 语言 | 是 |
-
-**Deepgram Nova-3 的核心优势：**
-
-首先是流式处理架构。Deepgram 采用真正的流式 STT——不是等用户说完再转写，而是边说边生成 partial transcript。这意味着当 VAD 检测到静音时，STT 的处理工作已经完成了大半，只需要生成最终确认文本。
-
-其次是通话场景优化。Nova-3 在电话音质（8kHz, 窄带）、口语化表达、带口音英语上有专项训练，这些正是企业接线场景的主要输入类型。
-
-第三是 `endpointing` 参数。Deepgram 允许配置结束检测的灵敏度，可以在 VAD 静音检测触发时直接告知 Deepgram 强制完成转写，进一步减少等待时间。
-
-**多语言场景的特殊处理：**
-
-北美中小企业来电中，中文、西班牙语、韩语来电并不罕见。iMorph.ai 采用「运行时语言切换」机制：系统提示词保持英文，当 STT 在前两个 utterance 中检测到非英语输入时，自动切换 TTS 语言并通知 LLM 用对应语言回复，无需重启 Session。
-
-## 四、TTS 选型：流式合成与首包时延
-
-TTS 的关键指标是**首包延迟（Time to First Packet, TTFP）**——从 LLM 开始输出文本到 TTS 合成出第一段可播放音频的时间。
-
-传统 TTS API 是「全文提交→全量返回」模式，必须等 LLM 完成整句生成才能开始合成。这至少增加 500-800ms 的不必要等待。
-
-**流式 TTS** 改变了这个模式：当 LLM 流式生成 token 时，TTS 从第一个句子片段就开始合成，实现 LLM 输出与 TTS 合成的并行处理。
-
-iMorph.ai 选用 **Cartesia Sonic** 作为主力 TTS 引擎：
-
-- TTFP ~80-100ms（业界领先水平）
-- 真实自然感：避免明显的 TTS 机械腔调
-- 情感控制：可以在平静/关切/热情等音调之间切换
-- 流式输出：兼容 LLM 流式输入
-
-**关键工程细节：文本分块策略**
-
-TTS 需要以句子或短语为单位接收文本，太短（单词级）会导致合成音不自然，太长（段落级）会增加等待。iMorph.ai 采用标点符号作为分块信号：每当 LLM 输出`,`、`。`、`？`等标点时，立即把已累积的片段推送给 TTS，启动这一段的并行合成。
+A complete AI voice interaction, from the moment the user finishes the last word to the moment AI starts playing its response, passes through the following stages:
 
 ```
-LLM stream: "您好，" → 推送 TTS ①
-             "感谢您今天的来电，" → 推送 TTS ②
-             "我是 AI 助理 Aya，" → 推送 TTS ③
-             "请问有什么可以帮您？" → 推送 TTS ④
+User finishes speaking
+    ↓
+VAD silence detection (End-of-Turn Detection)    ~80ms
+    ↓
+STT speech recognition (Speech-to-Text)          ~200-250ms
+    ↓
+LLM inference (first token generation)           ~300-450ms
+    ↓
+TTS first-packet synthesis (Text-to-Speech, TTFP) ~80-120ms
+    ↓
+Network transmission + buffering                 ~80-120ms
+    ↓
+User hears the first syllable                     Total ~740-1,020ms
 ```
 
-TTS ① 在 LLM 还在生成 ②③④ 时已经合成完毕，用户听到的「你好」和后续句子几乎无缝衔接。
+On the ideal path, E2E latency is around 890 ms, leaving a healthy margin. In production, however, network jitter, model cold starts, long inputs, and slow tool calls can push latency above two or three seconds.
 
-## 五、电话接入层：Telnyx 与 WebSocket 实时流
+The engineering work behind low-latency voice AI is therefore fundamentally about **controlling the worst case at every stage**, not simply optimizing the average case.
 
-语音 AI 的电话接入层需要处理 PSTN（公共电话网络）的编解码差异。电话网络默认使用 G.711 μ-law（8kHz, 64kbps），而现代 STT/TTS 引擎偏好 16kHz 或 24kHz 的 PCM 音频。
+## 2. Voice Activity Detection: Get the Turn Boundary Right Before Making It Fast
 
-iMorph.ai 使用 **Telnyx** 作为电话接入层，原因包括：
+VAD (Voice Activity Detection) is the first stage in the pipeline. It detects whether the user has finished speaking. This stage has an interesting tension:
 
-- 支持 WebSocket 媒体流（双向实时音频传输）
-- 提供 `TeXML`（类 TwiML）的拨打/接听控制
-- 通话转接和三方通话原生支持（Handoff 场景必需）
-- 北美覆盖优质，延迟稳定
+- **Cut too early:** The user has not finished, so AI begins processing incomplete input.
+- **Cut too late:** The system waits too long before processing, increasing perceived latency.
 
-关键配置：启用 `g711_ulaw_8000` 编码输入 + 在 Telnyx → STT 路径上做实时重采样（8kHz → 16kHz），这是减少音质损失的最佳实践。
+The common industry solution is a combined strategy:
 
-**WebSocket 双向流设计：**
+**Energy-threshold silence detection** acts as the fast path. When it detects 300–400 ms of continuous low-energy audio, it treats the turn as complete and starts the pipeline. This handles around 85% of normal scenarios.
+
+**Semantic completeness detection** acts as a safety net. It performs a quick semantic check on the detected end of the input. If the recognized text starts with a question word but does not yet form a complete question, the system may be looking at a truncated turn and should delay processing slightly. This reduces comprehension errors caused by incorrect VAD cuts.
+
+**Interruption handling:** When the user interrupts while AI is speaking, VAD must immediately stop TTS playback and restart the STT → LLM flow. This is essential for a natural conversational experience, but it requires the system to interrupt an active TTS stream as soon as VAD detects speech.
+
+## 3. Choosing STT: Measured Data from Deepgram Nova-3
+
+The three key metrics for speech recognition are time to first word (TTFW), word error rate (WER), and multilingual support.
+
+During evaluation, iMorph.ai compared several leading STT services:
+
+| Service | Time to first word | WER, conversational English | Languages | Real-time streaming |
+|---------|--------------------|-----------------------------|-----------|---------------------|
+| Deepgram Nova-3 | ~220ms | ~6% | 30+ | Yes |
+| OpenAI Whisper (API) | ~800ms+ | ~5% | 99 | Primarily batch |
+| Google Speech-to-Text | ~350ms | ~7% | 125 | Yes |
+| AssemblyAI | ~300ms | ~7% | 17 | Yes |
+
+**The core advantages of Deepgram Nova-3:**
+
+The first is its streaming architecture. Deepgram uses true streaming STT: it generates a partial transcript while the user is speaking instead of waiting for the user to finish. By the time VAD detects silence, most STT processing is already complete and only the final transcript confirmation remains.
+
+The second is optimization for phone conversations. Nova-3 is specifically trained for telephone audio at 8 kHz narrowband quality, conversational language, and accented English. These are the primary input types in enterprise receptionist scenarios.
+
+The third is the `endpointing` parameter. Deepgram allows the sensitivity of end-of-turn detection to be configured. When VAD silence detection fires, the system can tell Deepgram to force transcription completion, reducing wait time further.
+
+**Special handling for multilingual scenarios:**
+
+Chinese, Spanish, and Korean calls are not unusual among North American small and midsize businesses. iMorph.ai uses a runtime language-switching mechanism: the system prompt remains in English, and when STT detects non-English input in the first two utterances, it automatically switches the TTS language and tells the LLM to respond in the corresponding language without restarting the session.
+
+## 4. Choosing TTS: Streaming Synthesis and First-Packet Latency
+
+The key TTS metric is **time to first packet (TTFP)**: the time from when the LLM starts outputting text to when TTS synthesizes the first playable audio segment.
+
+Traditional TTS APIs use a "submit the full text → return the full result" model. They must wait for the LLM to generate a complete sentence before synthesis can begin. This adds at least 500–800 ms of unnecessary waiting.
+
+**Streaming TTS** changes this model. As the LLM generates tokens, TTS starts synthesizing from the first sentence fragment, allowing LLM output and TTS synthesis to run in parallel.
+
+iMorph.ai uses **Cartesia Sonic** as its primary TTS engine:
+
+- TTFP of ~80–100 ms, among the best in the industry.
+- Natural delivery that avoids an obvious mechanical TTS sound.
+- Emotional control that can switch between calm, concerned, and enthusiastic tones.
+- Streaming output compatible with streaming LLM input.
+
+**Key engineering detail: text chunking strategy**
+
+TTS needs to receive text in sentence or short-phrase units. Chunks that are too short, such as individual words, sound unnatural; chunks that are too long, such as full paragraphs, increase wait time. iMorph.ai uses punctuation as a chunking signal. Whenever the LLM outputs punctuation such as `,`, `.`, or `?`, the accumulated fragment is immediately pushed to TTS for parallel synthesis.
+
+```
+LLM stream: "Hello," → Push to TTS ①
+             "Thank you for calling today," → Push to TTS ②
+             "I'm AI assistant Aya," → Push to TTS ③
+             "How can I help you?" → Push to TTS ④
+```
+
+TTS ① finishes synthesizing while the LLM is still generating ②, ③, and ④, so the user's first words and the following sentences connect with almost no gap.
+
+## 5. Telephony Layer: Telnyx and Real-Time WebSocket Streaming
+
+The telephony layer for voice AI must handle codec differences in the PSTN (Public Switched Telephone Network). Phone networks typically use G.711 μ-law at 8 kHz and 64 kbps, while modern STT/TTS engines prefer 16 kHz or 24 kHz PCM audio.
+
+iMorph.ai uses **Telnyx** as its telephony layer because it provides:
+
+- WebSocket media streams for bidirectional real-time audio transmission.
+- `TeXML`, a TwiML-like call control interface.
+- Native call transfer and three-way calling, which are required for handoff scenarios.
+- Strong North American coverage and stable latency.
+
+The key configuration is to enable `g711_ulaw_8000` encoded input and perform real-time resampling from 8 kHz to 16 kHz on the Telnyx → STT path. This is the best practice for minimizing audio quality loss.
+
+**Bidirectional WebSocket stream design:**
 
 ```
 Telnyx ←→ WebSocket Server ←→ STT (Deepgram)
@@ -126,20 +126,22 @@ Telnyx ←→ WebSocket Server ←→ STT (Deepgram)
                               ←→ TTS (Cartesia)
 ```
 
-WebSocket Server 是整个管道的协调核心：接收来自 Telnyx 的实时音频流，转发给 Deepgram；接收 Deepgram 的文本，推送给 LLM；接收 LLM 的 token 流，分块推送给 Cartesia；接收 Cartesia 的音频包，回传给 Telnyx 播放给用户。
+The WebSocket Server coordinates the entire pipeline: it receives the real-time audio stream from Telnyx and forwards it to Deepgram; sends Deepgram's text to the LLM; chunks the LLM token stream and sends it to Cartesia; then receives Cartesia's audio packets and returns them to Telnyx for playback.
 
-整个过程中，没有任何中间步骤写入磁盘，全程在内存和网络流中处理。
+Nothing is written to disk in the process. The entire pipeline runs in memory and across network streams.
 
-## 六、Silence Padding 与感知优化
+## 6. Silence Padding and Perceived-Latency Optimization
 
-工程上的「低时延」和用户感知到的「流畅自然」之间还有一段距离。几个感知层面的优化同样重要：
+There is still a gap between engineering "low latency" and an experience that feels smooth and natural. Several perception-level optimizations are equally important:
 
-**思考提示音（Thinking Indicator）：** 当 LLM 推理时间预计超过 1 秒时（如工具调用场景），插入一段自然的停顿语气词（「好的，让我查一下...」）。这不缩短实际延迟，但大幅降低用户的等待焦虑。
+**Thinking indicators:** When LLM inference is expected to take more than one second, such as during a tool call, insert a natural acknowledgment such as "Okay, let me check that for you..." This does not reduce actual latency, but it substantially reduces the user's anxiety while waiting.
 
-**话语完整性优先于速度：** 当 TTS 正在播放一句话时，即使 VAD 检测到轻微噪音，也不立即中断。只有当检测到明确的人声（能量 + 语音特征）才触发打断逻辑，避免因背景噪音导致的意外中断。
+**Prioritize speech completeness over speed:** When TTS is playing a sentence, do not interrupt immediately for slight noise detected by VAD. Trigger interruption only when clear human speech is detected through energy and voice features. This avoids accidental interruptions caused by background noise.
 
-**静音填充（Silence Padding）：** 在每个 TTS 片段播放后插入 50-100ms 的静音，给用户自然的回应空间，避免 AI 说完后立即又开始侦听产生的「反应过快感」。
+**Silence padding:** Insert 50–100 ms of silence after each TTS segment to give the user natural space to respond and avoid the feeling that AI starts listening again too quickly after finishing a sentence.
 
 ---
 
-低时延语音 AI 的工程不是单点优化，而是整个管道的系统性设计。每一个环节的 50ms 改进都有意义，但真正的关键在于：**让 P95 延迟可控，而不只是平均值好看。** 在真实生产环境中，一个 P95 为 3 秒的系统，用户感受到的不是「平均 1 秒」，而是「有时候让我等了 3 秒」——这才是语音 AI 产品的体验上限。
+Engineering low-latency voice AI is not a single-point optimization. It is a systems design problem across the entire pipeline. Every 50 ms improvement at every stage matters, but the real key is **making P95 latency predictable, not merely making the average look good.** In production, a system with a three-second P95 does not feel like a "one-second average." It feels like "sometimes it makes me wait three seconds." That is what sets the experience ceiling for a voice AI product.
+
+---

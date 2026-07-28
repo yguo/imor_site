@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — iMorph</title>
+  <meta name="description" content="Contact the iMorph team about enterprise conversational AI.">
+  <link rel="icon" type="image/png" href="asssets/iMorph_logo.png">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #121218;
+      --surface: #191923;
+      --surface-2: #22222D;
+      --border: #343441;
+      --border-light: #404050;
+      --text: #EEEEF0;
+      --text-sec: #9A9AAD;
+      --text-muted: #6D6D7F;
+      --purple: #8B5CF6;
+      --purple-light: #A78BFA;
+      --purple-glow: rgba(139, 92, 246, 0.10);
+      --green: #34D399;
+      --red: #F87171;
+      --font: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --container: 1100px;
+    }
+
+    [data-theme="light"] {
+      --bg: #FAFAFA;
+      --surface: #FFFFFF;
+      --surface-2: #F4F4F5;
+      --border: #E4E4E7;
+      --border-light: #D4D4D8;
+      --text: #18181B;
+      --text-sec: #52525B;
+      --text-muted: #A1A1AA;
+      --purple: #7C3AED;
+      --purple-light: #6D28D9;
+      --purple-glow: rgba(124, 58, 237, 0.06);
+      --green: #059669;
+      --red: #DC2626;
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      min-width: 320px;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      font-weight: 300;
+      font-size: 0.8125rem;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.35s ease, color 0.35s ease;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea { font: inherit; }
+    .container { max-width: var(--container); margin: 0 auto; padding: 0 32px; }
+
+    nav {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      z-index: 10;
+      border-bottom: 1px solid transparent;
+      background: rgba(18, 18, 24, 0.72);
+      backdrop-filter: blur(16px);
+    }
+
+    [data-theme="light"] nav { background: rgba(250, 250, 250, 0.82); }
+
+    .nav-inner {
+      max-width: var(--container);
+      height: 56px;
+      margin: 0 auto;
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo { display: flex; align-items: center; gap: 8px; font-size: 0.9375rem; font-weight: 500; }
+    .logo-mark { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
+    .logo-mark img { width: 100%; height: 100%; object-fit: contain; }
+    .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+    .nav-links a { font-size: 0.75rem; color: var(--text-sec); transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+    .nav-cta { display: flex; align-items: center; gap: 12px; }
+
+    .theme-toggle, .mobile-toggle {
+      border: 0;
+      background: transparent;
+      color: var(--text-sec);
+      cursor: pointer;
+    }
+
+    .theme-toggle {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .theme-toggle svg { width: 14px; height: 14px; }
+    .theme-toggle .icon-sun { display: none; }
+    [data-theme="light"] .theme-toggle .icon-sun { display: block; }
+    [data-theme="light"] .theme-toggle .icon-moon { display: none; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 10px 24px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-weight: 400;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+
+    .btn-primary { background: var(--purple); color: #fff; }
+    .btn-primary:hover { background: #7C3AED; }
+    .btn-ghost { border-color: var(--border); color: var(--text-sec); }
+    .btn-ghost:hover { border-color: var(--border-light); color: var(--text); }
+
+    .mobile-toggle { display: none; padding: 4px; }
+
+    main { position: relative; overflow: hidden; padding: 148px 0 120px; }
+    main::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 20%, transparent 72%);
+      pointer-events: none;
+    }
+
+    [data-theme="light"] main::before { background-image: linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px); }
+    .contact-shell { position: relative; z-index: 1; }
+    .contact-header { max-width: 600px; margin: 0 auto 56px; text-align: center; }
+    .label { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border: 1px solid rgba(139, 92, 246, 0.15); border-radius: 100px; color: var(--purple-light); background: var(--purple-glow); font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    .label::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--purple); }
+    h1, h2, h3 { font-weight: 300; line-height: 1.2; letter-spacing: -0.02em; }
+    h1 { margin-top: 20px; font-size: clamp(2rem, 5vw, 3.25rem); }
+    .contact-header p { max-width: 500px; margin: 20px auto 0; color: var(--text-sec); font-size: 0.875rem; line-height: 1.8; }
+
+    .contact-grid { display: grid; grid-template-columns: minmax(0, 460px); justify-content: center; width: 100%; max-width: 460px; margin: 0 auto; }
+
+    .contact-form { padding: 32px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+    .form-group + .form-group { margin-top: 24px; }
+    .form-group label { display: block; margin-bottom: 8px; color: var(--text); font-size: 0.75rem; font-weight: 400; }
+    .required { color: var(--purple-light); }
+    .form-control { width: 100%; height: 36px; border: 1px solid var(--border); border-radius: 8px; outline: none; background: var(--surface-2); color: var(--text); padding: 8px 14px; font-size: 0.8125rem; transition: border-color 0.2s, box-shadow 0.2s; }
+    .form-control::placeholder { color: var(--text-muted); }
+    .form-control:focus { border-color: var(--purple); box-shadow: 0 0 0 3px var(--purple-glow); }
+    textarea.form-control { height: auto; min-height: 152px; resize: vertical; line-height: 1.7; }
+    .form-actions { margin-top: 28px; }
+    .form-actions .btn { width: 100%; }
+    .form-status { min-height: 1.4em; margin-top: 16px; color: var(--green); font-size: 0.75rem; }
+    .form-status.error { color: var(--red); }
+
+
+    @media (max-width: 900px) {
+      .nav-links { gap: 18px; }
+      .contact-grid { max-width: 100%; }
+    }
+
+    @media (max-width: 700px) {
+      .container, .nav-inner { padding-right: 20px; padding-left: 20px; }
+      .nav-links { display: none; position: absolute; top: 56px; right: 20px; left: 20px; padding: 20px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); box-shadow: 0 12px 28px rgba(0,0,0,0.16); }
+      .nav-links.show { display: grid; gap: 12px; }
+      .nav-links.show a { display: block; padding: 2px 0; }
+      .mobile-toggle { display: block; }
+      .nav-cta .btn { display: none; }
+      main { padding: 120px 0 80px; }
+      .contact-header { margin-bottom: 40px; }
+      .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+      .contact-form { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-mark"><img src="asssets/iMorph_logo.png" alt="iMorph"></div>
+        iMorph
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html#features">Product</a></li>
+        <li><a href="index.html#advantages">Why iMorph</a></li>
+        <li><a href="index.html#use-cases">Use Cases</a></li>
+        <li><a href="index.html#faq">FAQ</a></li>
+        <li><a href="roadmap.html">Roadmap</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="contact.html" class="active" aria-current="page">Contact</a></li>
+      </ul>
+      <div class="nav-cta">
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle theme">
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke-linecap="round"/></svg>
+        </button>
+        <a href="contact.html" class="btn btn-primary">Get Started</a>
+      </div>
+      <button class="mobile-toggle" type="button" aria-label="Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <main>
+    <div class="container contact-shell">
+      <header class="contact-header">
+        <div class="label">Contact</div>
+        <h1>Let's talk about your next conversation</h1>
+        <p>Tell us what you are building, where the workflow is today, and what you want to improve. The iMorph team will follow up with the right context.</p>
+      </header>
+
+      <div class="contact-grid">
+        <form class="contact-form" id="contact-form">
+          <div class="form-group">
+            <label for="full-name">Full Name <span class="required" aria-hidden="true">*</span></label>
+            <input class="form-control" id="full-name" name="fullName" type="text" placeholder="Your full name" autocomplete="name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email <span class="required" aria-hidden="true">*</span></label>
+            <input class="form-control" id="email" name="email" type="email" placeholder="you@company.com" autocomplete="email" required>
+          </div>
+          <div class="form-group">
+            <label for="message">Message <span class="required" aria-hidden="true">*</span></label>
+            <textarea class="form-control" id="message" name="message" maxlength="200" placeholder="Tell us a little about your workflow or question" required></textarea>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Submit</button>
+          </div>
+          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const html = document.documentElement;
+    const toggle = document.getElementById('theme-toggle');
+    const stored = localStorage.getItem('imorph-theme');
+    if (stored) html.setAttribute('data-theme', stored);
+    toggle.addEventListener('click', () => {
+      const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('imorph-theme', next);
+    });
+
+    const mobileToggle = document.querySelector('.mobile-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    mobileToggle.addEventListener('click', () => navLinks.classList.toggle('show'));
+    navLinks.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => navLinks.classList.remove('show')));
+
+    const form = document.getElementById('contact-form');
+    const status = document.getElementById('form-status');
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      status.classList.remove('error');
+      status.textContent = 'Thanks. Your message is ready for the iMorph team.';
+      form.reset();
+    });
+  </script>
+</body>
+</html>

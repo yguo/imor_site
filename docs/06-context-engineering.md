@@ -1,89 +1,89 @@
 ---
-title: "符合会话的上下文工程：为什么静态 System Prompt 无法撑起企业级 Agent"
-date: "2026-03-26"
-tags: ["技术探索"]
+title: "Conversation-Aware Context Engineering: Why a Static System Prompt Cannot Support an Enterprise Agent"
+date: "2026-03-17"
+tags: ["Technical Exploration"]
 slug: "context-engineering"
 ---
 
-# 符合会话的上下文工程：为什么静态 System Prompt 无法撑起企业级 Agent
+# Conversation-Aware Context Engineering: Why a Static System Prompt Cannot Support an Enterprise Agent
 
-构建企业 AI Agent 的第一道门槛，不是选哪个模型，而是解决一个更基本的问题：**怎么在对话进行中，给模型提供它此刻最需要的信息，而不是把所有信息都塞进去。**
+The first challenge in building an enterprise AI agent is not choosing a model. It is solving a more fundamental problem: **how to give the model the information it needs at that moment in the conversation, instead of putting every piece of information into the prompt.**
 
-这个问题被称为上下文工程（Context Engineering）。它是决定企业 Agent 稳不稳定、好不好调、能不能规模化的核心工程挑战。
+This problem is known as context engineering. It is the core engineering challenge that determines whether an enterprise agent is stable, easy to tune, and capable of scaling.
 
-## 一、静态 System Prompt 的失效边界
+## 1. Where a Static System Prompt Breaks Down
 
-大多数 AI Agent 的工作方式是这样的：在项目开始时，工程师或运营把所有规则、所有知识、所有流程说明、所有工具描述一次性写入 System Prompt。然后每一轮对话，模型都带着这份巨大的提示词来回答问题。
+Most AI agents work like this: at the start of a project, engineers or operations teams put every rule, piece of knowledge, workflow description, and tool definition into a System Prompt. The model then carries this huge prompt into every turn of every conversation.
 
-这个方式在 demo 阶段可能运转良好。但随着业务复杂度上升，它会逐渐失控：
+This approach may work well during the demo stage. But as business complexity increases, it gradually becomes unstable:
 
-**问题一：上下文污染。** 每添加一条新规则，System Prompt 就变长一点。当一个企业的 Agent 需要处理 50+ 种业务场景、100+ 条合规规则时，System Prompt 的长度往往超过 8,000-12,000 个 token。此时模型面对的是一片规则森林——它必须在每一轮对话里自己判断哪些部分相关。
+**Problem 1: Context pollution.** Every new rule makes the System Prompt longer. When an enterprise agent needs to handle more than 50 business scenarios and more than 100 compliance rules, the System Prompt often exceeds 8,000–12,000 tokens. The model is facing a forest of rules and must decide for itself which parts are relevant on every turn.
 
-**问题二：注意力稀释。** 大量研究（包括 Anthropic 的内部实验）表明，当一个关键指令被 3,000+ token 的无关内容包围时，模型遵守它的概率会显著下降。这不是模型的缺陷，而是注意力机制的物理特性。
+**Problem 2: Attention dilution.** A large body of research, including internal experiments by Anthropic, suggests that when a critical instruction is surrounded by more than 3,000 tokens of irrelevant content, the probability that the model follows it drops significantly. This is not a defect in a particular model; it is a physical property of attention mechanisms.
 
-**问题三：调优困难。** 当 Agent 出现问题——比如某类来电被错误处理——工程师不知道根因是哪条规则没被遵守，还是规则本身写错了，还是知识库内容有误。所有东西混在一起，调试几乎是在黑盒里猜谜。
+**Problem 3: Difficult optimization.** When an agent fails, for example by mishandling a type of incoming call, engineers cannot easily tell whether the root cause is a rule that was not followed, a rule that was written incorrectly, or an error in the knowledge base. Everything is mixed together, so debugging becomes guesswork inside a black box.
 
-## 二、五层上下文架构
+## 2. A Five-Layer Context Architecture
 
-符合会话特性的上下文工程，核心思路是把 System Prompt 从一个静态文档，变成一个**分层、可动态组装的结构体**。
+The core idea of conversation-aware context engineering is to turn the System Prompt from a static document into a **layered structure that can be assembled dynamically**.
 
-iMorph.ai 采用五层上下文架构：
+iMorph.ai uses a five-layer context architecture:
 
 ```
-Layer 1 — Persona & Identity（人设与角色）
-  ↓ 始终存在，全程不变
-Layer 2 — Constraints & Compliance（约束与合规）
-  ↓ 全程有效，按行业加载
-Layer 3 — Business Logic（业务逻辑）
-  ↓ 按当前 Journey 阶段动态切换
-Layer 4 — Conversation State（对话状态）
-  ↓ 每轮更新：已收集信息、当前意图、历史摘要
-Layer 5 — Tool Definitions（工具定义）
-  ↓ 只加载当前阶段可用工具
+Layer 1 — Persona & Identity
+  ↓ Always present and unchanged throughout the conversation
+Layer 2 — Constraints & Compliance
+  ↓ Valid throughout the conversation and loaded by industry
+Layer 3 — Business Logic
+  ↓ Dynamically switches according to the current Journey stage
+Layer 4 — Conversation State
+  ↓ Updated every turn: collected information, current intent, history summary
+Layer 5 — Tool Definitions
+  ↓ Loads only the tools available at the current stage
 ```
 
-这五层的关键设计原则：**越靠近底层的内容越动态，越靠近顶层的内容越稳定。**
+The key design principle is: **the closer a layer is to the bottom, the more dynamic it is; the closer it is to the top, the more stable it is.**
 
-Persona 层是固定的：它定义了这个 Agent 是谁、说话风格是什么、边界在哪里。这一层变化意味着 Agent 身份发生了根本改变，通常不在运行时修改。
+The Persona layer is fixed. It defines who the agent is, how it speaks, and where its boundaries are. A change to this layer means a fundamental change to the agent's identity, so it is usually not modified at runtime.
 
-Compliance 层是行业级固定的：一个牙科 Agent 永远需要 HIPAA 约束，这些约束在整个对话中都有效，但不同行业加载不同的合规规则集。
+The Compliance layer is fixed at the industry level. A dental agent always needs HIPAA constraints. These constraints remain valid throughout the conversation, while different industries load different compliance rule sets.
 
-Business Logic 层是会话流动的：随着对话从 Opening 进入 Coverage 阶段，进入 Discovery 阶段，再进入 Handoff 阶段，每个阶段的具体指引、关键目标、成功信号都在动态替换。这一层每次只装载当前阶段的 500-800 token，而不是所有阶段的 3,000+ token。
+The Business Logic layer flows with the conversation. As the conversation moves from Opening to Coverage, then Discovery, and finally Handoff, the specific guidance, key objectives, and success signals for each stage are dynamically replaced. Each turn loads only 500–800 tokens for the current stage instead of 3,000+ tokens for every stage.
 
-Conversation State 层是每轮更新的：已确认的用户信息（名字、诉求、保险情况）、检测到的意图信号、情绪状态、异议内容——这些都在每轮对话结束时被结构化地写入，供下一轮读取。
+The Conversation State layer is updated every turn. Confirmed user information such as name, request, and insurance status; detected intent signals; emotional state; and objections are structured and written at the end of each turn for the next turn to read.
 
-Tool 层是按阶段限定的：在 Opening 阶段，模型只需要 `load_lead_profile` 工具；在 Discovery 阶段，才需要 `record_follow_up_plan`；在 Handoff 阶段，才需要 `record_handoff_packet`。把所有工具定义同时暴露给模型，会增加错误调用的概率。
+The Tool layer is limited by stage. During Opening, the model only needs the `load_lead_profile` tool. During Discovery, it needs `record_follow_up_plan`. During Handoff, it needs `record_handoff_packet`. Exposing every tool definition at the same time increases the likelihood of incorrect tool calls.
 
-## 三、VoiceContextManager：三层记忆机制
+## 3. VoiceContextManager: A Three-Layer Memory Mechanism
 
-语音场景对上下文工程提出了额外的挑战：**对话历史不能无限累积。**
+Voice scenarios create an additional challenge for context engineering: **conversation history cannot accumulate forever.**
 
-一段 20 分钟的电话对话，如果逐条保留所有轮次，可能累积到 15,000+ token。这会导致延迟上升（模型需要处理更多输入）、成本上涨，并且大量早期内容实际上对当前轮次已经不再相关。
+A 20-minute phone conversation can grow to more than 15,000 tokens if every turn is retained in full. This increases latency because the model has more input to process, raises cost, and includes a large amount of early content that is no longer relevant to the current turn.
 
-iMorph.ai 的 VoiceContextManager 采用三层记忆结构：
+iMorph.ai's VoiceContextManager uses a three-layer memory structure:
 
 ```python
 class VoiceContextManager:
-    working_memory: list[Turn]    # 最近 6 轮完整记录（~1,200 token）
-    structured_state: dict        # 关键信息结构化提取（~400 token）
-    running_summary: str          # 更早历史的压缩摘要（~300 token）
+    working_memory: list[Turn]    # The last 6 turns in full (~1,200 tokens)
+    structured_state: dict        # Structured extraction of key information (~400 tokens)
+    running_summary: str          # Compressed summary of earlier history (~300 tokens)
 ```
 
-**Working Memory** 保持最近 6 轮的完整对话，确保模型在当前问答中有足够的近期上下文来保持连贯性。
+**Working Memory** keeps the six most recent turns in full, giving the model enough recent context to maintain coherence in the current exchange.
 
-**Structured State** 是从对话中持续提取的关键信息字典：患者姓名、预约类型、保险情况、紧急程度等。这些信息不需要通过翻阅历史对话来重新推断，而是以结构化方式直接注入当前上下文。这让模型可以直接引用「您之前提到的是 PPO 计划」，而不是需要从原始对话里再次推断。
+**Structured State** is a dictionary of key information continuously extracted from the conversation: the patient's name, appointment type, insurance status, urgency, and more. The model does not need to reread the conversation to infer these details. They are injected directly into the current context in structured form. This lets the model say, "You mentioned earlier that you have a PPO plan," without inferring it again from the raw conversation.
 
-**Running Summary** 是对超出 Working Memory 的历史对话做的滚动压缩。当第 7 轮对话发生时，第 1 轮的原始对话从 Working Memory 里移出，但其关键内容已被提炼到 Summary 层，确保重要信息不丢失，但 token 成本大幅降低。
+**Running Summary** is a rolling compression of conversation history beyond Working Memory. When turn 7 occurs, the raw content of turn 1 moves out of Working Memory, but its key information has already been distilled into the Summary layer. Important information is preserved while token cost is greatly reduced.
 
-这三层结构保持整个会话上下文在约 2,000 token 以内，与无限累积相比，既降低延迟，又保持了对话的完整连贯性。
+Together, these three layers keep the entire conversation context within roughly 2,000 tokens. Compared with unlimited accumulation, this both reduces latency and preserves conversational continuity.
 
-## 四、Guideline 的条件激活机制
+## 4. Conditional Guideline Activation
 
-上下文工程最精细的部分，是 Guideline（行为规则）的条件激活。
+The most precise part of context engineering is the conditional activation of Guidelines, or behavior rules.
 
-一个完整的企业 Agent 可能有 100+ 条 Guideline，涵盖话术要求、合规边界、异议处理、分支跳转等。但在任意一轮对话中，真正相关的 Guideline 往往只有 5-10 条。
+A complete enterprise agent may have more than 100 Guidelines covering talk-track requirements, compliance boundaries, objection handling, and branch transitions. But on any individual turn, only 5–10 Guidelines are usually relevant.
 
-iMorph.ai 的 Guideline 系统为每条规则定义激活条件：
+iMorph.ai's Guideline system defines activation conditions for every rule:
 
 ```yaml
 guideline:
@@ -92,33 +92,35 @@ guideline:
     journey_stage: ["appointment_lookup", "reschedule", "billing"]
     trigger: "user_requests_phi_access"
   content: |
-    在提供任何预约详情、账单信息或健康记录之前，
-    必须通过以下步骤完成身份验证：
-    1. 请求姓名 + 出生日期
-    2. 验证通过后才可继续
-    3. 如验证失败，提供人工转接选项
+    Before providing any appointment details, billing information, or health records,
+    identity verification must be completed through the following steps:
+    1. Request the person's name and date of birth
+    2. Continue only after verification succeeds
+    3. Offer a human handoff if verification fails
 ```
 
-这条规则只在两种条件同时满足时才被装入上下文：①当前 Journey 处于需要查询 PHI 的阶段；②用户的请求被识别为涉及个人健康信息访问。其他轮次，这条规则完全不存在于模型的上下文中。
+This rule is loaded into context only when both conditions are met: (1) the current Journey is at a stage that requires PHI lookup, and (2) the user's request is identified as involving access to personal health information. In every other turn, the rule does not exist in the model's context at all.
 
-这种条件激活机制带来两个关键收益：**降低 token 占用**（每轮只加载相关规则），**提升规则遵守率**（模型面对的规则集更聚焦，注意力不被稀释）。
+This conditional activation mechanism delivers two key benefits: **lower token usage** because each turn loads only relevant rules, and **higher rule adherence** because the model faces a more focused rule set without diluted attention.
 
-## 五、可观测性：让上下文装配过程可见
+## 5. Observability: Making Context Assembly Visible
 
-上下文工程的另一个维度是可观测性：当 Agent 表现不符合预期时，能看到它当时的上下文是什么。
+Another dimension of context engineering is observability: when an agent behaves unexpectedly, we need to see what its context was at that moment.
 
-iMorph.ai 的 Monitor 模块记录每一轮对话的完整上下文快照：
+iMorph.ai's Monitor module records a complete context snapshot for every conversation turn:
 
-- 本轮激活了哪些 Guideline（及其激活原因）
-- 哪个 Journey 阶段处于活跃状态
-- Structured State 的当前内容
-- 调用了哪个工具，输入输出是什么
-- 最终生成的 System Prompt 的精确 token 分布
+- Which Guidelines were activated in this turn and why.
+- Which Journey stage was active.
+- The current contents of Structured State.
+- Which tool was called and what its inputs and outputs were.
+- The exact token distribution of the final System Prompt.
 
-当 Agent 在某轮对话中做出了不当的回复，工程师不需要猜测原因，而是可以直接查看「这一轮模型看到的是什么上下文」，快速定位是规则没被激活、规则本身有误，还是知识库缺少相关内容。
+When an agent gives an inappropriate response, engineers do not need to guess. They can directly inspect what context the model saw on that turn and quickly determine whether a rule was not activated, the rule itself was wrong, or the knowledge base was missing relevant content.
 
-这种可观测性将调优工作从「试错」变成「诊断」——这是企业级 Agent 在生产环境中能够可持续运维的基础。
+This observability turns optimization from trial and error into diagnosis. It is the foundation for operating an enterprise agent sustainably in production.
 
 ---
 
-上下文工程不是 AI 产品的可选优化项，而是企业级 Agent 能否稳定运行的底层基础设施。当一个 Agent 需要服务真实客户、处理真实业务、承担真实后果时，它面对的每一轮对话，都需要一个干净、聚焦、精确的上下文——而不是一个装满所有可能信息的巨大黑盒。
+Context engineering is not an optional optimization for an AI product. It is the infrastructure underneath a stable enterprise agent. When an agent serves real customers, handles real business processes, and carries real consequences, every turn needs a clean, focused, precise context—not a giant black box filled with every piece of information that might be relevant.
+
+---

@@ -395,11 +395,11 @@
       <ul class="nav-links">
         <li><a href="index.html#features">Product</a></li>
         <li><a href="index.html#advantages">Why iMorph</a></li>
-        <li><a href="index.html#industries">Industries</a></li>
+        <li><a href="index.html#use-cases">Use Cases</a></li>
+        <li><a href="index.html#faq">FAQ</a></li>
         <li><a href="roadmap.html">Roadmap</a></li>
         <li><a href="blog.html" class="active">Blog</a></li>
-        <li><a href="index.html#faq">FAQ</a></li>
-        <li><a href="index.html#cta-section">Contact</a></li>
+        <li><a href="contact.html">Contact</a></li>
       </ul>
       <div class="nav-right">
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
@@ -447,8 +447,6 @@
       <div class="footer-links">
         <a href="index.html">Home</a>
         <a href="index.html#features">Product</a>
-        <a href="#">Privacy</a>
-        <a href="#">Terms</a>
       </div>
     </div>
   </footer>
@@ -457,65 +455,65 @@
 const ARTICLES = [
   {
     slug: "product-business-model",
-    title: "iMorph.ai 的产品业态：从 Prompt Playground 到企业会话操作系统",
-    date: "2026-03-26",
-    tags: ["商业价值", "产品构想"],
+    title: "iMorph.ai's Product Model: From Prompt Playground to Enterprise Conversation Operating System",
+    date: "2026-05-26",
+    tags: ["Business Value", "Product Thinking"],
     file: "docs/01-product-business-model.md"
   },
   {
     slug: "innovation-directions",
-    title: "iMorph.ai 的创新方向：五个让企业智能体真正可用的关键突破",
-    date: "2026-03-26",
-    tags: ["产品构想", "技术探索"],
+    title: "iMorph.ai's Innovation Directions: Five Breakthroughs That Make Enterprise Agents Truly Useful",
+    date: "2026-05-12",
+    tags: ["Product Thinking", "Technical Exploration"],
     file: "docs/02-innovation-directions.md"
   },
   {
     slug: "value-proposition",
-    title: "iMorph.ai 的价值主张：企业会话不是自由聊天，而是可约束的系统行为",
-    date: "2026-03-26",
-    tags: ["商业价值", "产品构想"],
+    title: "iMorph.ai's Value Proposition: Enterprise Conversations Are Governed System Behavior, Not Free-Form Chat",
+    date: "2026-04-28",
+    tags: ["Business Value", "Product Thinking"],
     file: "docs/03-value-proposition.md"
   },
   {
     slug: "industry-segmentation",
-    title: "iMorph.ai 的行业落地图：从保险外呼到牙医诊所，AI 接管的不只是通话",
-    date: "2026-03-26",
-    tags: ["商业价值"],
+    title: "iMorph.ai's Industry Playbook: From Insurance Outbound to Dental Clinics, AI Takes Over More Than Calls",
+    date: "2026-04-14",
+    tags: ["Business Value"],
     file: "docs/04-industry-segmentation.md"
   },
   {
     slug: "pricing-gtm",
-    title: "定价策略与GTM：如何让 AI 接线员在 15 分钟内上线并在第一个月证明价值",
-    date: "2026-03-26",
-    tags: ["商业价值"],
+    title: "Pricing and GTM: How to Launch an AI Receptionist in 15 Minutes and Prove Value in the First Month",
+    date: "2026-03-31",
+    tags: ["Business Value"],
     file: "docs/05-pricing-gtm.md"
   },
   {
     slug: "context-engineering",
-    title: "符合会话的上下文工程：为什么静态 System Prompt 无法撑起企业级 Agent",
-    date: "2026-03-26",
-    tags: ["技术探索"],
+    title: "Conversation-Aware Context Engineering: Why a Static System Prompt Cannot Support an Enterprise Agent",
+    date: "2026-03-17",
+    tags: ["Technical Exploration"],
     file: "docs/06-context-engineering.md"
   },
   {
     slug: "low-latency-tts-asr",
-    title: "低时延语音 AI 的工程实践：如何把 E2E 延迟压到 1.5 秒以内",
-    date: "2026-03-26",
-    tags: ["技术探索"],
+    title: "Engineering Low-Latency Voice AI: How to Bring E2E Latency below 1.5 Seconds",
+    date: "2026-03-03",
+    tags: ["Technical Exploration"],
     file: "docs/07-low-latency-tts-asr.md"
   },
   {
     slug: "self-play-simulation",
-    title: "Self Play：用模拟对话替代真实用户的上线前验证方法",
-    date: "2026-03-26",
-    tags: ["技术探索"],
+    title: "Self-Play: A Pre-Launch Validation Method That Replaces Real Users with Simulated Conversations",
+    date: "2026-02-17",
+    tags: ["Technical Exploration"],
     file: "docs/08-self-play-simulation.md"
   },
   {
     slug: "cold-start-knowledge",
-    title: "冷启动知识工程：如何让一个新 Agent 在没有历史数据的情况下快速可用",
-    date: "2026-03-26",
-    tags: ["产品构想"],
+    title: "Cold-Start Knowledge Engineering: How to Make a New Agent Useful Quickly without Historical Data",
+    date: "2026-02-03",
+    tags: ["Product Thinking"],
     file: "docs/09-cold-start-knowledge.md"
   }
 ];
@@ -551,15 +549,15 @@ let activeTag = null;
 function getExcerpt(file) {
   const idx = ARTICLES.findIndex(a => a.file === file);
   const excerpts = [
-    "企业不需要一个更聪明的聊天机器人，而需要一套可以围绕会话建立流程、规则、知识、动作和监控闭环的产品基础设施。",
-    "iMorph.ai 的创新方向不是追求更强的语言模型，而是专注于五个被绝大多数 AI 产品忽略的关键问题。",
-    "让企业能够像治理业务流程一样治理会话智能体。这句话背后是一个与大多数 AI 产品截然不同的假设。",
-    "不同行业有完全不同的合规要求、业务流程和对话复杂度。先从高结构化、高 ROI 的场景切入。",
-    "企业最贵的隐形成本，是漏接的电话。定价策略围绕这个核心认知设计。",
-    "怎么在对话进行中，给模型提供它此刻最需要的信息，而不是把所有信息都塞进去。",
-    "端到端延迟必须控制在 1.5 秒以内。整个语音处理管道的每一个环节都需要被精心设计。",
-    "让系统在沙盒环境中自行生成大规模的模拟对话，在真实用户出现之前完成系统化验证。",
-    "新客户的 Agent 没有历史数据，系统凭什么运行得好？这是冷启动问题的核心挑战。"
+    "Enterprises do not need a smarter chatbot. They need product infrastructure that creates a closed loop around conversations, connecting workflows, rules, knowledge, actions, and monitoring.",
+    "iMorph.ai focuses on five critical problems that most AI products overlook, rather than simply pursuing a more powerful language model.",
+    "iMorph.ai enables enterprises to govern conversational agents the way they govern business processes, treating conversations as structured, observable, and optimizable systems.",
+    "Different industries require different compliance models, workflows, and conversation strategies. iMorph.ai starts with highly structured, high-ROI scenarios and expands from there.",
+    "iMorph.ai's pricing is built around one core insight: the most expensive hidden cost for an enterprise is the calls it misses.",
+    "Context engineering determines whether an enterprise agent is stable, easy to tune, and capable of scaling by giving the model only the information it needs at each turn.",
+    "Every stage of the voice processing pipeline must be carefully designed to keep end-to-end latency below 1.5 seconds and ideally below 1.2 seconds at P95.",
+    "Self-Play lets the system generate large-scale simulated conversations in a sandbox and validate an agent systematically before real users arrive.",
+    "A new customer's agent has no historical data. iMorph.ai addresses this cold-start challenge with reusable industry knowledge, SOP compilation, and immediate Self-Play validation."
   ];
   return excerpts[idx] || "";
 }
@@ -587,9 +585,9 @@ const ILLUSTRATIONS = {
       <line x1="153" y1="56" x2="122" y2="38"/>
     </g>
     <g font-family="var(--font)" font-size="6" fill="var(--text-muted)" text-anchor="middle">
-      <text x="160" y="20"><tspan fill="var(--purple-light)">动态上下文</tspan></text>
-      <text x="208" y="36">Evidence建议</text><text x="205" y="92">Self Play</text>
-      <text x="115" y="92">SOP编译</text><text x="113" y="36">多渠道部署</text>
+      <text x="160" y="20"><tspan fill="var(--purple-light)">Dynamic Context</tspan></text>
+      <text x="208" y="36">Evidence Suggestions</text><text x="205" y="92">Self-Play</text>
+      <text x="115" y="92">SOP Compilation</text><text x="113" y="36">Multi-Channel</text>
     </g>
     <g fill="var(--purple)" opacity="0.3">
       <circle cx="160" cy="22" r="2.5"/><circle cx="202" cy="38" r="2.5"/><circle cx="199" cy="88" r="2.5"/>
@@ -600,8 +598,8 @@ const ILLUSTRATIONS = {
     <path d="M160 18 L190 32 V62 C190 82 160 96 160 96 C160 96 130 82 130 62 V32 Z" stroke="var(--purple)" stroke-width="0.8" fill="var(--purple)" fill-opacity="0.04"/>
     <path d="M150 56 L157 63 L172 48" stroke="var(--purple-light)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
     <g font-family="var(--font)" font-size="5.5" fill="var(--text-muted)">
-      <text x="82" y="40">严格遵循</text><text x="82" y="60">一致性</text><text x="82" y="80">可循证</text>
-      <text x="214" y="40">高置信度</text><text x="214" y="60">自动化</text>
+      <text x="82" y="40">Strict Adherence</text><text x="82" y="60">Consistency</text><text x="82" y="80">Evidence-Backed</text>
+      <text x="214" y="40">High Confidence</text><text x="214" y="60">Automation</text>
     </g>
     <g stroke="var(--purple)" stroke-width="0.4" opacity="0.2" stroke-dasharray="2 2">
       <line x1="108" y1="38" x2="130" y2="44"/><line x1="104" y1="58" x2="130" y2="58"/>
@@ -615,14 +613,14 @@ const ILLUSTRATIONS = {
       <rect x="194" y="44" width="34" height="48" rx="4" stroke="var(--purple)" stroke-width="0.7" fill="var(--purple)" fill-opacity="0.04"/>
     </g>
     <g font-family="var(--font)" font-size="6" text-anchor="middle">
-      <text x="109" y="36" fill="var(--purple-light)">保险</text>
-      <text x="160" y="24" fill="var(--purple-light)">牙科</text>
-      <text x="211" y="40" fill="var(--purple-light)">家政</text>
+      <text x="109" y="36" fill="var(--purple-light)">Insurance</text>
+      <text x="160" y="24" fill="var(--purple-light)">Dental</text>
+      <text x="211" y="40" fill="var(--purple-light)">Home Services</text>
     </g>
     <g font-family="var(--font)" font-size="5" text-anchor="middle" fill="var(--text-muted)">
-      <text x="109" y="60">外呼筛选</text><text x="109" y="72">多语言</text><text x="109" y="84">异议处理</text>
-      <text x="160" y="46">预约调度</text><text x="160" y="58">HIPAA</text><text x="160" y="70">急症分流</text><text x="160" y="82">PMS集成</text>
-      <text x="211" y="62">紧急派单</text><text x="211" y="74">报价引擎</text><text x="211" y="86">ETA查询</text>
+      <text x="109" y="60">Qualification</text><text x="109" y="72">Multilingual</text><text x="109" y="84">Objections</text>
+      <text x="160" y="46">Scheduling</text><text x="160" y="58">HIPAA</text><text x="160" y="70">Triage</text><text x="160" y="82">PMS API</text>
+      <text x="211" y="62">Dispatch</text><text x="211" y="74">Quoting</text><text x="211" y="86">ETA</text>
     </g></svg>`,
 
   "pricing-gtm": `<svg viewBox="0 0 320 120" fill="none">
@@ -637,7 +635,7 @@ const ILLUSTRATIONS = {
       <text x="182" y="52">Pro</text><text x="224" y="40">Enterprise</text>
     </g>
     <g font-family="var(--font)" font-size="5" text-anchor="middle" fill="var(--text-muted)" opacity="0.6">
-      <text x="98" y="64">$79</text><text x="140" y="44">$229</text><text x="182" y="32">$499</text><text x="224" y="20">定制</text>
+      <text x="98" y="64">$79</text><text x="140" y="44">$229</text><text x="182" y="32">$499</text><text x="224" y="20">Custom</text>
     </g>
     <line x1="74" y1="96" x2="248" y2="96" stroke="var(--border-light)" stroke-width="0.5"/></svg>`,
 
@@ -652,12 +650,12 @@ const ILLUSTRATIONS = {
     <g font-family="var(--font)" font-size="5.5" text-anchor="middle">
       <text x="160" y="21" fill="var(--text-muted)">Persona &amp; Identity</text>
       <text x="160" y="41" fill="var(--text-muted)">Constraints</text>
-      <text x="160" y="61" fill="var(--purple-light)">Business Logic ← 动态</text>
+    <text x="160" y="61" fill="var(--purple-light)">Business Logic — Dynamic</text>
       <text x="160" y="81" fill="var(--text-muted)">Conversation State</text>
       <text x="160" y="101" fill="var(--text-muted)">Tools</text>
     </g>
     <path d="M210 58 L224 58 L224 36 L210 36" stroke="var(--purple)" stroke-width="0.5" fill="none" opacity="0.3" stroke-dasharray="2 2"/>
-    <text x="228" y="50" font-family="var(--font)" font-size="5" fill="var(--text-muted)" opacity="0.6">按 Journey&#10;动态切换</text></svg>`,
+    <text x="228" y="50" font-family="var(--font)" font-size="5" fill="var(--text-muted)" opacity="0.6">Switches by Journey&#10;stage</text></svg>`,
 
   "low-latency-tts-asr": `<svg viewBox="0 0 320 120" fill="none">
     <g opacity="0.7">
@@ -685,7 +683,7 @@ const ILLUSTRATIONS = {
     <rect x="104" y="24" width="52" height="26" rx="6" stroke="var(--purple)" stroke-width="0.7" fill="var(--purple)" fill-opacity="0.06"/>
     <text x="130" y="41" font-family="var(--font)" font-size="6" text-anchor="middle" fill="var(--purple-light)">Agent</text>
     <rect x="164" y="66" width="52" height="26" rx="6" stroke="var(--purple)" stroke-width="0.7" fill="var(--purple)" fill-opacity="0.06"/>
-    <text x="190" y="83" font-family="var(--font)" font-size="6" text-anchor="middle" fill="var(--text-muted)">模拟客户</text>
+    <text x="190" y="83" font-family="var(--font)" font-size="6" text-anchor="middle" fill="var(--text-muted)">Simulated User</text>
     <path d="M156 40 C178 40 178 40 178 66" stroke="var(--purple)" stroke-width="0.6" fill="none" opacity="0.3"/>
     <path d="M164 80 C142 80 142 80 142 50" stroke="var(--purple)" stroke-width="0.6" fill="none" opacity="0.3"/>
     <g font-family="var(--font)" font-size="5" fill="var(--text-muted)" opacity="0.6">
@@ -696,19 +694,19 @@ const ILLUSTRATIONS = {
 
   "cold-start-knowledge": `<svg viewBox="0 0 320 120" fill="none">
     <rect x="92" y="18" width="56" height="76" rx="5" stroke="var(--purple)" stroke-width="0.7" fill="var(--purple)" fill-opacity="0.04"/>
-    <text x="120" y="14" font-family="var(--font)" font-size="5.5" text-anchor="middle" fill="var(--text-muted)">行业模板</text>
+    <text x="120" y="14" font-family="var(--font)" font-size="5.5" text-anchor="middle" fill="var(--text-muted)">Industry Template</text>
     <g font-family="var(--font)" font-size="5" fill="var(--text-muted)" opacity="0.7">
       <text x="100" y="36">Guidelines</text><text x="100" y="48">Journey</text><text x="100" y="60">Glossary</text>
     </g>
     <g opacity="0.3"><rect x="98" y="68" width="44" height="5" rx="2" fill="var(--purple)"/><rect x="98" y="76" width="32" height="5" rx="2" fill="var(--purple)"/><rect x="98" y="84" width="38" height="5" rx="2" fill="var(--purple)"/></g>
     <path d="M152 58 L172 58" stroke="var(--purple)" stroke-width="0.6" opacity="0.4"/>
-    <text x="162" y="52" font-family="var(--font)" font-size="5" fill="var(--text-muted)" opacity="0.5" text-anchor="middle">+客户</text>
+    <text x="162" y="52" font-family="var(--font)" font-size="5" fill="var(--text-muted)" opacity="0.5" text-anchor="middle">+ Customer</text>
     <rect x="178" y="26" width="50" height="60" rx="5" stroke="var(--purple-light)" stroke-width="0.9" fill="var(--purple)" fill-opacity="0.07"/>
-    <text x="203" y="20" font-family="var(--font)" font-size="5.5" text-anchor="middle" fill="var(--purple-light)">可用 Agent</text>
+    <text x="203" y="20" font-family="var(--font)" font-size="5.5" text-anchor="middle" fill="var(--purple-light)">Ready Agent</text>
     <g font-family="var(--font)" font-size="5" fill="var(--text-muted)" opacity="0.7">
-      <text x="186" y="44">诊所名称 ✓</text><text x="186" y="56">营业时间 ✓</text><text x="186" y="68">服务项目 ✓</text><text x="186" y="80">保险计划 ✓</text>
+      <text x="186" y="44">Practice name ✓</text><text x="186" y="56">Opening hours ✓</text><text x="186" y="68">Services ✓</text><text x="186" y="80">Insurance plans ✓</text>
     </g>
-    <text x="203" y="100" font-family="var(--font)" font-size="5.5" text-anchor="middle" fill="var(--green)" opacity="0.6">&lt;24h 上线</text></svg>`
+    <text x="203" y="100" font-family="var(--font)" font-size="5.5" text-anchor="middle" fill="var(--green)" opacity="0.6">Live in &lt;24h</text></svg>`
 };
 
 function renderIndex() {
@@ -755,7 +753,7 @@ async function showArticle(slug) {
 
   let md = '';
   try {
-    const res = await fetch(article.file);
+    const res = await fetch(`${article.file}?v=20260728`);
     md = await res.text();
   } catch (e) {
     document.getElementById('article-content').innerHTML = `<p>Unable to load article. Please serve this site via an HTTP server (e.g. <code>npx serve</code>).</p>`;

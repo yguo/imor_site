@@ -255,8 +255,15 @@
       letter-spacing: -0.01em;
       color: var(--text);
     }
+    .release-date {
+      margin-top: 6px;
+      color: var(--text-sec);
+      font-size: 0.6875rem;
+      line-height: 1.4;
+    }
     .release-summary {
       font-size: 0.75rem;
+      font-weight: 500;
       color: var(--text-sec);
       margin-bottom: 12px;
     }
@@ -334,11 +341,11 @@
       <ul class="nav-links">
         <li><a href="index.html#features">Product</a></li>
         <li><a href="index.html#advantages">Why iMorph</a></li>
-        <li><a href="index.html#industries">Industries</a></li>
+        <li><a href="index.html#use-cases">Use Cases</a></li>
+        <li><a href="index.html#faq">FAQ</a></li>
         <li><a href="roadmap.html" class="active">Roadmap</a></li>
         <li><a href="blog.html">Blog</a></li>
-        <li><a href="index.html#faq">FAQ</a></li>
-        <li><a href="index.html#cta-section">Contact</a></li>
+        <li><a href="contact.html">Contact</a></li>
       </ul>
       <div class="nav-right">
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
@@ -412,7 +419,25 @@
         <div class="release-stack">
           <article class="release-card">
             <div class="release-version">
+              <h3>v0.7.3</h3>
+              <p class="release-date">2026/7/21</p>
+            </div>
+            <div class="release-content">
+              <p class="release-summary">Enhanced knowledge processing, voice capabilities, and platform performance to improve agent quality, usability, and responsiveness.</p>
+              <ol class="release-list">
+                <li><strong>KnowledgeHub Enhancements:</strong> Added Xiaohongshu OCR and proprietary OCR support to improve image and document parsing.</li>
+                <li><strong>KnowledgeHub Web Sync:</strong> Integrated crawler capabilities and FireCrawl for more efficient web content synchronization.</li>
+                <li><strong>Voice Enhancements:</strong> Added voice preview to help users evaluate and select voice options more easily.</li>
+                <li><strong>Self-Play Enhancements:</strong> Support multilingual test script generation to improve testing across global use cases.</li>
+                <li><strong>Performance Improvements:</strong> Optimized page loading speed and overall user experience for a faster, smoother workflow.</li>
+              </ol>
+            </div>
+          </article>
+
+          <article class="release-card">
+            <div class="release-version">
               <h3>v0.7.2</h3>
+              <p class="release-date">2026/7/16</p>
             </div>
             <div class="release-content">
               <p class="release-summary">Enhanced operational insights, agent configuration, and runtime experience to improve usability, real-time performance, and operational efficiency.</p>
@@ -428,6 +453,7 @@
           <article class="release-card">
             <div class="release-version">
               <h3>v0.7.1</h3>
+              <p class="release-date">2026/7/7</p>
             </div>
             <div class="release-content">
               <p class="release-summary">Enhanced agent orchestration, knowledge management, and continuous optimization to build more intelligent and maintainable enterprise AI agents.</p>
@@ -443,6 +469,7 @@
           <article class="release-card">
             <div class="release-version">
               <h3>v0.6.4</h3>
+              <p class="release-date">2026/6/30</p>
             </div>
             <div class="release-content">
               <p class="release-summary">Enhanced agent configuration, testing, and knowledge management to improve development efficiency, quality, and business adaptability.</p>
@@ -459,6 +486,7 @@
           <article class="release-card">
             <div class="release-version">
               <h3>v0.6.3</h3>
+              <p class="release-date">2026/6/23</p>
             </div>
             <div class="release-content">
               <p class="release-summary">Enhanced agent integration, deployment, and openness capabilities, enabling broader business automation and voice-based use cases.</p>
@@ -473,6 +501,7 @@
           <article class="release-card">
             <div class="release-version">
               <h3>v0.6.2</h3>
+              <p class="release-date">2026/6/16</p>
             </div>
             <div class="release-content">
               <p class="release-summary">Expanded orchestration, configuration, and evaluation capabilities to enable more sophisticated and scalable AI agent deployments.</p>
@@ -488,6 +517,7 @@
           <article class="release-card">
             <div class="release-version">
               <h3>v0.6.1</h3>
+              <p class="release-date">2026/6/9</p>
             </div>
             <div class="release-content">
               <p class="release-summary">Enhanced agent testing, runtime performance, and platform governance to help teams identify issues faster and deliver more reliable AI experiences.</p>
@@ -503,6 +533,7 @@
           <article class="release-card">
             <div class="release-version">
               <h3>Beta v0.5.0</h3>
+              <p class="release-date">2026/5/31</p>
             </div>
             <div class="release-content">
               <p class="release-summary">Delivered the core capabilities required to create, test, monitor, and deploy AI agents, enabling business teams to build and validate agents faster and bring them into production with confidence.</p>
@@ -529,8 +560,6 @@
         <a href="index.html">Home</a>
         <a href="index.html#features">Product</a>
         <a href="blog.html">Blog</a>
-        <a href="#">Privacy</a>
-        <a href="#">Terms</a>
       </div>
     </div>
   </footer>

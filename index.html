@@ -88,7 +88,6 @@
 
     [data-theme="light"] .fw-node-icon svg { stroke: var(--purple); }
     [data-theme="light"] .adv-icon svg { stroke: var(--purple); }
-    [data-theme="light"] .ind-icon svg { stroke: var(--purple); }
 
     [data-theme="light"] .adv-icon {
       background: rgba(124, 58, 237, 0.05);
@@ -142,10 +141,6 @@
 
     [data-theme="light"] .cta-section::before {
       background: radial-gradient(ellipse, rgba(124, 58, 237, 0.04) 0%, transparent 65%);
-    }
-
-    [data-theme="light"] .ind-card::before {
-      background: linear-gradient(90deg, transparent, var(--purple), transparent);
     }
 
     [data-theme="light"] .flywheel-ring::after { border-top-color: var(--purple); }
@@ -1122,81 +1117,197 @@
 
     .adv-card p { font-size: 0.75rem; color: var(--text-muted); line-height: 1.7; }
 
-    /* ── INDUSTRIES ── */
-    .industries { padding: var(--section-py) 0; }
+    /* ── USE CASES ── */
+    .use-cases {
+      padding: var(--section-py) 0;
+      background: var(--bg);
+      color: var(--text);
+    }
 
-    .industries-header {
+    .use-cases-header {
       text-align: center;
-      max-width: 500px;
+      max-width: 560px;
       margin: 0 auto 56px;
     }
 
-    .industries-header p {
-      margin-top: 16px;
-      color: var(--text-sec);
+    .use-cases-header p { margin-top: 16px; color: var(--text-sec); }
+
+    .use-cases-header .label {
+      color: var(--purple-light);
+      background: rgba(139, 92, 246, 0.08);
     }
 
-    .ind-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+    .use-cases-header h2 { color: var(--text); }
+
+    .use-case-slider {
+      max-width: 960px;
+      margin: 0 auto;
     }
 
-    .ind-card {
-      padding: 36px 28px;
+    .use-case-stage {
+      position: relative;
+      min-height: 430px;
+      padding: 56px 104px 48px;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 12px;
-      transition: all 0.3s ease;
-      position: relative;
       overflow: hidden;
     }
 
-    .ind-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--purple), transparent);
-      opacity: 0;
-      transition: opacity 0.3s;
+    .use-case-stage::before {
+      display: none;
     }
 
-    .ind-card:hover::before { opacity: 1; }
-    .ind-card:hover { border-color: var(--border-light); }
+    .use-case-slide {
+      display: none;
+      position: relative;
+      z-index: 1;
+      grid-template-columns: minmax(0, 760px);
+      justify-content: center;
+      align-items: center;
+      min-height: 332px;
+      text-align: center;
+    }
 
-    .ind-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      background: var(--surface-2);
-      border: 1px solid var(--border);
+    .use-case-slide.active {
+      display: grid;
+      animation: use-case-in 0.45s ease both;
+    }
+
+    @keyframes use-case-in {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .use-case-slide h3 {
+      margin-bottom: 10px;
+      font-size: clamp(1.55rem, 3vw, 2.25rem);
+      font-weight: 400;
+      line-height: 1.25;
+      color: var(--text);
+    }
+
+    .use-case-kicker {
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 18px;
+      padding: 4px 9px;
+      border: 1px solid rgba(139, 92, 246, 0.18);
+      border-radius: 4px;
+      background: rgba(139, 92, 246, 0.08);
+      color: var(--purple-light);
+      font-size: 0.625rem;
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: 0.02em;
+    }
+
+    .use-case-slide p {
+      max-width: 700px;
+      margin: 0 auto;
+      color: var(--text-sec);
+      font-size: 0.8125rem;
+      line-height: 1.8;
+    }
+
+    .use-case-slide p + p { margin-top: 18px; }
+
+    .use-case-controls {
       display: flex;
       align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
+      justify-content: space-between;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 22px;
+      left: 22px;
+      z-index: 2;
+      pointer-events: none;
     }
 
-    .ind-icon svg { width: 20px; height: 20px; stroke: var(--purple-light); fill: none; stroke-width: 1.5; }
-
-    .ind-card h3 { font-size: 1rem; margin-bottom: 12px; }
-
-    .ind-card p { color: var(--text-sec); font-size: 0.75rem; line-height: 1.7; margin-bottom: 16px; }
-
-    .ind-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
+    .use-case-arrow {
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: var(--surface);
+      color: var(--purple-light);
+      font-family: var(--font);
+      font-size: 1.25rem;
+      line-height: 1;
+      cursor: pointer;
+      pointer-events: auto;
+      transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
     }
 
-    .ind-tag {
-      padding: 4px 10px;
+    .use-case-arrow:hover,
+    .use-case-arrow:focus-visible {
+      border-color: var(--border-light);
       background: var(--surface-2);
-      border-radius: 4px;
-      font-size: 0.5625rem;
+      color: var(--purple-light);
+    }
+
+    .use-case-tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      max-width: 960px;
+      margin: 0 auto 20px;
+      align-items: end;
+    }
+
+    .use-case-tab {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 66px;
+      padding: 0 8px 12px;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      background: none;
       color: var(--text-muted);
+      font-family: var(--font);
+      font-size: 0.6875rem;
+      line-height: 1.4;
+      text-align: center;
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+
+    .use-case-tab-icon {
+      width: 22px;
+      height: 22px;
+      margin-bottom: 8px;
+      color: currentColor;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.35;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .use-case-tab:hover,
+    .use-case-tab:focus-visible,
+    .use-case-tab.active { color: var(--text); }
+
+    .use-case-progress {
+      position: absolute;
+      right: 0;
+      bottom: -1px;
+      left: 0;
+      height: 1px;
+      background: var(--purple);
+      transform: scaleX(0);
+      transform-origin: left;
+    }
+
+    .use-case-tab.active .use-case-progress { animation: use-case-progress 4s linear forwards; }
+
+    @keyframes use-case-progress {
+      to { transform: scaleX(1); }
     }
 
     /* ── ROADMAP ── */
@@ -1394,6 +1505,8 @@
       gap: 20px;
     }
 
+    .blog-grid .blog-card:nth-child(n + 7) { display: none; }
+
     .blog-card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -1579,7 +1692,7 @@
 
     .footer-grid {
       display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      grid-template-columns: 1.5fr 1fr 1fr;
       gap: 48px;
       margin-bottom: 48px;
     }
@@ -1664,7 +1777,7 @@
       .feature-block.reverse .feature-text { order: 1; }
       .feature-block.reverse .feature-mockup { order: 2; }
       .adv-grid { grid-template-columns: repeat(2, 1fr); }
-      .ind-grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
+      .use-case-stage { padding: 56px 72px 40px; }
       .release-card { grid-template-columns: 1fr; gap: 18px; }
       .release-version { padding-left: 16px; }
       .blog-grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
@@ -1718,6 +1831,12 @@
       .hero-cta { flex-direction: column; align-items: center; }
       .cta-buttons { flex-direction: column; align-items: center; }
       .release-card { padding: 22px; }
+      .use-case-stage { min-height: 0; padding: 48px 48px 32px; }
+      .use-case-slide { min-height: 0; }
+      .use-case-controls { right: 12px; left: 12px; }
+      .use-case-tabs { gap: 10px; margin-bottom: 16px; }
+      .use-case-tab { min-height: 62px; padding-right: 2px; padding-left: 2px; font-size: 0.5625rem; }
+      .use-case-tab-icon { width: 20px; height: 20px; margin-bottom: 6px; }
     }
   </style>
 </head>
@@ -1735,18 +1854,18 @@
       <ul class="nav-links">
         <li><a href="#features">Product</a></li>
         <li><a href="#advantages">Why iMorph</a></li>
-        <li><a href="#industries">Industries</a></li>
+        <li><a href="#use-cases">Use Cases</a></li>
+        <li><a href="#faq">FAQ</a></li>
         <li><a href="roadmap.html">Roadmap</a></li>
         <li><a href="blog.html">Blog</a></li>
-        <li><a href="#faq">FAQ</a></li>
-        <li><a href="#cta-section">Contact</a></li>
+        <li><a href="contact.html">Contact</a></li>
       </ul>
       <div class="nav-cta">
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
           <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke-linecap="round"/></svg>
         </button>
-        <a href="#cta-section" class="btn btn-primary">Get Started</a>
+        <a href="https://imorph-test.salessavvy.ai" class="btn btn-primary">Get Started</a>
       </div>
       <button class="mobile-toggle" aria-label="Menu">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
@@ -1762,7 +1881,7 @@
         <h1>Build Conversational Agents <span>Businesses Trust</span></h1>
         <p class="hero-desc">A lightweight, all-in-one platform for building, testing, deploying, and continuously optimizing enterprise-grade conversational AI — from cold start to production in minutes.</p>
         <div class="hero-cta">
-          <a href="#cta-section" class="btn btn-primary">Get Started Free</a>
+          <a href="https://imorph-test.salessavvy.ai" class="btn btn-primary">Get Started Free</a>
           <a href="#flywheel" class="btn btn-ghost">See How It Works</a>
         </div>
       </div>
@@ -2158,52 +2277,69 @@
     </div>
   </section>
 
-  <!-- ────── INDUSTRIES ────── -->
-  <section class="industries" id="industries">
+  <!-- ────── USE CASES ────── -->
+  <section class="use-cases" id="use-cases">
     <div class="container">
-      <div class="industries-header reveal">
-        <div class="label">Industries</div>
-        <h2 style="margin-top:16px">Built for Regulated, High-Stakes Industries</h2>
-        <p>Trusted by over 1,000 enterprises across Japan, Europe, North America, and Southeast Asia in industries where conversation quality directly impacts revenue and compliance.</p>
+      <div class="use-cases-header reveal">
+        <div class="label">Use Cases</div>
+        <h2 style="margin-top:16px">See How Conversations Move Business Forward</h2>
+        <p>Explore the real-world workflows where iMorph helps teams engage leads, guide decisions, and turn every conversation into measurable progress.</p>
       </div>
-      <div class="ind-grid">
-        <div class="ind-card reveal">
-          <div class="ind-icon">
-            <svg viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5.25-3.5 10-8 12-4.5-2-8-6.75-8-12V6l8-4z" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <h3>Insurance</h3>
-          <p>Outbound qualification, policy explanation, renewal follow-ups, and compliance-aware conversations at scale. Handle objections with empathy and precision.</p>
-          <div class="ind-tags">
-            <span class="ind-tag">Outbound Qualification</span>
-            <span class="ind-tag">Policy Explanation</span>
-            <span class="ind-tag">Follow-Up</span>
-            <span class="ind-tag">Compliance</span>
-          </div>
+      <div class="use-case-slider reveal" data-use-case-slider>
+        <div class="use-case-tabs" role="tablist" aria-label="Use cases">
+          <button class="use-case-tab active" type="button" role="tab" aria-selected="true" data-use-case-tab="0">
+            <svg class="use-case-tab-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5M8.5 11h5M11 8.5v5"/></svg>
+            Consumer Finance
+            <span class="use-case-progress"></span>
+          </button>
+          <button class="use-case-tab" type="button" role="tab" aria-selected="false" data-use-case-tab="1">
+            <svg class="use-case-tab-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M7.5 3.5v3M16.5 3.5v3M3.5 9h17M8 13h3M13 13h3M8 16.5h3"/></svg>
+            Insurance
+            <span class="use-case-progress"></span>
+          </button>
+          <button class="use-case-tab" type="button" role="tab" aria-selected="false" data-use-case-tab="2">
+            <svg class="use-case-tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6.5h16M4 12h16M4 17.5h10"/><circle cx="18" cy="17.5" r="2.5"/></svg>
+            Financial Services
+            <span class="use-case-progress"></span>
+          </button>
+          <button class="use-case-tab" type="button" role="tab" aria-selected="false" data-use-case-tab="3">
+            <svg class="use-case-tab-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M8 9h8M8 13h5M8 17h3"/></svg>
+            Banking
+            <span class="use-case-progress"></span>
+          </button>
         </div>
-        <div class="ind-card reveal reveal-d1">
-          <div class="ind-icon">
-            <svg viewBox="0 0 24 24"><path d="M2 17l5-5 4 4 5.5-5.5L22 16" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 7v5h-5" stroke-linecap="round" stroke-linejoin="round"/><rect x="2" y="3" width="20" height="18" rx="2" stroke-linecap="round"/></svg>
-          </div>
-          <h3>Financial Services</h3>
-          <p>Pre-screening, product recommendation, KYC verification, and appointment scheduling. Regulatory compliance built into every turn of the conversation.</p>
-          <div class="ind-tags">
-            <span class="ind-tag">Pre-Screening</span>
-            <span class="ind-tag">Product Advisory</span>
-            <span class="ind-tag">KYC</span>
-            <span class="ind-tag">Scheduling</span>
-          </div>
-        </div>
-        <div class="ind-card reveal reveal-d2">
-          <div class="ind-icon">
-            <svg viewBox="0 0 24 24"><path d="M5 17h14M7 17l1-9h8l1 9" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 8V6a3 3 0 016 0v2" stroke-linecap="round"/><circle cx="8" cy="17" r="2"/><circle cx="16" cy="17" r="2"/></svg>
-          </div>
-          <h3>Automotive & EV</h3>
-          <p>Test drive invitations, sales qualification, financing pre-approval, service scheduling, and multi-language support for global OEM operations.</p>
-          <div class="ind-tags">
-            <span class="ind-tag">Test Drives</span>
-            <span class="ind-tag">Sales Qualification</span>
-            <span class="ind-tag">Financing</span>
-            <span class="ind-tag">Service</span>
+        <div class="use-case-stage" aria-live="polite">
+          <article class="use-case-slide active" data-use-case-slide>
+            <div>
+              <h3>Resolving Routine Customer Questions with Consistent Service Policies</h3>
+              <div class="use-case-kicker">Consumer Finance | Customer Support</div>
+              <p>A consumer finance company uses iMorph to handle recurring customer service requests. The agent follows approved service policies and product knowledge, guides customers through supported service steps, and hands on cases requiring human judgment from customer service representatives with the available conversation context. Within the currently measured scope, the agent resolves 70% of inbound customer questions without human assistance.</p>
+            </div>
+          </article>
+          <article class="use-case-slide" data-use-case-slide>
+            <div>
+              <h3>Expanding Reach while Concentrating Human Time on High-Intent Prospects</h3>
+              <div class="use-case-kicker">Insurance | Outbound Sales</div>
+              <p>A Japanese insurer is using iMorph to expand outbound reach without scaling manual dialing at the same rate, while reserving human sales time for higher-intent conversations. The agent follows jointly approved scripts, explains approved product information, handles common objections, and identifies prospects for human follow-up. Refusal, do-not-call, complaint, and out-of-scope conditions remain hard boundaries. The business case models 6-8x greater list reach per operator and 30%+ improvement potential in human follow-up conversion.</p>
+            </div>
+          </article>
+          <article class="use-case-slide" data-use-case-slide>
+            <div>
+              <h3>Scaling Consistent Outreach while Protecting Customers and Human Judgment</h3>
+              <div class="use-case-kicker">Financial Services | Delinquency Outreach</div>
+              <p>A financial services team uses iMorph to reduce repetitive manual outreach, apply approved communication policies consistently, and create structured next steps for overdue accounts. Following required identity checks, the agent explains approved repayment paths, captures customer intent, schedules follow-up, and escalates disputes, hardship, vulnerability, or other cases requiring human judgment. Session records provide evidence for review. Quantified collection outcomes should be added only after legal, compliance, and data validation.</p>
+            </div>
+          </article>
+          <article class="use-case-slide" data-use-case-slide>
+            <div>
+              <h3>Improving First-Contact Resolution across Multilingual Voice Support</h3>
+              <div class="use-case-kicker">Banking | Inbound Voice Support</div>
+              <p>A Japan-based bank is building an inbound voice agent to resolve more FAQ, branch-information, and other consultation requests at first contact, reduce repetitive agent workload, and provide a more consistent experience for Japanese and foreign-language customers. iMorph connects Japanese ASR/TTS, grounded retrieval, long-question decomposition, response boundaries, and human handoff in one traceable flow. The project tracks 80%+ first-contact resolution, 95%+ accuracy on answerable questions, and &lt;0.05% complaints as stated business metrics.</p>
+            </div>
+          </article>
+          <div class="use-case-controls">
+            <button class="use-case-arrow" type="button" data-use-case-prev aria-label="Previous use case">&#8249;</button>
+            <button class="use-case-arrow" type="button" data-use-case-next aria-label="Next use case">&#8250;</button>
           </div>
         </div>
       </div>
@@ -2246,9 +2382,9 @@
             </svg>
           </div>
           <div class="blog-body">
-            <div class="blog-meta"><span class="blog-tag">商业价值</span><span class="blog-tag">产品构想</span><span class="blog-date">Mar 2026</span></div>
-            <h4>iMorph.ai 的产品业态：从 Prompt Playground 到企业会话操作系统</h4>
-            <p>企业不需要一个更聪明的聊天机器人，而需要一套围绕会话建立流程、规则、知识、动作和监控闭环的产品基础设施。</p>
+            <div class="blog-meta"><span class="blog-tag">商业价值</span><span class="blog-tag">产品构想</span><span class="blog-date">May 2026</span></div>
+            <h4>iMorph.ai's Product Model: From Prompt Playground to Enterprise Conversation Operating System</h4>
+            <p>Enterprises do not need a smarter chatbot. They need product infrastructure that creates a closed loop around conversations, connecting workflows, rules, knowledge, actions, and monitoring.</p>
             <span class="blog-link">Read more →</span>
           </div>
         </a>
@@ -2267,11 +2403,11 @@
                 <line x1="153" y1="65" x2="122" y2="46"/>
               </g>
               <g font-family="var(--font)" font-size="6.5" fill="var(--text-muted)" text-anchor="middle">
-                <text x="160" y="28"><tspan fill="var(--purple-light)">动态上下文</tspan></text>
-                <text x="208" y="43">Evidence建议</text>
-                <text x="205" y="102">Self Play</text>
-                <text x="115" y="102">SOP编译</text>
-                <text x="113" y="43">多渠道部署</text>
+                <text x="160" y="28"><tspan fill="var(--purple-light)">Dynamic Context</tspan></text>
+                <text x="208" y="43">Evidence Suggestions</text>
+                <text x="205" y="102">Self-Play</text>
+                <text x="115" y="102">SOP Compilation</text>
+                <text x="113" y="43">Multi-Channel</text>
               </g>
               <g fill="var(--purple)" opacity="0.35">
                 <circle cx="160" cy="30" r="2.5"/><circle cx="202" cy="44" r="2.5"/><circle cx="199" cy="98" r="2.5"/>
@@ -2280,9 +2416,9 @@
             </svg>
           </div>
           <div class="blog-body">
-            <div class="blog-meta"><span class="blog-tag">产品构想</span><span class="blog-tag">技术探索</span><span class="blog-date">Mar 2026</span></div>
-            <h4>iMorph.ai 的创新方向：五个让企业智能体真正可用的关键突破</h4>
-            <p>iMorph.ai 的创新方向不是追求更强的语言模型，而是专注于五个被绝大多数 AI 产品忽略的关键问题。</p>
+            <div class="blog-meta"><span class="blog-tag">Product Thinking</span><span class="blog-tag">Technical Exploration</span><span class="blog-date">May 2026</span></div>
+            <h4>iMorph.ai's Innovation Directions: Five Breakthroughs That Make Enterprise Agents Truly Useful</h4>
+            <p>iMorph.ai focuses on five critical problems that most AI products overlook, rather than simply pursuing a more powerful language model.</p>
             <span class="blog-link">Read more →</span>
           </div>
         </a>
@@ -2294,8 +2430,8 @@
               <path d="M160 28 L192 42 V76 C192 96 160 112 160 112 C160 112 128 96 128 76 V42 Z" stroke="var(--purple)" stroke-width="0.8" fill="var(--purple)" fill-opacity="0.04"/>
               <path d="M148 68 L156 76 L174 58" stroke="var(--purple-light)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
               <g font-family="var(--font)" font-size="5.5" fill="var(--text-muted)">
-                <text x="80" y="50">严格遵循</text><text x="80" y="72">一致性</text><text x="80" y="94">可循证</text>
-                <text x="216" y="50">高置信度</text><text x="216" y="72">自动化</text>
+                <text x="80" y="50">Strict Adherence</text><text x="80" y="72">Consistency</text><text x="80" y="94">Evidence-Backed</text>
+                <text x="216" y="50">High Confidence</text><text x="216" y="72">Automation</text>
               </g>
               <g stroke="var(--purple)" stroke-width="0.4" opacity="0.2" stroke-dasharray="2 2">
                 <line x1="106" y1="48" x2="128" y2="55"/><line x1="102" y1="70" x2="128" y2="70"/>
@@ -2305,9 +2441,9 @@
             </svg>
           </div>
           <div class="blog-body">
-            <div class="blog-meta"><span class="blog-tag">商业价值</span><span class="blog-tag">产品构想</span><span class="blog-date">Mar 2026</span></div>
-            <h4>iMorph.ai 的价值主张：企业会话不是自由聊天，而是可约束的系统行为</h4>
-            <p>让企业能够像治理业务流程一样治理会话智能体——严格、一致、可解释、可回溯、可度量。</p>
+            <div class="blog-meta"><span class="blog-tag">Business Value</span><span class="blog-tag">Product Thinking</span><span class="blog-date">Apr 2026</span></div>
+            <h4>iMorph.ai's Value Proposition: Enterprise Conversations Are Governed System Behavior, Not Free-Form Chat</h4>
+            <p>iMorph.ai enables enterprises to govern conversational agents the way they govern business processes, treating conversations as structured, observable, and optimizable systems.</p>
             <span class="blog-link">Read more →</span>
           </div>
         </a>
@@ -2322,21 +2458,21 @@
                 <rect x="196" y="56" width="36" height="54" rx="4" stroke="var(--purple)" stroke-width="0.7" fill="var(--purple)" fill-opacity="0.04"/>
               </g>
               <g font-family="var(--font)" font-size="6" text-anchor="middle">
-                <text x="106" y="46" fill="var(--purple-light)">保险</text>
-                <text x="160" y="34" fill="var(--purple-light)">牙科</text>
-                <text x="214" y="52" fill="var(--purple-light)">家政</text>
+                <text x="106" y="46" fill="var(--purple-light)">Insurance</text>
+                <text x="160" y="34" fill="var(--purple-light)">Dental</text>
+                <text x="214" y="52" fill="var(--purple-light)">Home Services</text>
               </g>
               <g font-family="var(--font)" font-size="5" text-anchor="middle" fill="var(--text-muted)">
-                <text x="106" y="76">外呼筛选</text><text x="106" y="88">多语言</text><text x="106" y="100">异议处理</text>
-                <text x="160" y="60">预约调度</text><text x="160" y="72">HIPAA</text><text x="160" y="84">急症分流</text><text x="160" y="96">PMS集成</text>
-                <text x="214" y="74">紧急派单</text><text x="214" y="86">报价引擎</text><text x="214" y="98">ETA查询</text>
+                <text x="106" y="76">Qualification</text><text x="106" y="88">Multilingual</text><text x="106" y="100">Objections</text>
+                <text x="160" y="60">Scheduling</text><text x="160" y="72">HIPAA</text><text x="160" y="84">Triage</text><text x="160" y="96">PMS API</text>
+                <text x="214" y="74">Dispatch</text><text x="214" y="86">Quoting</text><text x="214" y="98">ETA</text>
               </g>
             </svg>
           </div>
           <div class="blog-body">
-            <div class="blog-meta"><span class="blog-tag">商业价值</span><span class="blog-date">Mar 2026</span></div>
-            <h4>iMorph.ai 的行业落地图：从保险外呼到牙医诊所，AI 接管的不只是通话</h4>
-            <p>不同行业有完全不同的合规要求、业务流程和对话复杂度。先从高结构化、高 ROI 的场景切入。</p>
+            <div class="blog-meta"><span class="blog-tag">Business Value</span><span class="blog-date">Apr 2026</span></div>
+            <h4>iMorph.ai's Industry Playbook: From Insurance Outbound to Dental Clinics, AI Takes Over More Than Calls</h4>
+            <p>Different industries require different compliance models, workflows, and conversation strategies. iMorph.ai starts with highly structured, high-ROI scenarios and expands from there.</p>
             <span class="blog-link">Read more →</span>
           </div>
         </a>
@@ -2356,15 +2492,15 @@
                 <text x="185" y="64">Pro</text><text x="229" y="52">Enterprise</text>
               </g>
               <g font-family="var(--font)" font-size="5.5" text-anchor="middle" fill="var(--text-muted)" opacity="0.7">
-                <text x="97" y="74">$79</text><text x="141" y="54">$229</text><text x="185" y="42">$499</text><text x="229" y="30">定制</text>
+                <text x="97" y="74">$79</text><text x="141" y="54">$229</text><text x="185" y="42">$499</text><text x="229" y="30">Custom</text>
               </g>
               <line x1="72" y1="110" x2="252" y2="110" stroke="var(--border-light)" stroke-width="0.5"/>
             </svg>
           </div>
           <div class="blog-body">
-            <div class="blog-meta"><span class="blog-tag">商业价值</span><span class="blog-date">Mar 2026</span></div>
-            <h4>定价策略与GTM：如何让 AI 接线员在 15 分钟内上线并在第一个月证明价值</h4>
-            <p>企业最贵的隐形成本，是漏接的电话。定价策略围绕这个核心认知设计。</p>
+            <div class="blog-meta"><span class="blog-tag">Business Value</span><span class="blog-date">Mar 2026</span></div>
+            <h4>Pricing and GTM: How to Launch an AI Receptionist in 15 Minutes and Prove Value in the First Month</h4>
+            <p>iMorph.ai's pricing is built around one core insight: the most expensive hidden cost for an enterprise is the calls it misses.</p>
             <span class="blog-link">Read more →</span>
           </div>
         </a>
@@ -2383,18 +2519,18 @@
               <g font-family="var(--font)" font-size="5.5" text-anchor="middle">
                 <text x="160" y="33" fill="var(--text-muted)">Persona &amp; Identity</text>
                 <text x="160" y="53" fill="var(--text-muted)">Constraints</text>
-                <text x="160" y="73" fill="var(--purple-light)">Business Logic ← 动态</text>
+      <text x="160" y="73" fill="var(--purple-light)">Business Logic — Dynamic</text>
                 <text x="160" y="93" fill="var(--text-muted)">Conversation State</text>
                 <text x="160" y="113" fill="var(--text-muted)">Tools</text>
               </g>
               <path d="M215 70 L230 70 L230 45 L215 45" stroke="var(--purple)" stroke-width="0.5" fill="none" opacity="0.3" stroke-dasharray="2 2"/>
-              <text x="234" y="60" font-family="var(--font)" font-size="5" fill="var(--text-muted)" opacity="0.6">按 Journey&#10;动态切换</text>
+              <text x="234" y="60" font-family="var(--font)" font-size="5" fill="var(--text-muted)" opacity="0.6">Switches by Journey&#10;stage</text>
             </svg>
           </div>
           <div class="blog-body">
-            <div class="blog-meta"><span class="blog-tag">技术探索</span><span class="blog-date">Mar 2026</span></div>
-            <h4>符合会话的上下文工程：为什么静态 System Prompt 无法撑起企业级 Agent</h4>
-            <p>怎么在对话进行中，给模型提供它此刻最需要的信息，而不是把所有信息都塞进去。</p>
+            <div class="blog-meta"><span class="blog-tag">Technical Exploration</span><span class="blog-date">Mar 2026</span></div>
+            <h4>Conversation-Aware Context Engineering: Why a Static System Prompt Cannot Support an Enterprise Agent</h4>
+            <p>Context engineering determines whether an enterprise agent is stable, easy to tune, and capable of scaling by giving the model only the information it needs at each turn.</p>
             <span class="blog-link">Read more →</span>
           </div>
         </a>
@@ -2428,9 +2564,9 @@
             </svg>
           </div>
           <div class="blog-body">
-            <div class="blog-meta"><span class="blog-tag">技术探索</span><span class="blog-date">Mar 2026</span></div>
-            <h4>低时延语音 AI 的工程实践：如何把 E2E 延迟压到 1.5 秒以内</h4>
-            <p>端到端延迟必须控制在 1.5 秒以内。整个语音处理管道的每一个环节都需要被精心设计。</p>
+            <div class="blog-meta"><span class="blog-tag">Technical Exploration</span><span class="blog-date">Mar 2026</span></div>
+            <h4>Engineering Low-Latency Voice AI: How to Bring E2E Latency below 1.5 Seconds</h4>
+            <p>Every stage of the voice processing pipeline must be carefully designed to keep end-to-end latency below 1.5 seconds and ideally below 1.2 seconds at P95.</p>
             <span class="blog-link">Read more →</span>
           </div>
         </a>
@@ -2442,7 +2578,7 @@
               <rect x="100" y="36" width="56" height="28" rx="6" stroke="var(--purple)" stroke-width="0.7" fill="var(--purple)" fill-opacity="0.06"/>
               <text x="128" y="54" font-family="var(--font)" font-size="6" text-anchor="middle" fill="var(--purple-light)">Agent</text>
               <rect x="164" y="76" width="56" height="28" rx="6" stroke="var(--purple)" stroke-width="0.7" fill="var(--purple)" fill-opacity="0.06"/>
-              <text x="192" y="94" font-family="var(--font)" font-size="6" text-anchor="middle" fill="var(--text-muted)">模拟客户</text>
+              <text x="192" y="94" font-family="var(--font)" font-size="6" text-anchor="middle" fill="var(--text-muted)">Simulated User</text>
               <path d="M156 52 C180 52 180 52 180 76" stroke="var(--purple)" stroke-width="0.6" fill="none" opacity="0.35" marker-end="url(#arr3)"/>
               <path d="M164 90 C140 90 140 90 140 64" stroke="var(--purple)" stroke-width="0.6" fill="none" opacity="0.35" marker-end="url(#arr3)"/>
               <g font-family="var(--font)" font-size="5" fill="var(--text-muted)" opacity="0.6">
@@ -2450,14 +2586,14 @@
                 <text x="128" y="104">Acceptable</text><text x="128" y="114" fill="var(--amber)">12%</text>
                 <text x="195" y="104">Bad</text><text x="195" y="114" fill="var(--text-muted)">3%</text>
               </g>
-              <text x="260" y="70" font-family="var(--font)" font-size="5" fill="var(--text-muted)" opacity="0.5" text-anchor="middle">×100+&#10;场景</text>
+              <text x="260" y="70" font-family="var(--font)" font-size="5" fill="var(--text-muted)" opacity="0.5" text-anchor="middle">100+&#10;scenarios</text>
               <defs><marker id="arr3" markerWidth="4" markerHeight="3" refX="3.5" refY="1.5" orient="auto"><path d="M0 0 L4 1.5 L0 3" fill="none" stroke="var(--purple)" stroke-width="0.5"/></marker></defs>
             </svg>
           </div>
           <div class="blog-body">
-            <div class="blog-meta"><span class="blog-tag">技术探索</span><span class="blog-date">Mar 2026</span></div>
-            <h4>Self Play：用模拟对话替代真实用户的上线前验证方法</h4>
-            <p>让系统在沙盒环境中自行生成大规模的模拟对话，在真实用户出现之前完成系统化验证。</p>
+            <div class="blog-meta"><span class="blog-tag">Technical Exploration</span><span class="blog-date">Feb 2026</span></div>
+            <h4>Self-Play: A Pre-Launch Validation Method That Replaces Real Users with Simulated Conversations</h4>
+            <p>Self-Play lets the system generate large-scale simulated conversations in a sandbox and validate an agent systematically before real users arrive.</p>
             <span class="blog-link">Read more →</span>
           </div>
         </a>
@@ -2467,26 +2603,26 @@
           <div class="blog-thumb">
             <svg class="blog-illust" viewBox="0 0 320 140" fill="none">
               <rect x="90" y="28" width="60" height="84" rx="5" stroke="var(--purple)" stroke-width="0.7" fill="var(--purple)" fill-opacity="0.04"/>
-              <text x="120" y="22" font-family="var(--font)" font-size="5.5" text-anchor="middle" fill="var(--text-muted)">行业模板</text>
+              <text x="120" y="22" font-family="var(--font)" font-size="5.5" text-anchor="middle" fill="var(--text-muted)">Industry Template</text>
               <g font-family="var(--font)" font-size="5" fill="var(--text-muted)" opacity="0.7">
                 <text x="100" y="46">Guidelines</text><text x="100" y="58">Journey</text><text x="100" y="70">Glossary</text>
               </g>
               <g opacity="0.3"><rect x="96" y="78" width="48" height="6" rx="2" fill="var(--purple)"/><rect x="96" y="88" width="36" height="6" rx="2" fill="var(--purple)"/><rect x="96" y="98" width="42" height="6" rx="2" fill="var(--purple)"/></g>
               <path d="M155 70 L175 70" stroke="var(--purple)" stroke-width="0.7" opacity="0.4" marker-end="url(#arr4)"/>
-              <text x="165" y="64" font-family="var(--font)" font-size="5" fill="var(--text-muted)" opacity="0.5" text-anchor="middle">+客户信息</text>
+              <text x="165" y="64" font-family="var(--font)" font-size="5" fill="var(--text-muted)" opacity="0.5" text-anchor="middle">+ Customer Data</text>
               <rect x="180" y="38" width="50" height="64" rx="5" stroke="var(--purple-light)" stroke-width="0.9" fill="var(--purple)" fill-opacity="0.07"/>
-              <text x="205" y="32" font-family="var(--font)" font-size="5.5" text-anchor="middle" fill="var(--purple-light)">可用 Agent</text>
+              <text x="205" y="32" font-family="var(--font)" font-size="5.5" text-anchor="middle" fill="var(--purple-light)">Ready Agent</text>
               <g font-family="var(--font)" font-size="5" fill="var(--text-muted)" opacity="0.7">
-                <text x="188" y="56">诊所名称 ✓</text><text x="188" y="68">营业时间 ✓</text><text x="188" y="80">服务项目 ✓</text><text x="188" y="92">保险计划 ✓</text>
+                <text x="188" y="56">Practice name ✓</text><text x="188" y="68">Opening hours ✓</text><text x="188" y="80">Services ✓</text><text x="188" y="92">Insurance plans ✓</text>
               </g>
-              <text x="205" y="110" font-family="var(--font)" font-size="5.5" text-anchor="middle" fill="var(--green)" opacity="0.6">&lt;24h 上线</text>
+              <text x="205" y="110" font-family="var(--font)" font-size="5.5" text-anchor="middle" fill="var(--green)" opacity="0.6">Live in &lt;24h</text>
               <defs><marker id="arr4" markerWidth="4" markerHeight="3" refX="3.5" refY="1.5" orient="auto"><path d="M0 0 L4 1.5 L0 3" fill="none" stroke="var(--purple)" stroke-width="0.5"/></marker></defs>
             </svg>
           </div>
           <div class="blog-body">
-            <div class="blog-meta"><span class="blog-tag">产品构想</span><span class="blog-date">Mar 2026</span></div>
-            <h4>冷启动知识工程：如何让一个新 Agent 在没有历史数据的情况下快速可用</h4>
-            <p>新客户的 Agent 没有历史数据，系统凭什么运行得好？这是冷启动问题的核心挑战。</p>
+            <div class="blog-meta"><span class="blog-tag">Product Thinking</span><span class="blog-date">Feb 2026</span></div>
+            <h4>Cold-Start Knowledge Engineering: How to Make a New Agent Useful Quickly without Historical Data</h4>
+            <p>A new customer's agent has no historical data. iMorph.ai addresses this cold-start challenge with reusable industry knowledge, SOP compilation, and immediate Self-Play validation.</p>
             <span class="blog-link">Read more →</span>
           </div>
         </a>
@@ -2546,6 +2682,34 @@
           </button>
           <div class="faq-answer"><p>Pricing is based on conversation volume and deployed channels. We offer a free tier for evaluation, a growth plan for scaling teams, and enterprise contracts for organizations needing SSO, audit logs, and dedicated support. Contact our sales team for a custom quote.</p></div>
         </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            Which AI models does iMorph use?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-answer"><p>iMorph automatically selects the most suitable AI model for each task. The model used depends on factors such as the complexity of the request, whether the interaction is via voice or chat, the language, response speed, reasoning requirements, and any tools that need to be used.</p><p>Different stages of the same workflow may use different models to achieve the best balance of quality, speed, and cost. There's no need to choose a single model before building your agent.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            How is iMorph different from a typical agent builder?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-answer"><p>Most agent builders help you create a prompt, connect a knowledge base, and publish an AI agent.</p><p>iMorph goes much further. It treats every conversation as part of a complete operating system that includes workflows, business rules, approved knowledge, tools, evaluations, conversation traces, and continuous optimisation.</p><p>Rather than simply helping you launch an agent, iMorph helps you understand, measure, and improve its performance as your business evolves.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            How do self-play simulations and evaluations work?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-answer"><p>You define the workflows, user personas, expected outcomes, business policies, tool behaviour, and handoff rules you want to test.</p><p>iMorph then runs realistic multi-turn conversations across everyday situations, customer objections, and edge cases. It records the results, highlights where things went well or wrong, and provides the evidence needed for review.</p><p>Evaluation criteria and scoring should be tailored to each workflow, rather than relying on a single universal quality score.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+            How does iMorph help improve an agent after launch?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-answer"><p>Once your agent is live, iMorph brings together user feedback, business outcomes, conversation patterns, and detailed request traces to show why the agent behaves the way it does.</p><p>This helps your team identify recurring issues, prioritise improvements to prompts, knowledge, tools, or workflows, and validate changes before rolling them out more widely.</p></div>
+        </div>
       </div>
     </div>
   </section>
@@ -2558,8 +2722,8 @@
         <h2 style="margin-top:16px">Start Building in Minutes</h2>
         <p>Describe your business process in natural language. Have a 5-minute conversation with our onboarding agent, and your production-ready conversational AI will be ready for testing and deployment.</p>
         <div class="cta-buttons">
-          <a href="#" class="btn btn-primary">Get Started Free</a>
-          <a href="#" class="btn btn-ghost">Contact Sales</a>
+          <a href="https://imorph-test.salessavvy.ai" class="btn btn-primary">Get Started</a>
+          <a href="contact.html" class="btn btn-ghost">Contact Sales</a>
         </div>
       </div>
     </div>
@@ -2581,36 +2745,19 @@
           <ul>
             <li><a href="#features">Features</a></li>
             <li><a href="#flywheel">How It Works</a></li>
-            <li><a href="#industries">Industries</a></li>
-            <li><a href="#">Pricing</a></li>
-            <li><a href="#">Documentation</a></li>
+            <li><a href="#use-cases">Use Cases</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <h4>Company</h4>
           <ul>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Careers</a></li>
-            <li><a href="#">Blog</a></li>
-            <li><a href="#">Contact</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>Resources</h4>
-          <ul>
-            <li><a href="#">API Reference</a></li>
-            <li><a href="#">Case Studies</a></li>
-            <li><a href="#">Status</a></li>
-            <li><a href="#">Changelog</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="contact.html">Contact</a></li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
         <p>&copy; 2026 iMorph.ai. All rights reserved.</p>
-        <div class="footer-legal">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
-        </div>
       </div>
     </div>
   </footer>
@@ -2658,6 +2805,62 @@
     }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ── Use case slider ──
+    (() => {
+      const slider = document.querySelector('[data-use-case-slider]');
+      if (!slider) return;
+
+      const slides = Array.from(slider.querySelectorAll('[data-use-case-slide]'));
+      const tabs = Array.from(slider.querySelectorAll('[data-use-case-tab]'));
+      const previous = slider.querySelector('[data-use-case-prev]');
+      const next = slider.querySelector('[data-use-case-next]');
+      const duration = 4000;
+      let current = 0;
+      let timer;
+      let paused = false;
+
+      function render(index) {
+        current = (index + slides.length) % slides.length;
+        slides.forEach((slide, slideIndex) => slide.classList.toggle('active', slideIndex === current));
+        tabs.forEach((tab, tabIndex) => {
+          const active = tabIndex === current;
+          tab.classList.toggle('active', active);
+          tab.setAttribute('aria-selected', String(active));
+        });
+        restartTimer();
+      }
+
+      function restartTimer() {
+        window.clearTimeout(timer);
+        if (!paused) timer = window.setTimeout(() => render(current + 1), duration);
+      }
+
+      function pause() {
+        paused = true;
+        window.clearTimeout(timer);
+      }
+
+      function resume() {
+        paused = false;
+        restartTimer();
+      }
+
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => render(Number(tab.dataset.useCaseTab)));
+      });
+
+      previous.addEventListener('click', () => render(current - 1));
+      next.addEventListener('click', () => render(current + 1));
+      slider.addEventListener('mouseenter', pause);
+      slider.addEventListener('mouseleave', resume);
+      slider.addEventListener('focusin', pause);
+      slider.addEventListener('focusout', (event) => {
+        if (!slider.contains(event.relatedTarget)) resume();
+      });
+
+      render(0);
+    })();
 
     const countEls = document.querySelectorAll('[data-count]');
     const countObserver = new IntersectionObserver((entries) => {
@@ -2716,7 +2919,7 @@
       document.addEventListener('mousedown', (e) => {
         if (e.button !== 0) return;
         const t = e.target;
-        if (t.closest && t.closest('a, button, input, select, textarea, nav, .blog-card, .blog-thumb, .faq-item, .btn, .theme-toggle, .ind-card, .flywheel-svg, .mockup, .hero-cta')) return;
+        if (t.closest && t.closest('a, button, input, select, textarea, nav, .blog-card, .blog-thumb, .faq-item, .btn, .theme-toggle, .flywheel-svg, .mockup, .hero-cta')) return;
 
         const node = {
           x: e.clientX,
