@@ -267,7 +267,7 @@
     mobileToggle.addEventListener('click', () => navLinks.classList.toggle('show'));
     navLinks.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => navLinks.classList.remove('show')));
 
-    const contactApiUrl = 'https://imorph-dev.salessavvy.ai/api/v1/operation/contact-messages';
+    const contactApiUrl = 'https://imorph-uat.salessavvy.ai/api/v1/operation/contact-messages';
     const form = document.getElementById('contact-form');
     const status = document.getElementById('form-status');
     const submitButton = document.getElementById('submit-button');
