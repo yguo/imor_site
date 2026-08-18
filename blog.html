@@ -114,6 +114,7 @@
     }
     [data-theme="light"] .blog-card-thumb { background: #F8F7FF; }
     .blog-card-thumb svg { width: 100%; height: 100%; }
+    .blog-card-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     .blog-card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
     .blog-card-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
@@ -154,7 +155,7 @@
     .toc-list a {
       font-size: 0.6875rem; color: var(--text-muted); line-height: 1.5;
       display: block; padding: 2px 0 2px 10px; border-left: 1px solid var(--border);
-      transition: all 0.2s;
+      transition: all 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .toc-list a:hover { color: var(--text-sec); border-color: var(--border-light); }
     .toc-list a.active { color: var(--purple-light); border-color: var(--purple); }
@@ -176,6 +177,7 @@
     .article-content h2:first-of-type { border-top: none; padding-top: 0; }
     .article-content h3 { font-size: 0.9375rem; font-weight: 400; margin-top: 32px; margin-bottom: 12px; }
     .article-content p { margin-bottom: 16px; color: var(--text-sec); line-height: 1.9; font-size: 0.8125rem; }
+    .article-content img { display: block; width: 100%; height: auto; margin: 8px 0 28px; border: 1px solid var(--border); border-radius: 8px; }
     .article-content strong { font-weight: 500; color: var(--text); }
     .article-content ul, .article-content ol { margin-bottom: 16px; padding-left: 20px; color: var(--text-sec); }
     .article-content li { margin-bottom: 6px; line-height: 1.8; font-size: 0.8125rem; }
@@ -455,6 +457,34 @@
 <script>
 const ARTICLES = [
   {
+    slug: "presence-operating-systems",
+    title: "After OpenAI Presence: Why Enterprise Agent Competition Is Moving from Models to Operating Systems",
+    date: "2026-08-18",
+    tags: ["Product Thinking", "Technical Exploration", "Business Value"],
+    file: "docs/13-presence-operating-systems.md"
+  },
+  {
+    slug: "presence-codex-agentops",
+    title: "What OpenAI Presence's Codex Improvement Loop Reveals About the Next Generation of AgentOps",
+    date: "2026-08-18",
+    tags: ["Technical Exploration", "Product Thinking", "Business Value"],
+    file: "docs/12-presence-codex-agentops.md"
+  },
+  {
+    slug: "suggestions-evidence",
+    title: "A Request Failed. What Should You Fix?",
+    date: "2026-07-29",
+    tags: ["Product Thinking", "Technical Exploration", "Business Value"],
+    file: "docs/10-suggestions-evidence.md"
+  },
+  {
+    slug: "insight-compounding",
+    title: "Insight: Every Conversation Should Improve More Than the Agent",
+    date: "2026-07-28",
+    tags: ["Product Thinking", "Business Value", "Technical Exploration"],
+    file: "docs/11-insight-compounding.md"
+  },
+  {
     slug: "product-business-model",
     title: "iMorph.ai's Product Model: From Prompt Playground to Enterprise Conversation Operating System",
     date: "2026-05-26",
@@ -550,6 +580,10 @@ let activeTag = null;
 function getExcerpt(file) {
   const idx = ARTICLES.findIndex(a => a.file === file);
   const excerpts = [
+    "After OpenAI Presence, enterprise agent competition is moving beyond model capability toward job boundaries, governed operations, production evidence, controlled change, and reusable delivery methods.",
+    "The next generation of AgentOps should turn production signals into evidence, reviewable changes, evaluations, and controlled releases without bypassing enterprise judgment.",
+    "Not every failed request is a prompt problem. iMorph Suggestions separates knowledge gaps, guideline gaps, and operational follow-up failures so teams can make focused, evidence-backed changes.",
+    "Every conversation should reveal customer needs, experience friction, and business problems, then improve the entire system.",
     "Enterprises do not need a smarter chatbot. They need product infrastructure that creates a closed loop around conversations, connecting workflows, rules, knowledge, actions, and monitoring.",
     "iMorph.ai focuses on five critical problems that most AI products overlook, rather than simply pursuing a more powerful language model.",
     "iMorph.ai enables enterprises to govern conversational agents the way they govern business processes, treating conversations as structured, observable, and optimizable systems.",
@@ -564,6 +598,50 @@ function getExcerpt(file) {
 }
 
 const ILLUSTRATIONS = {
+  "presence-operating-systems": `<svg viewBox="0 0 320 120" fill="none">
+    <g stroke="var(--purple)" stroke-width="0.8" opacity="0.7">
+      <rect x="12" y="43" width="48" height="30" rx="5" fill="var(--purple)" fill-opacity="0.11"/>
+      <rect x="72" y="43" width="48" height="30" rx="5" fill="var(--purple)" fill-opacity="0.08"/>
+      <rect x="132" y="43" width="48" height="30" rx="5" fill="var(--purple)" fill-opacity="0.08"/>
+      <rect x="192" y="43" width="48" height="30" rx="5" fill="var(--purple)" fill-opacity="0.08"/>
+      <rect x="252" y="43" width="56" height="30" rx="5" fill="var(--green)" fill-opacity="0.10" stroke="var(--green)"/>
+      <path d="M60 58h12M120 58h12M180 58h12M240 58h12" stroke-dasharray="3 2"/>
+      <path d="M280 80v22H36V80" stroke="var(--green)" opacity="0.5" stroke-dasharray="3 2"/>
+    </g>
+    <g font-family="var(--font)" font-size="6" text-anchor="middle">
+      <text x="36" y="61" fill="var(--purple-light)">Job</text>
+      <text x="96" y="61" fill="var(--text-muted)">Policy</text>
+      <text x="156" y="61" fill="var(--text-muted)">Eval</text>
+      <text x="216" y="61" fill="var(--text-muted)">Signals</text>
+      <text x="280" y="61" fill="var(--green)">Control</text>
+      <text x="160" y="114" fill="var(--green)" opacity="0.75">Enterprise agent operating system</text>
+    </g>
+  </svg>`,
+  "presence-codex-agentops": `<svg viewBox="0 0 320 120" fill="none">
+    <g stroke="var(--purple)" stroke-width="0.7" opacity="0.55">
+      <rect x="14" y="40" width="52" height="34" rx="5" fill="var(--purple)" fill-opacity="0.10"/>
+      <rect x="72" y="40" width="52" height="34" rx="5" fill="var(--purple)" fill-opacity="0.06"/>
+      <rect x="130" y="40" width="52" height="34" rx="5" fill="var(--purple)" fill-opacity="0.06"/>
+      <rect x="188" y="40" width="52" height="34" rx="5" fill="var(--purple)" fill-opacity="0.06"/>
+      <rect x="246" y="40" width="60" height="34" rx="5" fill="var(--green)" fill-opacity="0.08" stroke="var(--green)"/>
+      <path d="M66 57h6M124 57h6M182 57h6M240 57h6" stroke-dasharray="3 2"/>
+    </g>
+    <g font-family="var(--font)" font-size="5.2" text-anchor="middle">
+      <text x="40" y="35" fill="var(--purple-light)">Evidence</text>
+      <text x="98" y="35" fill="var(--text-muted)">Root Cause</text>
+      <text x="156" y="35" fill="var(--text-muted)">Change</text>
+      <text x="214" y="35" fill="var(--text-muted)">Eval</text>
+      <text x="276" y="35" fill="var(--green)">Approval</text>
+      <text x="40" y="60" fill="var(--text-muted)">Production</text>
+      <text x="98" y="60" fill="var(--text-muted)">Diagnose</text>
+      <text x="156" y="60" fill="var(--text-muted)">Reviewable</text>
+      <text x="214" y="60" fill="var(--text-muted)">Validate</text>
+      <text x="276" y="60" fill="var(--green)">Control</text>
+    </g>
+    <path d="M276 80v20H40V80" stroke="var(--green)" stroke-width="0.7" opacity="0.45" stroke-dasharray="3 2"/>
+    <text x="160" y="111" font-family="var(--font)" font-size="5.5" text-anchor="middle" fill="var(--green)" opacity="0.7">Evidence-driven improvement loop</text>
+  </svg>`,
+
   "product-business-model": `<svg viewBox="0 0 320 120" fill="none">
     <circle cx="160" cy="60" r="34" stroke="var(--purple)" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.25"/>
     <circle cx="160" cy="60" r="18" stroke="var(--purple)" stroke-width="0.6" opacity="0.15"/>
@@ -708,6 +786,50 @@ const ILLUSTRATIONS = {
       <text x="186" y="44">Practice name ✓</text><text x="186" y="56">Opening hours ✓</text><text x="186" y="68">Services ✓</text><text x="186" y="80">Insurance plans ✓</text>
     </g>
     <text x="203" y="100" font-family="var(--font)" font-size="5.5" text-anchor="middle" fill="var(--green)" opacity="0.6">Live in &lt;24h</text></svg>`
+  ,
+
+  "insight-compounding": `<svg viewBox="0 0 320 120" fill="none">
+    <g stroke="var(--purple)" stroke-width="0.7" opacity="0.55">
+      <circle cx="160" cy="60" r="28" fill="var(--purple)" fill-opacity="0.08"/>
+      <circle cx="160" cy="60" r="10" fill="var(--purple)" fill-opacity="0.14"/>
+      <path d="M160 18v16M160 86v16M118 60h16M186 60h16M130 30l12 12M178 78l12 12M190 30l-12 12M142 78l-12 12" stroke-dasharray="3 2"/>
+    </g>
+    <g font-family="var(--font)" font-size="5.5" text-anchor="middle">
+      <text x="160" y="63" fill="var(--purple-light)">Conversation</text>
+      <text x="160" y="13" fill="var(--text-muted)">Agent</text>
+      <text x="160" y="114" fill="var(--green)" opacity="0.75">Experience + Business</text>
+      <text x="105" y="27" fill="var(--text-muted)">Signals</text>
+      <text x="215" y="27" fill="var(--text-muted)">Evidence</text>
+      <text x="102" y="99" fill="var(--text-muted)">Metrics</text>
+      <text x="218" y="99" fill="var(--text-muted)">Action</text>
+    </g>
+    <path d="M125 60c0-19 16-35 35-35 19 0 35 16 35 35" stroke="var(--purple-light)" stroke-width="0.8" fill="none" opacity="0.45"/>
+    <path d="M195 60c0 19-16 35-35 35-19 0-35-16-35-35" stroke="var(--green)" stroke-width="0.8" fill="none" opacity="0.35" stroke-dasharray="4 3"/></svg>`,
+
+  "suggestions-evidence": `<svg viewBox="0 0 320 120" fill="none">
+    <g stroke="var(--purple)" stroke-width="0.7" opacity="0.55">
+      <rect x="54" y="28" width="58" height="62" rx="5" fill="var(--purple)" fill-opacity="0.05"/>
+      <rect x="131" y="28" width="58" height="62" rx="5" fill="var(--purple)" fill-opacity="0.10"/>
+      <rect x="208" y="28" width="58" height="62" rx="5" fill="var(--purple)" fill-opacity="0.05"/>
+      <path d="M112 59h19M189 59h19" stroke-dasharray="3 2"/>
+    </g>
+    <g font-family="var(--font)" font-size="5.5" text-anchor="middle">
+      <text x="83" y="22" fill="var(--text-muted)">Evidence</text>
+      <text x="160" y="22" fill="var(--purple-light)">Diagnosis</text>
+      <text x="237" y="22" fill="var(--text-muted)">Focused Fix</text>
+      <text x="83" y="47" fill="var(--text-muted)">Conversation</text>
+      <text x="83" y="59" fill="var(--text-muted)">Monitor trace</text>
+      <text x="83" y="71" fill="var(--text-muted)">Outcome</text>
+      <text x="160" y="47" fill="var(--purple-light)">Knowledge</text>
+      <text x="160" y="59" fill="var(--purple-light)">Guideline</text>
+      <text x="160" y="71" fill="var(--purple-light)">Ops</text>
+      <text x="237" y="47" fill="var(--text-muted)">Change target</text>
+      <text x="237" y="59" fill="var(--text-muted)">Regression test</text>
+      <text x="237" y="71" fill="var(--text-muted)">Verify why</text>
+    </g>
+    <circle cx="160" cy="100" r="3" fill="var(--green)" opacity="0.55"/>
+    <path d="M160 90v7" stroke="var(--green)" stroke-width="0.7" opacity="0.45"/>
+    <text x="160" y="111" font-family="var(--font)" font-size="5.5" text-anchor="middle" fill="var(--green)" opacity="0.7">Evidence first</text></svg>`
 };
 
 function renderIndex() {
@@ -819,11 +941,15 @@ function buildToc() {
     const li = document.createElement('li');
     const a = document.createElement('a');
     a.href = '#' + id;
-    a.textContent = h.textContent;
+    const fullLabel = h.textContent.trim();
+    const fallbackLabel = fullLabel.length > 34 ? fullLabel.slice(0, 31) + '...' : fullLabel;
+    a.textContent = fallbackLabel;
+    a.title = fullLabel;
     if (h.tagName === 'H3') a.classList.add('h3');
     a.addEventListener('click', (e) => {
       e.preventDefault();
-      h.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const top = h.getBoundingClientRect().top + window.scrollY - 72;
+      window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
     });
     li.appendChild(a);
     list.appendChild(li);
