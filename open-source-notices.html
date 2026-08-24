@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Source Notices — iMorph</title>
+  <link rel="icon" type="image/png" href="asssets/iMorph_logo.png">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #09090B; --surface: #111113; --border: #222228;
+      --text: #EEEEF0; --text-sec: #9090A0; --text-muted: #606070;
+      --purple: #8B5CF6; --purple-light: #A78BFA;
+      --font: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --container: 1100px;
+    }
+    [data-theme="light"] {
+      --bg: #FAFAFA; --surface: #FFFFFF; --border: #E4E4E7;
+      --text: #18181B; --text-sec: #52525B; --text-muted: #A1A1AA;
+      --purple: #7C3AED; --purple-light: #6D28D9;
+    }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      min-height: 100vh; display: flex; flex-direction: column;
+      font-family: var(--font); background: var(--bg); color: var(--text);
+      font-size: 0.8125rem; font-weight: 300; line-height: 1.7;
+      -webkit-font-smoothing: antialiased; transition: background 0.35s ease, color 0.35s ease;
+    }
+    a { color: inherit; text-decoration: none; }
+    nav { border-bottom: 1px solid var(--border); }
+    .nav-inner, .page-inner, .footer-inner { max-width: var(--container); margin: 0 auto; padding: 0 32px; }
+    .nav-inner { height: 72px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { display: flex; align-items: center; gap: 8px; font-size: 0.9375rem; font-weight: 500; }
+    .logo-mark { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
+    .logo-mark img { width: 100%; height: 100%; object-fit: contain; }
+    .nav-actions { display: flex; align-items: center; gap: 12px; }
+    .back-link { color: var(--text-sec); font-size: 0.75rem; transition: color 0.2s; }
+    .back-link:hover { color: var(--text); }
+    .theme-toggle { width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 8px; background: transparent; color: var(--text-sec); cursor: pointer; display: grid; place-items: center; }
+    .theme-toggle svg { width: 14px; height: 14px; }
+    .icon-sun { display: none; }
+    [data-theme="light"] .icon-moon { display: none; }
+    [data-theme="light"] .icon-sun { display: block; }
+    main { flex: 1; padding: 120px 0 140px; }
+    .page-inner { max-width: 760px; }
+    .eyebrow { color: var(--purple-light); font-size: 0.6875rem; letter-spacing: 0.1em; text-transform: uppercase; }
+    h1 { margin-top: 16px; font-size: clamp(2rem, 5vw, 3.25rem); font-weight: 300; letter-spacing: -0.02em; line-height: 1.2; }
+    .notice-content { margin-top: 40px; color: var(--text-sec); }
+    .notice-content p { margin-bottom: 18px; }
+    .notice-content strong { color: var(--text); font-weight: 500; }
+    .notice-content h2 { margin: 48px 0 18px; color: var(--text); font-size: 1.25rem; font-weight: 400; line-height: 1.35; }
+    .notice-content h3 { margin: 32px 0 12px; color: var(--text); font-size: 0.9375rem; font-weight: 400; }
+    .notice-content a { color: var(--purple-light); text-decoration: underline; text-underline-offset: 3px; }
+    .notice-content a:hover { color: var(--text); }
+    .notice-rule { height: 1px; margin: 36px 0; background: var(--border); }
+    .notice-meta { margin: 24px 0; padding-left: 18px; border-left: 2px solid var(--purple); }
+    .notice-table-wrap { overflow-x: auto; margin: 24px 0 8px; }
+    .notice-content table { width: 100%; min-width: 480px; border-collapse: collapse; color: var(--text-sec); }
+    .notice-content th, .notice-content td { padding: 12px 14px; border: 1px solid var(--border); text-align: left; }
+    .notice-content th { color: var(--text); background: var(--surface); font-weight: 400; }
+    .notice-content td { background: transparent; }
+    .notice-copyright { margin-top: 52px; color: var(--text-muted); }
+    footer { border-top: 1px solid var(--border); padding: 28px 0 24px; }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .footer-inner p, .footer-inner a { color: var(--text-muted); font-size: 0.6875rem; }
+    .footer-links { display: flex; gap: 18px; }
+    .footer-links a:hover { color: var(--text-sec); }
+    @media (max-width: 700px) {
+      .nav-inner, .page-inner, .footer-inner { padding-left: 20px; padding-right: 20px; }
+      .back-link { display: none; }
+      main { padding: 88px 0 100px; }
+      .footer-inner { align-items: flex-start; flex-direction: column; }
+      .footer-links { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-mark"><img src="asssets/iMorph_logo.png" alt="iMorph"></div>
+        iMorph
+      </a>
+      <div class="nav-actions">
+        <a href="index.html" class="back-link">Back to home</a>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle theme">
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+  <main>
+    <div class="page-inner">
+      <div class="eyebrow">Legal</div>
+      <h1>Open Source Notices</h1>
+      <div class="notice-content">
+        <p>iMorph incorporates and uses certain third-party open-source software components.</p>
+        <p>These components are licensed under their respective open-source licenses. The use of these components is subject to the terms and conditions of their applicable licenses.</p>
+        <p>This page provides attribution and licensing information for certain open-source software included in or distributed with iMorph.</p>
+
+        <div class="notice-rule"></div>
+
+        <h2>Parlant</h2>
+        <p>iMorph incorporates <strong>Parlant</strong>, an open-source conversational AI framework.</p>
+        <div class="notice-meta">
+          <p><strong>Component:</strong> Parlant<br>
+          <strong>Version:</strong> v3.3.2<br>
+          <strong>License:</strong> Apache License 2.0<br>
+          Parlant is licensed under the Apache License, Version 2.0.</p>
+        </div>
+        <p>The Apache License 2.0 permits use, reproduction, modification, and distribution of the software subject to the terms and conditions of the license.</p>
+
+        <h3>License</h3>
+        <p>The full text of the Apache License 2.0 is available at:</p>
+        <p><a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="noopener noreferrer">https://www.apache.org/licenses/LICENSE-2.0</a></p>
+
+        <h3>Source</h3>
+        <p>The Parlant source code is available at:</p>
+        <p><a href="https://github.com/emcie-co/parlant" target="_blank" rel="noopener noreferrer">https://github.com/emcie-co/parlant</a></p>
+        <p>iMorph does not represent or imply any affiliation with, sponsorship by, or endorsement from the Parlant project or its contributors unless expressly stated.</p>
+
+        <div class="notice-rule"></div>
+
+        <h2>Third-Party Open Source Software</h2>
+        <p>iMorph may include or use additional third-party open-source software components.</p>
+        <p>Each component remains subject to its respective license. The applicable license terms for such components are independent of the terms governing the iMorph platform and services.</p>
+        <p>Additional third-party components and their applicable licenses may be listed below:</p>
+        <div class="notice-table-wrap">
+          <table>
+            <thead>
+              <tr><th>Component</th><th>Version</th><th>License</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Parlant</td><td>v3.3.2</td><td>Apache License 2.0</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>License Information</h2>
+        <p>Unless otherwise stated, the open-source components listed on this page are provided under their respective open-source licenses.</p>
+        <p>Nothing on this page grants any rights to use third-party trademarks, logos, or other brand assets beyond what is permitted by applicable law or the relevant license.</p>
+        <p>The iMorph name, logo, trademarks, and other proprietary materials remain the property of their respective owners.</p>
+
+        <h2>Changes and Updates</h2>
+        <p>The open-source components used by iMorph may change over time as the platform evolves.</p>
+        <p>This page may be updated periodically to reflect the open-source components and versions included in iMorph.</p>
+        <p>For a specific software release or deployment, the applicable license and attribution information is determined by the corresponding version of the software distributed or used in that release.</p>
+
+        <p class="notice-copyright">&copy; 2026 iMorph. All rights reserved.</p>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <div class="footer-inner">
+      <p>&copy; 2026 iMorph.ai. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#features">Product</a>
+        <a href="open-source-notices.html">Legal</a>
+      </div>
+    </div>
+  </footer>
+  <script>
+    const html = document.documentElement;
+    const toggle = document.getElementById('theme-toggle');
+    const stored = localStorage.getItem('imorph-theme');
+    if (stored) html.setAttribute('data-theme', stored);
+    toggle.addEventListener('click', () => {
+      const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('imorph-theme', next);
+    });
+  </script>
+</body>
+</html>
